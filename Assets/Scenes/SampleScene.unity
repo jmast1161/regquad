@@ -156,7 +156,9 @@ MonoBehaviour:
   height: 4
   nodePrefab: {fileID: 693816015424048080, guid: 659429e50fe27884f833f404094645b1, type: 3}
   blockPrefab: {fileID: 1681427915611887823, guid: 212bd2f3960ff904ca21225b9a22dd83, type: 3}
+  targetPrefab: {fileID: 1797644771863235036, guid: b3cb53e5939c950499a410ecf52e624e, type: 3}
   boardPrefab: {fileID: 5590793918680668662, guid: fdbbd55c62f462c43ac07b75bb5ab46d, type: 3}
+  travelTime: 0.5
 --- !u!4 &75417974
 Transform:
   m_ObjectHideFlags: 0

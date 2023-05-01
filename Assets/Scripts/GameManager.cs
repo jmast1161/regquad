@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private Block player;
 
     private ICollection<Block> occupiedBlocks;
+    private ICollection<Target> targets;
 
     private int CurrentLevelIndex = 1;
 
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int height = 4;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
+    [SerializeField] private Target targetPrefab;
     [SerializeField] private SpriteRenderer boardPrefab;
     [SerializeField] private float travelTime = 0.5f;
 
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour
 
         occupiedBlocks = new List<Block>();
         nodes = new List<Node>();
+        targets = new List<Target>();
         
         var level = gameConfiguration.Levels
             .FirstOrDefault(l => l.Index == CurrentLevelIndex);
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour
 
         Camera.main.transform.position = new Vector3(center.x, center.y, -10);
         SpawnPlayer();
+        SpawnTargets();
         SetGameState(GameState.WaitingInput);        
     }
 
@@ -106,6 +110,21 @@ public class GameManager : MonoBehaviour
 
                 occupiedBlocks.Add(occupiedBlock);
             }
+        }
+    }
+
+    private void SpawnTargets()
+    {        
+        var node = nodes
+            .Where(n => !n.IsOccupied)
+            .Where(n => n.Position.x == 1)
+            .FirstOrDefault(n => n.Position.y == 0);
+
+         if(node != null)
+        {
+            var target = Instantiate(targetPrefab,  node.Position, Quaternion.identity);
+            target.Init(node);
+            targets.Add(target);
         }
     }
 
@@ -169,10 +188,18 @@ public class GameManager : MonoBehaviour
 
         var originalPosition = player.Node;
         var next = player.Node;
+        var targetsToDelete = new List<Target>();
         do{
             next = GetNodeAtPosition(next.Position + direction);
             if(next != null)
             {
+                if(next.HasTarget)
+                {
+                    var target = targets.FirstOrDefault(t => t.Node == next);                   
+                    targetsToDelete.Add(target);
+                    next.HasTarget = false;
+                }
+
                 player.Node = next;
             }
         } 
@@ -182,7 +209,16 @@ public class GameManager : MonoBehaviour
         {
             var sequence = DOTween.Sequence();        
             sequence.Insert(0, player.transform.DOMove(player.Node.Position, travelTime).SetEase(Ease.InQuad));
+            sequence.OnUpdate(() => {
+                
+            });
             sequence.OnComplete(() => {
+               foreach(var target in targetsToDelete)
+               {
+                    targets.Remove(target);
+                    Destroy(target.gameObject);
+               }
+
                 SetGameState(GameState.WaitingInput);
             });
         }
