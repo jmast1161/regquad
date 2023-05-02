@@ -152,8 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0f5b3fe7fc85a4b8f806f9786240b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 4
-  height: 4
   nodePrefab: {fileID: 693816015424048080, guid: 659429e50fe27884f833f404094645b1, type: 3}
   blockPrefab: {fileID: 1681427915611887823, guid: 212bd2f3960ff904ca21225b9a22dd83, type: 3}
   targetPrefab: {fileID: 1797644771863235036, guid: b3cb53e5939c950499a410ecf52e624e, type: 3}

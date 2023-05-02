@@ -26,8 +26,6 @@ public class GameManager : MonoBehaviour
 
     private int CurrentLevelIndex = 1;
 
-    [SerializeField] private int width = 4;
-    [SerializeField] private int height = 4;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
@@ -58,8 +56,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeLevel()
     {
-        //todo: get relative path
-        StreamReader reader = new StreamReader(Path.GetFullPath(@"D:\SoftwareDevelopment\GameDevelopment\ExitGame\Assets\Scripts\Levels.json"));
+        StreamReader reader = new StreamReader(Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json"));
         string json = reader.ReadToEnd();
         var gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
 
@@ -79,19 +76,19 @@ public class GameManager : MonoBehaviour
                 }
             }            
 
-            AddOccupiedBlocks(level.OccupiedBlockLocations);
-            ++CurrentLevelIndex;
+            AddOccupiedBlocks(level.OccupiedBlockLocations);            
+            SpawnPlayer(level.PlayerPosition);
+            SpawnTargets(level.TargetLocations);
+            ++CurrentLevelIndex;            
+
+            var center = new Vector2((float) level.GridWidth / 2 - 0.5f, (float) level.GridHeight / 2 - 0.5f);
+
+            var board = Instantiate(boardPrefab, center, Quaternion.identity);
+            board.size = new Vector2(level.GridWidth, level.GridHeight);
+
+            Camera.main.transform.position = new Vector3(center.x, center.y, -10);
+            SetGameState(GameState.WaitingInput);        
         }
-
-        var center = new Vector2((float) width / 2 - 0.5f, (float) height / 2 - 0.5f);
-
-        var board = Instantiate(boardPrefab, center, Quaternion.identity);
-        board.size = new Vector2(width, height);
-
-        Camera.main.transform.position = new Vector3(center.x, center.y, -10);
-        SpawnPlayer();
-        SpawnTargets();
-        SetGameState(GameState.WaitingInput);        
     }
 
     private void AddOccupiedBlocks(Vector2[] occupiedBlockPositions)
@@ -113,27 +110,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SpawnTargets()
+    private void SpawnTargets(Vector2[] targetLocations)
     {        
-        var node = nodes
-            .Where(n => !n.IsOccupied)
-            .Where(n => n.Position.x == 1)
-            .FirstOrDefault(n => n.Position.y == 0);
-
-         if(node != null)
+        foreach(var targetLocation in targetLocations)
         {
-            var target = Instantiate(targetPrefab,  node.Position, Quaternion.identity);
-            target.Init(node);
-            targets.Add(target);
+            var node = nodes
+                .Where(n => !n.IsOccupied)
+                .Where(n => n.Position.x == targetLocation.x)
+                .FirstOrDefault(n => n.Position.y == targetLocation.y);
+
+            if(node != null)
+            {
+                var target = Instantiate(targetPrefab,  node.Position, Quaternion.identity);
+                target.Init(node);
+                targets.Add(target);
+            }
         }
     }
 
-    private void SpawnPlayer()
+    private void SpawnPlayer(Vector2 position)
     {
         var node = nodes
             .Where(n => !n.IsOccupied)
-            .Where(n => n.Position.x == 1)
-            .FirstOrDefault(n => n.Position.y == 1);
+            .Where(n => n.Position.x == position.x)
+            .FirstOrDefault(n => n.Position.y == position.y);
 
         if(node != null)
         {
@@ -189,6 +189,7 @@ public class GameManager : MonoBehaviour
         var originalPosition = player.Node;
         var next = player.Node;
         var targetsToDelete = new List<Target>();
+        var playerMovePath = new List<Vector3>();
         do{
             next = GetNodeAtPosition(next.Position + direction);
             if(next != null)
@@ -199,7 +200,7 @@ public class GameManager : MonoBehaviour
                     targetsToDelete.Add(target);
                     next.HasTarget = false;
                 }
-
+                playerMovePath.Add(next.transform.position);
                 player.Node = next;
             }
         } 
@@ -207,17 +208,30 @@ public class GameManager : MonoBehaviour
 
         if(originalPosition != player.Node)
         {
-            var sequence = DOTween.Sequence();        
-            sequence.Insert(0, player.transform.DOMove(player.Node.Position, travelTime).SetEase(Ease.InQuad));
-            sequence.OnUpdate(() => {
-                
-            });
+            var sequence = DOTween.Sequence();
+            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime).SetEase(Ease.InQuad).OnWaypointChange((int index) => {                
+                if(index > 0)
+                {
+                    var previousNode = playerMovePath[index - 1];
+                    var targetToDelete = targetsToDelete
+                        .Where(x => x.Node.Position.x == previousNode.x)
+                        .FirstOrDefault(x => x.Node.Position.y == previousNode.y);
+
+                    if(targetToDelete != null)
+                    {
+                        targets.Remove(targetToDelete);
+                        Destroy(targetToDelete.gameObject);
+                    }
+                }
+
+            }));
+
             sequence.OnComplete(() => {
-               foreach(var target in targetsToDelete)
-               {
-                    targets.Remove(target);
-                    Destroy(target.gameObject);
-               }
+                if(playerMovePath.Count == 1 && targetsToDelete.Count == 1)
+                {
+                     targets.Remove(targetsToDelete[0]);
+                     Destroy(targetsToDelete[0].gameObject);
+                }
 
                 SetGameState(GameState.WaitingInput);
             });
