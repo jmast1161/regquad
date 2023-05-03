@@ -24,11 +24,12 @@ public class GameManager : MonoBehaviour
     private ICollection<Block> occupiedBlocks;
     private ICollection<Target> targets;
 
-    private int CurrentLevelIndex = 1;
-
+    private int currentLevelIndex = 1;
+    private Goal goal;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
+    [SerializeField] private Goal goalPrefab;
     [SerializeField] private SpriteRenderer boardPrefab;
     [SerializeField] private float travelTime = 0.5f;
 
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour
         targets = new List<Target>();
         
         var level = gameConfiguration.Levels
-            .FirstOrDefault(l => l.Index == CurrentLevelIndex);
+            .FirstOrDefault(l => l.Index == currentLevelIndex);
 
         if(level != null)
         {
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour
             AddOccupiedBlocks(level.OccupiedBlockLocations);            
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
-            ++CurrentLevelIndex;            
+            SpawnGoal(level.GoalPosition);
 
             var center = new Vector2((float) level.GridWidth / 2 - 0.5f, (float) level.GridHeight / 2 - 0.5f);
 
@@ -92,12 +93,11 @@ public class GameManager : MonoBehaviour
     }
 
     private void AddOccupiedBlocks(Vector2[] occupiedBlockPositions)
-    {
-        // var randomIndex = Random.Range(0, nodes.Count - 1);
-        // var node = nodes[randomIndex];        
+    {   
         foreach(var occupiedBlockPosition in occupiedBlockPositions)
         {
             var node = nodes
+                .Where(n => !n.IsGoalNode)
                 .Where(n => n.Position.x == occupiedBlockPosition.x)
                 .FirstOrDefault(n => n.Position.y == occupiedBlockPosition.y);
             if(node != null)
@@ -110,11 +110,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SpawnGoal(Vector2 goalPosition)
+    {
+        var node = Instantiate(nodePrefab, goalPosition, Quaternion.identity);
+        node.IsGoalNode = true;
+        nodes.Add(node);
+        goal = Instantiate(goalPrefab, goalPosition, Quaternion.identity);
+    }
+
     private void SpawnTargets(Vector2[] targetLocations)
     {        
         foreach(var targetLocation in targetLocations)
         {
             var node = nodes
+                .Where(n => !n.IsGoalNode)
                 .Where(n => !n.IsOccupied)
                 .Where(n => n.Position.x == targetLocation.x)
                 .FirstOrDefault(n => n.Position.y == targetLocation.y);
@@ -131,6 +140,7 @@ public class GameManager : MonoBehaviour
     private void SpawnPlayer(Vector2 position)
     {
         var node = nodes
+            .Where(n => !n.IsGoalNode)
             .Where(n => !n.IsOccupied)
             .Where(n => n.Position.x == position.x)
             .FirstOrDefault(n => n.Position.y == position.y);
@@ -171,10 +181,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Node GetNodeAtPosition(Vector2 position) =>
-        nodes
-        .Where(n => !n.IsOccupied)
-        .FirstOrDefault(n => n.Position == position);    
+    private Node GetNodeAtPosition(Vector2 position)
+    {
+        var possibleNodes = nodes
+            .Where(n => !n.IsOccupied);             
+
+        if(!goal.GoalActive)
+        {
+            possibleNodes = possibleNodes
+                .Where(n => !n.IsGoalNode);
+        }
+
+        return  possibleNodes
+            .FirstOrDefault(n => n.Position == position);              
+    }
 
     private void MoveBlock(Vector2 direction)
     {
@@ -231,6 +251,11 @@ public class GameManager : MonoBehaviour
                 {
                      targets.Remove(targetsToDelete[0]);
                      Destroy(targetsToDelete[0].gameObject);
+                }
+
+                if(!goal.GoalActive && !targets.Any())
+                {
+                    goal.SetGoalState(true);                    
                 }
 
                 SetGameState(GameState.WaitingInput);
