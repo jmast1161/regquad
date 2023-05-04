@@ -7,9 +7,11 @@ using System.IO;
 
 public enum GameState
 {
+    InitializeGame,
     InitializeLevel,
     WaitingInput,
-    Moving
+    Moving,
+    LevelComplete
 
 }
 
@@ -23,9 +25,10 @@ public class GameManager : MonoBehaviour
 
     private ICollection<Block> occupiedBlocks;
     private ICollection<Target> targets;
-
-    private int currentLevelIndex = 1;
+    private GameConfiguration gameConfiguration;
+    private int currentLevelIndex;
     private Goal goal;
+    private SpriteRenderer board;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
@@ -36,7 +39,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetGameState(GameState.InitializeLevel);
+        SetGameState(GameState.InitializeGame);
     }
 
     private void SetGameState(GameState newState)
@@ -45,6 +48,9 @@ public class GameManager : MonoBehaviour
 
         switch(gameState)
         {
+            case GameState.InitializeGame:
+                InitializeGame();
+                break;
             case GameState.InitializeLevel:
                 InitializeLevel();
                 break;
@@ -55,16 +61,65 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void InitializeLevel()
+    private void InitializeGame()
     {
         StreamReader reader = new StreamReader(Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json"));
         string json = reader.ReadToEnd();
-        var gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
-
+        gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
+        currentLevelIndex = 1;
         occupiedBlocks = new List<Block>();
         nodes = new List<Node>();
         targets = new List<Target>();
-        
+
+        SetGameState(GameState.InitializeLevel);
+    }
+
+    private void InitializeLevel()
+    {
+        if(occupiedBlocks.Any())
+        {
+            foreach(var occupiedBlock in occupiedBlocks)
+            {
+                Destroy(occupiedBlock.gameObject);
+            }
+            
+            occupiedBlocks.Clear();
+        }
+
+        if(nodes.Any())
+        {
+            foreach(var node in nodes)
+            {
+                Destroy(node.gameObject);
+            }
+            nodes.Clear();
+        }
+
+        if(targets.Any())
+        {
+            foreach(var target in targets)
+            {
+                Destroy(target.gameObject);
+            }
+
+            targets.Clear();
+        }
+
+        if(player != null)
+        {
+            Destroy(player.gameObject);
+        }
+
+        if(goal != null)
+        {
+            Destroy(goal.gameObject);
+        }
+
+        if(board != null)
+        {
+            Destroy(board.gameObject);
+        }
+
         var level = gameConfiguration.Levels
             .FirstOrDefault(l => l.Index == currentLevelIndex);
 
@@ -75,20 +130,20 @@ public class GameManager : MonoBehaviour
                     var node = Instantiate(nodePrefab, new Vector2(x, y), Quaternion.identity);
                     nodes.Add(node);
                 }
-            }            
+            }
 
-            AddOccupiedBlocks(level.OccupiedBlockLocations);            
+            AddOccupiedBlocks(level.OccupiedBlockLocations);
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
             SpawnGoal(level.GoalPosition);
 
             var center = new Vector2((float) level.GridWidth / 2 - 0.5f, (float) level.GridHeight / 2 - 0.5f);
 
-            var board = Instantiate(boardPrefab, center, Quaternion.identity);
+            board = Instantiate(boardPrefab, center, Quaternion.identity);
             board.size = new Vector2(level.GridWidth, level.GridHeight);
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
-            SetGameState(GameState.WaitingInput);        
+            SetGameState(GameState.WaitingInput);
         }
     }
 
@@ -116,6 +171,8 @@ public class GameManager : MonoBehaviour
         node.IsGoalNode = true;
         nodes.Add(node);
         goal = Instantiate(goalPrefab, goalPosition, Quaternion.identity);
+        goal.Init(node);
+        goal.SetGoalState(!targets.Any());
     }
 
     private void SpawnTargets(Vector2[] targetLocations)
@@ -153,38 +210,47 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if(gameState != GameState.WaitingInput)
+        switch(gameState)
         {
-            return;
-        }
+            case GameState.WaitingInput:
+                if(Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    MoveBlock(Vector2.left);
+                }
 
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            MoveBlock(Vector2.left);
-        }
+                if(Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    MoveBlock(Vector2.right);
+                }
 
-        if(Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            MoveBlock(Vector2.right);
-        }
+                if(Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    MoveBlock(Vector2.up);
+                }
 
-        if(Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            MoveBlock(Vector2.up);
-        }
+                if(Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    MoveBlock(Vector2.down);
+                }
+                break;
 
-        if(Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            MoveBlock(Vector2.down);
+            case GameState.LevelComplete:
+
+                if(Input.GetKeyDown(KeyCode.Space))
+                {
+                    ++currentLevelIndex;
+                    SetGameState(GameState.InitializeLevel);
+                }
+                break;
         }
     }
 
     private Node GetNodeAtPosition(Vector2 position)
     {
         var possibleNodes = nodes
-            .Where(n => !n.IsOccupied);             
+            .Where(n => !n.IsOccupied);
 
         if(!goal.GoalActive)
         {
@@ -193,7 +259,7 @@ public class GameManager : MonoBehaviour
         }
 
         return  possibleNodes
-            .FirstOrDefault(n => n.Position == position);              
+            .FirstOrDefault(n => n.Position == position);
     }
 
     private void MoveBlock(Vector2 direction)
@@ -216,7 +282,7 @@ public class GameManager : MonoBehaviour
             {
                 if(next.HasTarget)
                 {
-                    var target = targets.FirstOrDefault(t => t.Node == next);                   
+                    var target = targets.FirstOrDefault(t => t.Node == next);
                     targetsToDelete.Add(target);
                     next.HasTarget = false;
                 }
@@ -229,7 +295,7 @@ public class GameManager : MonoBehaviour
         if(originalPosition != player.Node)
         {
             var sequence = DOTween.Sequence();
-            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime).SetEase(Ease.InQuad).OnWaypointChange((int index) => {                
+            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime).SetEase(Ease.InQuad).OnWaypointChange((int index) => {
                 if(index > 0)
                 {
                     var previousNode = playerMovePath[index - 1];
@@ -255,10 +321,17 @@ public class GameManager : MonoBehaviour
 
                 if(!goal.GoalActive && !targets.Any())
                 {
-                    goal.SetGoalState(true);                    
+                    goal.SetGoalState(true);
                 }
 
-                SetGameState(GameState.WaitingInput);
+                if(player.Node == goal.Node)
+                {
+                    SetGameState(GameState.LevelComplete);
+                }
+                else
+                {
+                    SetGameState(GameState.WaitingInput);
+                }
             });
         }
         else

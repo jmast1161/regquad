@@ -3,6 +3,27 @@
     [
         {
             "Index": 1,
+            "GridWidth": 3,
+            "GridHeight": 3,
+            "PlayerPosition":
+            {
+                "x": 0,
+                "y": 0
+            },
+            "OccupiedBlockLocations":
+            [
+            ],
+            "TargetLocations":
+            [
+            ],
+            "GoalPosition":
+            {
+                "x": 3,
+                "y": 2
+            }
+        },
+        {
+            "Index": 2,
             "GridWidth": 4,
             "GridHeight": 4,
             "PlayerPosition":
@@ -22,16 +43,45 @@
                 {
                     "x": 1,
                     "y": 0
-                },
-                {
-                    "x": 0,
-                    "y": 3
                 }
             ],
             "GoalPosition":
             {
                 "x": 4,
                 "y": 0    
+            }
+        },
+        {
+            "Index": 3,
+            "GridWidth": 4,
+            "GridHeight": 4,
+            "PlayerPosition":
+            {
+                "x": 0,
+                "y": 0
+            },
+            "OccupiedBlockLocations":
+            [
+                {
+                    "x": 1,
+                    "y": 1
+                }
+            ],
+            "TargetLocations":
+            [
+                {
+                    "x": 3,
+                    "y": 0
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ],
+            "GoalPosition":
+            {
+                "x": -1,
+                "y": 3
             }
         }   
     ]
