@@ -15,7 +15,7 @@ public class Block : MonoBehaviour
     {
         if(!isPlayer)
         {
-            node.IsOccupied = true;        
+            node.IsOccupied = true;
         }
 
         Node = node;
