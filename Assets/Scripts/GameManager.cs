@@ -9,10 +9,10 @@ public enum GameState
 {
     InitializeGame,
     InitializeLevel,
-    WaitingInput,
+    WaitingGameplayInput,
     Moving,
-    LevelComplete
-
+    LevelComplete,
+    WaitingLevelCompleteInput
 }
 
 public class GameManager : MonoBehaviour
@@ -29,11 +29,13 @@ public class GameManager : MonoBehaviour
     private int currentLevelIndex;
     private Goal goal;
     private SpriteRenderer board;
+    private Canvas levelCompleteCanvas;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
     [SerializeField] private SpriteRenderer boardPrefab;
+    [SerializeField] private Canvas levelCompletePrefab;
     [SerializeField] private float travelTime = 0.5f;
 
     // Start is called before the first frame update
@@ -54,9 +56,12 @@ public class GameManager : MonoBehaviour
             case GameState.InitializeLevel:
                 InitializeLevel();
                 break;
-            case GameState.WaitingInput:
+            case GameState.LevelComplete:
+                SpawnLevelCompleteCanvas();
                 break;
+            case GameState.WaitingGameplayInput:
             case GameState.Moving:
+            case GameState.WaitingLevelCompleteInput:
                 break;
         }
     }
@@ -120,6 +125,11 @@ public class GameManager : MonoBehaviour
             Destroy(board.gameObject);
         }
 
+        if(levelCompleteCanvas != null)
+        {
+            Destroy(levelCompleteCanvas.gameObject);
+        }
+
         var level = gameConfiguration.Levels
             .FirstOrDefault(l => l.Index == currentLevelIndex);
 
@@ -143,7 +153,7 @@ public class GameManager : MonoBehaviour
             board.size = new Vector2(level.GridWidth, level.GridHeight);
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
-            SetGameState(GameState.WaitingInput);
+            SetGameState(GameState.WaitingGameplayInput);
         }
     }
 
@@ -173,6 +183,20 @@ public class GameManager : MonoBehaviour
         goal = Instantiate(goalPrefab, goalPosition, Quaternion.identity);
         goal.Init(node);
         goal.SetGoalState(!targets.Any());
+    }
+
+    private void SpawnLevelCompleteCanvas()
+    {
+        levelCompleteCanvas = Instantiate(levelCompletePrefab, new Vector3(0f, 0f), Quaternion.identity);
+        var nextLevelButton = levelCompleteCanvas.GetComponentInChildren<UnityEngine.UI.Button>();
+        nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
+        SetGameState(GameState.WaitingLevelCompleteInput);
+    }
+
+    private void NextLevelButtonClicked()
+    {
+        ++currentLevelIndex;
+        SetGameState(GameState.InitializeLevel);
     }
 
     private void SpawnTargets(Vector2[] targetLocations)
@@ -214,7 +238,7 @@ public class GameManager : MonoBehaviour
     {
         switch(gameState)
         {
-            case GameState.WaitingInput:
+            case GameState.WaitingGameplayInput:
                 if(Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     MoveBlock(Vector2.left);
@@ -233,15 +257,6 @@ public class GameManager : MonoBehaviour
                 if(Input.GetKeyDown(KeyCode.DownArrow))
                 {
                     MoveBlock(Vector2.down);
-                }
-                break;
-
-            case GameState.LevelComplete:
-
-                if(Input.GetKeyDown(KeyCode.Space))
-                {
-                    ++currentLevelIndex;
-                    SetGameState(GameState.InitializeLevel);
                 }
                 break;
         }
@@ -330,13 +345,13 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    SetGameState(GameState.WaitingInput);
+                    SetGameState(GameState.WaitingGameplayInput);
                 }
             });
         }
         else
         {
-            SetGameState(GameState.WaitingInput);
+            SetGameState(GameState.WaitingGameplayInput);
         }
     }
 }
