@@ -189,6 +189,12 @@ public class GameManager : MonoBehaviour
     {
         levelCompleteCanvas = Instantiate(levelCompletePrefab, new Vector3(0f, 0f), Quaternion.identity);
         var nextLevelButton = levelCompleteCanvas.GetComponentInChildren<UnityEngine.UI.Button>();
+        var entryAnimator = levelCompleteCanvas.GetComponentInChildren<Animator>();
+        if(entryAnimator != null)
+        {
+            entryAnimator.Play("Entry");
+        }
+
         nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
         SetGameState(GameState.WaitingLevelCompleteInput);
     }
