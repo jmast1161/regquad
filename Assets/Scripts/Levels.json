@@ -5,6 +5,7 @@
             "Index": 1,
             "GridWidth": 3,
             "GridHeight": 3,
+            "Moves": 2,
             "PlayerPosition":
             {
                 "x": 0,
@@ -26,6 +27,7 @@
             "Index": 2,
             "GridWidth": 4,
             "GridHeight": 4,
+            "Moves": 3,
             "PlayerPosition":
             {
                 "x": 1,
@@ -55,6 +57,7 @@
             "Index": 3,
             "GridWidth": 4,
             "GridHeight": 4,
+            "Moves": 3,
             "PlayerPosition":
             {
                 "x": 0,

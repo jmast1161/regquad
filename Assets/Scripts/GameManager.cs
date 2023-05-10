@@ -12,7 +12,8 @@ public enum GameState
     WaitingGameplayInput,
     Moving,
     LevelComplete,
-    WaitingLevelCompleteInput
+    WaitingLevelCompleteInput,
+    GameOver
 }
 
 public class GameManager : MonoBehaviour
@@ -27,15 +28,18 @@ public class GameManager : MonoBehaviour
     private ICollection<Target> targets;
     private GameConfiguration gameConfiguration;
     private int currentLevelIndex;
+    private int remainingMoves;
     private Goal goal;
     private SpriteRenderer board;
     private Canvas levelCompleteCanvas;
+    private Canvas remainingMovesCanvas;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
     [SerializeField] private SpriteRenderer boardPrefab;
     [SerializeField] private Canvas levelCompletePrefab;
+    [SerializeField] private Canvas remainingMovesPrefab;
     [SerializeField] private float travelTime = 0.5f;
 
     // Start is called before the first frame update
@@ -130,6 +134,11 @@ public class GameManager : MonoBehaviour
             Destroy(levelCompleteCanvas.gameObject);
         }
 
+        if(remainingMovesCanvas != null)
+        {
+            Destroy(remainingMovesCanvas.gameObject);
+        }
+
         var level = gameConfiguration.Levels
             .FirstOrDefault(l => l.Index == currentLevelIndex);
 
@@ -142,10 +151,12 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            remainingMoves = level.Moves;
             AddOccupiedBlocks(level.OccupiedBlockLocations);
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
             SpawnGoal(level.GoalPosition);
+            SpawnRemainingMoves();
 
             var center = new Vector2((float) level.GridWidth / 2 - 0.5f, (float) level.GridHeight / 2 - 0.5f);
 
@@ -236,6 +247,27 @@ public class GameManager : MonoBehaviour
         {
             player = Instantiate(blockPrefab,  node.Position, Quaternion.identity);
             player.Init(node, Color.white, true);
+        }
+    }
+
+    private void SpawnRemainingMoves()
+    {
+        remainingMovesCanvas = Instantiate(remainingMovesPrefab, new Vector3(0f, 0f), Quaternion.identity);
+        UpdateRemainingMoves(remainingMoves);
+    }
+
+    private void UpdateRemainingMoves(int moves)
+    {
+        if(remainingMovesCanvas == null)
+        {
+            return;
+        }
+
+        var text = remainingMovesCanvas.GetComponentInChildren<TMPro.TMP_Text>();
+        if(text != null)
+        {
+            var baseText = text.text.Split(':');
+            text.text = $"{baseText[0]}: {moves}";
         }
     }
 
@@ -345,9 +377,14 @@ public class GameManager : MonoBehaviour
                     goal.SetGoalState(true);
                 }
 
+                UpdateRemainingMoves(--remainingMoves);
                 if(player.Node == goal.Node)
                 {
                     SetGameState(GameState.LevelComplete);
+                }
+                else if(remainingMoves == 0)
+                {
+                    SetGameState(GameState.GameOver);
                 }
                 else
                 {
