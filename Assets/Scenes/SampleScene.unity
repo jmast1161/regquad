@@ -157,7 +157,9 @@ MonoBehaviour:
   targetPrefab: {fileID: 1797644771863235036, guid: b3cb53e5939c950499a410ecf52e624e, type: 3}
   goalPrefab: {fileID: 1671197447051736365, guid: e4a2c1ca92b2f9842bd18fbce6252339, type: 3}
   boardPrefab: {fileID: 5590793918680668662, guid: fdbbd55c62f462c43ac07b75bb5ab46d, type: 3}
-  levelCompletePrefab: {fileID: 5205803403889699031, guid: eb1d67d0023c0b745972ffc3083222ec, type: 3}
+  levelCompletePrefab: {fileID: 5205803403889699031, guid: ce32e9a25f803d240b489b5318e48e93, type: 3}
+  remainingMovesPrefab: {fileID: 5205803403889699031, guid: eb1d67d0023c0b745972ffc3083222ec, type: 3}
+  gameOverPrefab: {fileID: 5205803403889699031, guid: cd417da7b227d204b85340b5eb670a54, type: 3}
   travelTime: 0.5
 --- !u!4 &75417974
 Transform:

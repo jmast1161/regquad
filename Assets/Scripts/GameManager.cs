@@ -13,7 +13,8 @@ public enum GameState
     Moving,
     LevelComplete,
     WaitingLevelCompleteInput,
-    GameOver
+    GameOver,
+    WaitingGameOverInput
 }
 
 public class GameManager : MonoBehaviour
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     private SpriteRenderer board;
     private Canvas levelCompleteCanvas;
     private Canvas remainingMovesCanvas;
+    private Canvas gameOverCanvas;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SpriteRenderer boardPrefab;
     [SerializeField] private Canvas levelCompletePrefab;
     [SerializeField] private Canvas remainingMovesPrefab;
+    [SerializeField] private Canvas gameOverPrefab;
     [SerializeField] private float travelTime = 0.5f;
 
     // Start is called before the first frame update
@@ -66,6 +69,10 @@ public class GameManager : MonoBehaviour
             case GameState.WaitingGameplayInput:
             case GameState.Moving:
             case GameState.WaitingLevelCompleteInput:
+            case GameState.WaitingGameOverInput:
+                break;
+            case GameState.GameOver:
+                SpawnGameOverCanvas();
                 break;
         }
     }
@@ -139,6 +146,11 @@ public class GameManager : MonoBehaviour
             Destroy(remainingMovesCanvas.gameObject);
         }
 
+        if(gameOverCanvas != null)
+        {
+            Destroy(gameOverCanvas.gameObject);
+        }
+
         var level = gameConfiguration.Levels
             .FirstOrDefault(l => l.Index == currentLevelIndex);
 
@@ -208,6 +220,24 @@ public class GameManager : MonoBehaviour
 
         nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
         SetGameState(GameState.WaitingLevelCompleteInput);
+    }
+
+    private void SpawnGameOverCanvas()
+    {
+        gameOverCanvas = Instantiate(gameOverPrefab, new Vector3(0f, 0f), Quaternion.identity);
+        var replayButton = gameOverCanvas.GetComponentInChildren<UnityEngine.UI.Button>();
+        var replayAnimator = gameOverCanvas.GetComponent<Animator>();
+        if(replayAnimator != null)
+        {
+            replayAnimator.Play("Entry");
+        }
+
+        replayButton.onClick.AddListener(() => 
+        {
+            SetGameState(GameState.InitializeLevel);
+        });
+
+        SetGameState(GameState.WaitingGameOverInput);
     }
 
     private void NextLevelButtonClicked()
