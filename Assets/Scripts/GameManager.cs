@@ -215,7 +215,7 @@ public class GameManager : MonoBehaviour
         var entryAnimator = levelCompleteCanvas.GetComponentInChildren<Animator>();
         if(entryAnimator != null)
         {
-            entryAnimator.Play("Entry");
+            entryAnimator.Play("LevelCompletePanel", 0);
         }
 
         nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
@@ -229,7 +229,7 @@ public class GameManager : MonoBehaviour
         var replayAnimator = gameOverCanvas.GetComponent<Animator>();
         if(replayAnimator != null)
         {
-            replayAnimator.Play("Entry");
+            replayAnimator.Play("LevelCompletePanel", 0);
         }
 
         replayButton.onClick.AddListener(() => 
