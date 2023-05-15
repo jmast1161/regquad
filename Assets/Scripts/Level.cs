@@ -10,6 +10,7 @@ public class Level
     public int GridWidth;
     public int GridHeight;
     public Vector2 PlayerPosition;
+    public Vector2[] BombLocations;
     public Vector2[] OccupiedBlockLocations;
     public Vector2[] TargetLocations;
     public Vector2 GoalPosition;

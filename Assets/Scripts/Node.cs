@@ -6,6 +6,7 @@ public class Node : MonoBehaviour
 {
     public bool IsOccupied;
     public bool HasTarget;
+    public bool HasBomb;
     public bool IsGoalNode;
     public Vector2 Position => transform.position;
 }

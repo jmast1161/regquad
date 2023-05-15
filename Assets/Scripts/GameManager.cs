@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     private ICollection<Block> occupiedBlocks;
     private ICollection<Target> targets;
+    private ICollection<Bomb> bombs;
     private GameConfiguration gameConfiguration;
     private int currentLevelIndex;
     private int remainingMoves;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas levelCompletePrefab;
     [SerializeField] private Canvas remainingMovesPrefab;
     [SerializeField] private Canvas gameOverPrefab;
+    [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float travelTime = 0.5f;
 
     // Start is called before the first frame update
@@ -86,11 +88,12 @@ public class GameManager : MonoBehaviour
         occupiedBlocks = new List<Block>();
         nodes = new List<Node>();
         targets = new List<Target>();
+        bombs = new List<Bomb>();
 
         SetGameState(GameState.InitializeLevel);
     }
 
-    private void InitializeLevel()
+    private void ClearLevelGameObjects()
     {
         if(occupiedBlocks.Any())
         {
@@ -100,6 +103,16 @@ public class GameManager : MonoBehaviour
             }
             
             occupiedBlocks.Clear();
+        }
+
+        if(bombs.Any())
+        {
+            foreach(var bomb in bombs)
+            {
+                Destroy(bomb.gameObject);
+            }
+            
+            bombs.Clear();
         }
 
         if(nodes.Any())
@@ -150,7 +163,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameOverCanvas.gameObject);
         }
+    }
 
+    private void InitializeLevel()
+    {
+        ClearLevelGameObjects();
+        
         var level = gameConfiguration.Levels
             .FirstOrDefault(l => l.Index == currentLevelIndex);
 
@@ -165,6 +183,7 @@ public class GameManager : MonoBehaviour
 
             remainingMoves = level.Moves;
             AddOccupiedBlocks(level.OccupiedBlockLocations);
+            SpawnBombs(level.BombLocations);
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
             SpawnGoal(level.GoalPosition);
@@ -244,6 +263,25 @@ public class GameManager : MonoBehaviour
     {
         ++currentLevelIndex;
         SetGameState(GameState.InitializeLevel);
+    }
+
+    private void SpawnBombs(Vector2[] bombLocations)
+    {
+        foreach(var bombLocation in bombLocations)
+        {
+            var node = nodes
+                .Where(n => !n.IsGoalNode)
+                .Where(n => !n.IsOccupied)
+                .Where(n => n.Position.x == bombLocation.x)
+                .FirstOrDefault(n => n.Position.y == bombLocation.y);
+
+            if(node != null)
+            {
+                var bomb = Instantiate(bombPrefab, node.Position, Quaternion.identity);
+                bomb.Init(node);
+                bombs.Add(bomb);
+            }
+        }
     }
 
     private void SpawnTargets(Vector2[] targetLocations)
@@ -359,6 +397,7 @@ public class GameManager : MonoBehaviour
         var next = player.Node;
         var targetsToDelete = new List<Target>();
         var playerMovePath = new List<Vector3>();
+        var bombHit = false;
         do{
             next = GetNodeAtPosition(next.Position + direction);
             if(next != null)
@@ -369,8 +408,15 @@ public class GameManager : MonoBehaviour
                     targetsToDelete.Add(target);
                     next.HasTarget = false;
                 }
+
                 playerMovePath.Add(next.transform.position);
                 player.Node = next;
+
+                if(next.HasBomb)
+                {
+                    bombHit = true;
+                    break;
+                }
             }
         } 
         while(next != null);
@@ -412,7 +458,7 @@ public class GameManager : MonoBehaviour
                 {
                     SetGameState(GameState.LevelComplete);
                 }
-                else if(remainingMoves == 0)
+                else if(remainingMoves == 0 || bombHit)
                 {
                     SetGameState(GameState.GameOver);
                 }

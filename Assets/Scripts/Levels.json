@@ -11,6 +11,13 @@
                 "x": 0,
                 "y": 0
             },
+            "BombLocations":
+            [
+                {
+                    "x": 1,
+                    "y": 0
+                }
+            ],
             "OccupiedBlockLocations":
             [
             ],
@@ -33,6 +40,13 @@
                 "x": 1,
                 "y": 1
             },
+            "BombLocations":
+            [
+                {
+                    "x": 2,
+                    "y": 2
+                }
+            ],
             "OccupiedBlockLocations":
             [
                 {
@@ -63,6 +77,13 @@
                 "x": 0,
                 "y": 0
             },
+            "BombLocations":
+            [
+                {
+                    "x": 2,
+                    "y": 2
+                }
+            ],
             "OccupiedBlockLocations":
             [
                 {
