@@ -279,6 +279,7 @@ public class GameManager : MonoBehaviour
             {
                 var bomb = Instantiate(bombPrefab, node.Position, Quaternion.identity);
                 bomb.Init(node);
+                bomb.ExplosionComplete += OnExplosionComplete;
                 bombs.Add(bomb);
             }
         }
@@ -458,9 +459,22 @@ public class GameManager : MonoBehaviour
                 {
                     SetGameState(GameState.LevelComplete);
                 }
-                else if(remainingMoves == 0 || bombHit)
+                else if(remainingMoves == 0)
                 {
                     SetGameState(GameState.GameOver);
+                }
+                else if(bombHit)
+                {
+                    Destroy(player.gameObject);
+                    
+                    var bomb = bombs
+                        .FirstOrDefault(b => b.Node == next);
+                    
+                    if(bomb != null)
+                    {
+                        bomb.PlayExplosion();
+                    }
+
                 }
                 else
                 {
@@ -472,5 +486,12 @@ public class GameManager : MonoBehaviour
         {
             SetGameState(GameState.WaitingGameplayInput);
         }
+    }
+
+    private void OnExplosionComplete(Bomb bomb)
+    {
+        bombs.Remove(bomb);
+        Destroy(bomb.gameObject);
+        SetGameState(GameState.GameOver);
     }
 }
