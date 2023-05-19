@@ -424,6 +424,7 @@ public class GameManager : MonoBehaviour
 
         if(originalPosition != player.Node)
         {
+            player.PlayMoveSound();
             var sequence = DOTween.Sequence();
             sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime).SetEase(Ease.InQuad).OnWaypointChange((int index) => {
                 if(index > 0)

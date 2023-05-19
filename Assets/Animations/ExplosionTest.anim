@@ -253,9 +253,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 5.25
-    functionName: ExplosionComplete
+    functionName: OnExplosionComplete
     data: 
-    objectReferenceParameter: {fileID: 1279499230878741737, guid: fb6bd9a9f10abca41add4c6cbe87c653, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

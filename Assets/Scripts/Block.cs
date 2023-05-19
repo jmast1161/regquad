@@ -10,6 +10,7 @@ public class Block : MonoBehaviour
     public int Y {get;set;}
     
     [SerializeField] private SpriteRenderer _renderer;
+    [SerializeField] private AudioSource audioSource;
 
     public void Init(Node node, Color color, bool isPlayer)
     {
@@ -20,5 +21,10 @@ public class Block : MonoBehaviour
 
         Node = node;
         _renderer.color = color;
+    }
+
+    public void PlayMoveSound()
+    {
+        audioSource.Play();
     }
 }
