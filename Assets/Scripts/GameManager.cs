@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas gameOverPrefab;
     [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float travelTime = 0.5f;
+    [SerializeField] private SoundManager soundManager;
 
     // Start is called before the first frame update
     void Start()
@@ -89,7 +90,7 @@ public class GameManager : MonoBehaviour
         nodes = new List<Node>();
         targets = new List<Target>();
         bombs = new List<Bomb>();
-
+        soundManager.PlayMusicAudioSource();
         SetGameState(GameState.InitializeLevel);
     }
 
@@ -399,14 +400,17 @@ public class GameManager : MonoBehaviour
         var targetsToDelete = new List<Target>();
         var playerMovePath = new List<Vector3>();
         var bombHit = false;
+        var blockDistance = 0;
         do{
             next = GetNodeAtPosition(next.Position + direction);
+            ++blockDistance;
             if(next != null)
             {
                 if(next.HasTarget)
                 {
                     var target = targets.FirstOrDefault(t => t.Node == next);
                     targetsToDelete.Add(target);
+                    player.PlayTargetPickupSound(blockDistance);
                     next.HasTarget = false;
                 }
 
@@ -440,14 +444,13 @@ public class GameManager : MonoBehaviour
                         Destroy(targetToDelete.gameObject);
                     }
                 }
-
             }));
 
             sequence.OnComplete(() => {
                 if(playerMovePath.Count == 1 && targetsToDelete.Count == 1)
                 {
-                     targets.Remove(targetsToDelete[0]);
-                     Destroy(targetsToDelete[0].gameObject);
+                    targets.Remove(targetsToDelete[0]);
+                    Destroy(targetsToDelete[0].gameObject);
                 }
 
                 if(!goal.GoalActive && !targets.Any())
@@ -458,6 +461,7 @@ public class GameManager : MonoBehaviour
                 UpdateRemainingMoves(--remainingMoves);
                 if(player.Node == goal.Node)
                 {
+                    player.PlayGoalSound();
                     SetGameState(GameState.LevelComplete);
                 }
                 else if(remainingMoves == 0)

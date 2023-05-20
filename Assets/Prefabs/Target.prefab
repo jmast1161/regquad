@@ -131,3 +131,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Node: {fileID: 0}
   _renderer: {fileID: 1797644770880792095}
+  audioSource: {fileID: 0}
