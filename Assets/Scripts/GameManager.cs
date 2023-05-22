@@ -410,7 +410,7 @@ public class GameManager : MonoBehaviour
                 {
                     var target = targets.FirstOrDefault(t => t.Node == next);
                     targetsToDelete.Add(target);
-                    player.PlayTargetPickupSound(blockDistance);
+                    soundManager.PlayTargetPickupSound(blockDistance);
                     next.HasTarget = false;
                 }
 
@@ -428,7 +428,7 @@ public class GameManager : MonoBehaviour
 
         if(originalPosition != player.Node)
         {
-            player.PlayMoveSound();
+            soundManager.PlayMoveSound();
             var sequence = DOTween.Sequence();
             sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime).SetEase(Ease.InQuad).OnWaypointChange((int index) => {
                 if(index > 0)
@@ -461,7 +461,7 @@ public class GameManager : MonoBehaviour
                 UpdateRemainingMoves(--remainingMoves);
                 if(player.Node == goal.Node)
                 {
-                    player.PlayGoalSound();
+                    soundManager.PlayGoalSound();
                     SetGameState(GameState.LevelComplete);
                 }
                 else if(remainingMoves == 0)
@@ -477,6 +477,7 @@ public class GameManager : MonoBehaviour
                     
                     if(bomb != null)
                     {
+                        soundManager.PlayExplosionSound();
                         bomb.PlayExplosion();
                     }
 

@@ -6,8 +6,8 @@ public class Bomb : MonoBehaviour
     public event Action<Bomb> ExplosionComplete;
     public Node Node;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private ExplosionAnimation explosionAnimation;    
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private ExplosionAnimation explosionAnimation;
+    
     public void Init(Node node)
     {
         node.HasBomb = true;
@@ -20,7 +20,6 @@ public class Bomb : MonoBehaviour
         var explosionAnimator = GetComponentInChildren<Animator>();
         if(explosionAnimator != null)
         {
-            audioSource.Play();
             explosionAnimator.Play("ExplosionTest", 0);
         }
     }
