@@ -20,7 +20,7 @@ public class Bomb : MonoBehaviour
         var explosionAnimator = GetComponentInChildren<Animator>();
         if(explosionAnimator != null)
         {
-            explosionAnimator.Play("ExplosionTest", 0);
+            explosionAnimator.Play("Explosion", 0);
         }
     }
 
