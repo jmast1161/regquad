@@ -11,14 +11,8 @@ public class Block : MonoBehaviour
     
     [SerializeField] private SpriteRenderer _renderer;
     
-    public void Init(Node node, Color color, bool isPlayer)
+    public void Init(Node node)
     {
-        if(!isPlayer)
-        {
-            node.IsOccupied = true;
-        }
-
         Node = node;
-        _renderer.color = color;
     }
 }

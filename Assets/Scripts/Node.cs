@@ -9,4 +9,11 @@ public class Node : MonoBehaviour
     public bool HasBomb;
     public bool IsGoalNode;
     public Vector2 Position => transform.position;
+    [SerializeField] private SpriteRenderer _renderer;
+
+    public void SetNodeOccupied()
+    {
+        IsOccupied = true;
+        _renderer.color = new Color(_renderer.color.r, _renderer.color.g, _renderer.color.b, 100f);
+    }
 }

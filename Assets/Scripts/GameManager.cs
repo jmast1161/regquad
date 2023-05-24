@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private Block player;
 
-    private ICollection<Block> occupiedBlocks;
+    private ICollection<Node> occupiedNodes;
     private ICollection<Target> targets;
     private ICollection<Bomb> bombs;
     private GameConfiguration gameConfiguration;
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
         string json = reader.ReadToEnd();
         gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
         currentLevelIndex = 1;
-        occupiedBlocks = new List<Block>();
+        occupiedNodes = new List<Node>();
         nodes = new List<Node>();
         targets = new List<Target>();
         bombs = new List<Bomb>();
@@ -96,14 +96,14 @@ public class GameManager : MonoBehaviour
 
     private void ClearLevelGameObjects()
     {
-        if(occupiedBlocks.Any())
+        if(occupiedNodes.Any())
         {
-            foreach(var occupiedBlock in occupiedBlocks)
+            foreach(var occupiedBlock in occupiedNodes)
             {
                 Destroy(occupiedBlock.gameObject);
             }
             
-            occupiedBlocks.Clear();
+            occupiedNodes.Clear();
         }
 
         if(bombs.Any())
@@ -210,10 +210,8 @@ public class GameManager : MonoBehaviour
                 .FirstOrDefault(n => n.Position.y == occupiedBlockPosition.y);
             if(node != null)
             {
-                var occupiedBlock = Instantiate(blockPrefab,  node.Position, Quaternion.identity);
-                occupiedBlock.Init(node, Color.red, false);
-
-                occupiedBlocks.Add(occupiedBlock);
+                node.SetNodeOccupied();
+                occupiedNodes.Add(node);
             }
         }
     }
@@ -316,7 +314,7 @@ public class GameManager : MonoBehaviour
         if(node != null)
         {
             player = Instantiate(blockPrefab,  node.Position, Quaternion.identity);
-            player.Init(node, Color.white, true);
+            player.Init(node);
         }
     }
 

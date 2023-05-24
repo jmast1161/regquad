@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 693816014195957561}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
+  m_LocalScale: {x: 0.62, y: 0.62, z: 0.62}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 693816015424048083}
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 9f8fd7e3cb3fc6548b568b0473a3e0ad, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: f6e0fc9d83b88be4f8abf7657f983992, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -131,4 +131,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsOccupied: 0
   HasTarget: 0
+  HasBomb: 0
   IsGoalNode: 0
+  _renderer: {fileID: 693816014195957563}
