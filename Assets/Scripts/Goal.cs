@@ -7,6 +7,7 @@ public class Goal : MonoBehaviour
     public bool GoalActive = false;
     public Node Node;
     [SerializeField] private SpriteRenderer _renderer;
+    [SerializeField] private Sprite[] sprites;
     public void Init(Node node)
     {
         Node = node;
@@ -18,11 +19,11 @@ public class Goal : MonoBehaviour
         GoalActive = active;
         if(GoalActive)
         {
-            _renderer.color = Color.cyan;
+            _renderer.sprite = sprites[0];
         }
         else
-        {            
-            _renderer.color = Color.yellow;
+        {
+            _renderer.sprite = sprites[1];
         }
     }
 }

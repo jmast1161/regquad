@@ -16,4 +16,10 @@ public class Node : MonoBehaviour
         IsOccupied = true;
         _renderer.color = new Color(_renderer.color.r, _renderer.color.g, _renderer.color.b, 100f);
     }
+
+    public void SetGoalNode()
+    {
+        IsGoalNode = true;
+        _renderer.color = new Color(_renderer.color.r, _renderer.color.g, _renderer.color.b, 0f);
+    }
 }

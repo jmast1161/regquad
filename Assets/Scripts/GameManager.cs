@@ -219,7 +219,7 @@ public class GameManager : MonoBehaviour
     private void SpawnGoal(Vector2 goalPosition)
     {
         var node = Instantiate(nodePrefab, goalPosition, Quaternion.identity);
-        node.IsGoalNode = true;
+        node.SetGoalNode();
         nodes.Add(node);
         goal = Instantiate(goalPrefab, goalPosition, Quaternion.identity);
         goal.Init(node);
@@ -457,7 +457,9 @@ public class GameManager : MonoBehaviour
                 }
 
                 UpdateRemainingMoves(--remainingMoves);
-                if(player.Node == goal.Node)
+                if(player.Node.Position.x == goal.Node.Position.x &&
+                    player.Node.Position.y == goal.Node.Position.y &&
+                    goal.GoalActive)
                 {
                     soundManager.PlayGoalSound();
                     SetGameState(GameState.LevelComplete);
