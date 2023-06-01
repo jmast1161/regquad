@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Remaining Moves:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 61f4280a41520b947b2e53af63f4d6da, type: 2}
-  m_sharedMaterial: {fileID: 6821003281328510091, guid: 61f4280a41520b947b2e53af63f4d6da, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 53983dc9fc3aca64f83a640284bc7c21, type: 2}
+  m_sharedMaterial: {fileID: 4526657208287630531, guid: 53983dc9fc3aca64f83a640284bc7c21, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
