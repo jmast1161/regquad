@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     private int currentLevelIndex;
     private int remainingMoves;
     private Goal goal;
-    private SpriteRenderer board;
     private Canvas levelCompleteCanvas;
     private Canvas remainingMovesCanvas;
     private Canvas gameOverCanvas;
@@ -40,18 +39,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
-    [SerializeField] private SpriteRenderer boardPrefab;
     [SerializeField] private Canvas levelCompletePrefab;
     [SerializeField] private Canvas remainingMovesPrefab;
     [SerializeField] private Canvas gameOverPrefab;
     [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float travelTime = 0.5f;
     [SerializeField] private SoundManager soundManager;
+    [SerializeField] private UnityEngine.UI.Button restartLevelButton;
 
     // Start is called before the first frame update
     void Start()
     {
         SetGameState(GameState.InitializeGame);
+        restartLevelButton.onClick.AddListener(RestartLevelButtonClicked);
     }
 
     private void SetGameState(GameState newState)
@@ -145,11 +145,6 @@ public class GameManager : MonoBehaviour
             Destroy(goal.gameObject);
         }
 
-        if(board != null)
-        {
-            Destroy(board.gameObject);
-        }
-
         if(levelCompleteCanvas != null)
         {
             Destroy(levelCompleteCanvas.gameObject);
@@ -191,9 +186,6 @@ public class GameManager : MonoBehaviour
             SpawnRemainingMoves();
 
             var center = new Vector2((float) level.GridWidth / 2 - 0.5f, (float) level.GridHeight / 2 - 0.5f);
-
-            board = Instantiate(boardPrefab, center, Quaternion.identity);
-            board.size = new Vector2(level.GridWidth, level.GridHeight);
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
             SetGameState(GameState.WaitingGameplayInput);
@@ -261,6 +253,11 @@ public class GameManager : MonoBehaviour
     private void NextLevelButtonClicked()
     {
         ++currentLevelIndex;
+        SetGameState(GameState.InitializeLevel);
+    }
+
+    private void RestartLevelButtonClicked()
+    {
         SetGameState(GameState.InitializeLevel);
     }
 
@@ -349,18 +346,15 @@ public class GameManager : MonoBehaviour
                 {
                     MoveBlock(Vector2.left);
                 }
-
-                if(Input.GetKeyDown(KeyCode.RightArrow))
+                else if(Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     MoveBlock(Vector2.right);
                 }
-
-                if(Input.GetKeyDown(KeyCode.UpArrow))
+                else if(Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     MoveBlock(Vector2.up);
                 }
-
-                if(Input.GetKeyDown(KeyCode.DownArrow))
+                else if(Input.GetKeyDown(KeyCode.DownArrow))
                 {
                     MoveBlock(Vector2.down);
                 }
