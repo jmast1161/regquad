@@ -290,6 +290,7 @@ MonoBehaviour:
   bombPrefab: {fileID: 1279499230878741739, guid: fb6bd9a9f10abca41add4c6cbe87c653, type: 3}
   travelTime: 0.5
   soundManager: {fileID: 1462034242}
+  restartLevelButton: {fileID: 1858137163}
 --- !u!4 &75417974
 Transform:
   m_ObjectHideFlags: 0
@@ -1398,7 +1399,7 @@ GameObject:
   - component: {fileID: 1858137164}
   - component: {fileID: 1858137163}
   m_Layer: 5
-  m_Name: Button
+  m_Name: RestartLevelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
