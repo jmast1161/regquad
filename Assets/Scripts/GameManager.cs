@@ -29,23 +29,23 @@ public class GameManager : MonoBehaviour
     private ICollection<Target> targets;
     private ICollection<Bomb> bombs;
     private GameConfiguration gameConfiguration;
-    private int currentLevelIndex;
     private int remainingMoves;
     private Goal goal;
     private Canvas levelCompleteCanvas;
-    private Canvas remainingMovesCanvas;
     private Canvas gameOverCanvas;
+    private CurrentLevelIndex currentLevel;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
     [SerializeField] private Canvas levelCompletePrefab;
-    [SerializeField] private Canvas remainingMovesPrefab;
+    [SerializeField] private Canvas remainingMovesCanvas;
     [SerializeField] private Canvas gameOverPrefab;
     [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float travelTime = 0.5f;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private UnityEngine.UI.Button restartLevelButton;
+    [SerializeField] private CurrentLevelIndex currentLevelIndexPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -85,12 +85,23 @@ public class GameManager : MonoBehaviour
         StreamReader reader = new StreamReader(Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json"));
         string json = reader.ReadToEnd();
         gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
-        currentLevelIndex = 1;
         occupiedNodes = new List<Node>();
         nodes = new List<Node>();
         targets = new List<Target>();
         bombs = new List<Bomb>();
         soundManager.PlayMusicAudioSource();
+        currentLevel = GameObject.FindObjectOfType<CurrentLevelIndex>();
+
+        if (currentLevel == null)
+        {
+            currentLevel = Instantiate(currentLevelIndexPrefab);
+        }
+
+        if(currentLevel.CurrentLevel == 0)
+        {
+            currentLevel.CurrentLevel = 1;
+        }
+
         SetGameState(GameState.InitializeLevel);
     }
 
@@ -150,11 +161,6 @@ public class GameManager : MonoBehaviour
             Destroy(levelCompleteCanvas.gameObject);
         }
 
-        if(remainingMovesCanvas != null)
-        {
-            Destroy(remainingMovesCanvas.gameObject);
-        }
-
         if(gameOverCanvas != null)
         {
             Destroy(gameOverCanvas.gameObject);
@@ -166,7 +172,7 @@ public class GameManager : MonoBehaviour
         ClearLevelGameObjects();
         
         var level = gameConfiguration.Levels
-            .FirstOrDefault(l => l.Index == currentLevelIndex);
+            .FirstOrDefault(l => l.Index == currentLevel.CurrentLevel);
 
         if(level != null)
         {
@@ -252,7 +258,7 @@ public class GameManager : MonoBehaviour
 
     private void NextLevelButtonClicked()
     {
-        ++currentLevelIndex;
+        ++currentLevel.CurrentLevel;
         SetGameState(GameState.InitializeLevel);
     }
 
@@ -317,7 +323,6 @@ public class GameManager : MonoBehaviour
 
     private void SpawnRemainingMoves()
     {
-        remainingMovesCanvas = Instantiate(remainingMovesPrefab, new Vector3(0f, 0f), Quaternion.identity);
         UpdateRemainingMoves(remainingMoves);
     }
 

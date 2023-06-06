@@ -6,6 +6,7 @@ public class MenuGameManager : MonoBehaviour
 {
     private Canvas mainMenu;
     [SerializeField] private Canvas mainMenuPrefab;
+    [SerializeField] private CurrentLevelIndex currentLevel;
 
     void Start()
     {
@@ -23,7 +24,8 @@ public class MenuGameManager : MonoBehaviour
         {
             playButton.onClick.AddListener(() => 
             {
-                SceneManager.LoadScene("GameScene");
+                currentLevel.CurrentLevel = 2;
+                SceneManager.LoadSceneAsync("GameScene");
             });
         }
 
