@@ -4,13 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class MenuGameManager : MonoBehaviour
 {
-    private Canvas mainMenu;
-    [SerializeField] private Canvas mainMenuPrefab;
+    [SerializeField] private Canvas mainMenu;
     [SerializeField] private CurrentLevelIndex currentLevel;
 
     void Start()
     {
-        mainMenu = Instantiate(mainMenuPrefab, new Vector3(0f, 0f), Quaternion.identity);
         var buttons = mainMenu.GetComponentsInChildren<UnityEngine.UI.Button>();
         var entryAnimator = mainMenu.GetComponentInChildren<Animator>();
         if(entryAnimator != null)
@@ -22,11 +20,11 @@ public class MenuGameManager : MonoBehaviour
 
         if(playButton != null)
         {
-            playButton.onClick.AddListener(() => 
-            {
-                currentLevel.CurrentLevel = 2;
-                SceneManager.LoadSceneAsync("GameScene");
-            });
+            // playButton.onClick.AddListener(() => 
+            // {
+            //     //currentLevel.CurrentLevel = 2;
+            //     //SceneManager.LoadSceneAsync("GameScene");
+            // });
         }
 
         var quitButton = buttons.FirstOrDefault(b => b.name == "Quit");
