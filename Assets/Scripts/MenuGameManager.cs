@@ -4,37 +4,37 @@ using UnityEngine.SceneManagement;
 
 public class MenuGameManager : MonoBehaviour
 {
-    [SerializeField] private Canvas mainMenu;
+    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject levelSelect;
     [SerializeField] private CurrentLevelIndex currentLevel;
+    [SerializeField] private Animator mainMenuEntryAnimator;
+    [SerializeField] private Animator levelSelectEntryAnimator;
+    [SerializeField] private UnityEngine.UI.Button mainMenuPlayButton;
+    [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
+    [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
 
     void Start()
     {
-        var buttons = mainMenu.GetComponentsInChildren<UnityEngine.UI.Button>();
-        var entryAnimator = mainMenu.GetComponentInChildren<Animator>();
-        if(entryAnimator != null)
+        //mainMenuEntryAnimator.Play("LevelCompletePanel", 0);
+        mainMenuPlayButton.onClick.AddListener(() => 
         {
-            entryAnimator.Play("LevelCompletePanel", 0);
-        }
+            //levelSelectEntryAnimator.Play("ShowLevelSelectPanel", 0);
+        });
 
-        var playButton = buttons.FirstOrDefault(b => b.name == "Play");
-
-        if(playButton != null)
+        mainMenuQuitButton.onClick.AddListener(() => 
         {
-            // playButton.onClick.AddListener(() => 
-            // {
-            //     //currentLevel.CurrentLevel = 2;
-            //     //SceneManager.LoadSceneAsync("GameScene");
-            // });
-        }
+            Debug.Log("quit game");
+            Application.Quit();
+        });
 
-        var quitButton = buttons.FirstOrDefault(b => b.name == "Quit");
+        //currentLevel.CurrentLevel = 2;
+        //SceneManager.LoadSceneAsync("GameScene");
 
-        if(quitButton != null)
+        levelSelectBackButton.onClick.AddListener(() => 
         {
-            quitButton.onClick.AddListener(() => 
-            {
-                Application.Quit();
-            });
-        }
+            //levelSelectEntryAnimator.Play("HideLevelSelectPanel", 0);
+            Debug.Log("back clicked");
+            //mainMenuEntryAnimator.Play("LevelCompletePanel", 0);
+        });
     }
 }
