@@ -12,29 +12,24 @@ public class MenuGameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button mainMenuPlayButton;
     [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
     [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
+    [SerializeField] private UnityEngine.UI.Button[] levelSelectButtons;
 
     void Start()
     {
-        //mainMenuEntryAnimator.Play("LevelCompletePanel", 0);
-        mainMenuPlayButton.onClick.AddListener(() => 
-        {
-            //levelSelectEntryAnimator.Play("ShowLevelSelectPanel", 0);
-        });
-
         mainMenuQuitButton.onClick.AddListener(() => 
         {
             Debug.Log("quit game");
             Application.Quit();
         });
 
-        //currentLevel.CurrentLevel = 2;
-        //SceneManager.LoadSceneAsync("GameScene");
-
-        levelSelectBackButton.onClick.AddListener(() => 
+        for(int i = 0; i < levelSelectButtons.Length; ++i)
         {
-            //levelSelectEntryAnimator.Play("HideLevelSelectPanel", 0);
-            Debug.Log("back clicked");
-            //mainMenuEntryAnimator.Play("LevelCompletePanel", 0);
-        });
+            var index = i;
+            levelSelectButtons[i].onClick.AddListener(() =>
+            {
+                currentLevel.CurrentLevel = index + 1;
+                SceneManager.LoadSceneAsync("GameScene");
+            });
+        }
     }
 }
