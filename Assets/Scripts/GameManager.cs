@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using DG.Tweening;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -14,7 +15,8 @@ public enum GameState
     LevelComplete,
     WaitingLevelCompleteInput,
     GameOver,
-    WaitingGameOverInput
+    WaitingGameOverInput,
+    Paused
 }
 
 public class GameManager : MonoBehaviour
@@ -45,6 +47,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float travelTime = 0.5f;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private UnityEngine.UI.Button restartLevelButton;
+    [SerializeField] private UnityEngine.UI.Button pauseButton;
+    [SerializeField] private UnityEngine.UI.Button resumeButton;
+    [SerializeField] private UnityEngine.UI.Button mainMenuButton;
     [SerializeField] private CurrentLevelIndex currentLevelIndexPrefab;
 
     // Start is called before the first frame update
@@ -52,6 +57,9 @@ public class GameManager : MonoBehaviour
     {
         SetGameState(GameState.InitializeGame);
         restartLevelButton.onClick.AddListener(RestartLevelButtonClicked);
+        pauseButton.onClick.AddListener(PauseButtonClicked);
+        resumeButton.onClick.AddListener(ResumeButtonClicked);
+        mainMenuButton.onClick.AddListener(MainMenuButtonClicked);
     }
 
     private void SetGameState(GameState newState)
@@ -260,6 +268,21 @@ public class GameManager : MonoBehaviour
     {
         ++currentLevel.CurrentLevel;
         SetGameState(GameState.InitializeLevel);
+    }
+
+    private void PauseButtonClicked()
+    {
+        SetGameState(GameState.Paused);
+    }
+
+    private void ResumeButtonClicked()
+    {
+        SetGameState(GameState.WaitingGameplayInput);
+    }
+
+    private void MainMenuButtonClicked()
+    {
+        SceneManager.LoadSceneAsync("MenuScene");
     }
 
     private void RestartLevelButtonClicked()
