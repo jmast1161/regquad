@@ -16,7 +16,7 @@ public class MenuGameManager : MonoBehaviour
 
     void Start()
     {
-        mainMenuEntryAnimator.Play("ShowLevelSelect", 0);
+        mainMenuEntryAnimator.Play("ShowPanel", 0);
         mainMenuQuitButton.onClick.AddListener(() => 
         {
             Debug.Log("quit game");

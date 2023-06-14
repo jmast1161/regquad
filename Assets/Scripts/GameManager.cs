@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
     [SerializeField] private Canvas levelCompletePrefab;
-    [SerializeField] private Canvas remainingMovesCanvas;
+    [SerializeField] private TMPro.TMP_Text remainingMovesText;
+    [SerializeField] private TMPro.TMP_Text currentLevelText;
     [SerializeField] private Canvas gameOverPrefab;
     [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float travelTime = 0.5f;
@@ -197,7 +198,8 @@ public class GameManager : MonoBehaviour
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
             SpawnGoal(level.GoalPosition);
-            SpawnRemainingMoves();
+            UpdateRemainingMoves(remainingMoves);
+            UpdateCurrentLevel(level.Index);
 
             var center = new Vector2((float) level.GridWidth / 2 - 0.5f, (float) level.GridHeight / 2 - 0.5f);
 
@@ -239,7 +241,7 @@ public class GameManager : MonoBehaviour
         var entryAnimator = levelCompleteCanvas.GetComponentInChildren<Animator>();
         if(entryAnimator != null)
         {
-            entryAnimator.Play("LevelCompletePanel", 0);
+            entryAnimator.Play("ShowPanel", 0);
         }
 
         nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
@@ -253,7 +255,7 @@ public class GameManager : MonoBehaviour
         var replayAnimator = gameOverCanvas.GetComponent<Animator>();
         if(replayAnimator != null)
         {
-            replayAnimator.Play("LevelCompletePanel", 0);
+            replayAnimator.Play("ShowPanel", 0);
         }
 
         replayButton.onClick.AddListener(() => 
@@ -344,24 +346,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SpawnRemainingMoves()
-    {
-        UpdateRemainingMoves(remainingMoves);
-    }
-
     private void UpdateRemainingMoves(int moves)
     {
-        if(remainingMovesCanvas == null)
+        if(remainingMovesText == null)
         {
             return;
         }
 
-        var text = remainingMovesCanvas.GetComponentInChildren<TMPro.TMP_Text>();
-        if(text != null)
+        var baseText = remainingMovesText.text.Split(':');
+        remainingMovesText.text = $"{baseText[0]}: {moves}";
+    }
+
+    private void UpdateCurrentLevel(int currentLevel)
+    {
+        if(currentLevelText == null)
         {
-            var baseText = text.text.Split(':');
-            text.text = $"{baseText[0]}: {moves}";
+            return;
         }
+
+        var baseText = currentLevelText.text.Split(':');
+        currentLevelText.text = $"{baseText[0]}: {currentLevel}";
     }
 
     // Update is called once per frame
