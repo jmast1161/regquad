@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button pauseButton;
     [SerializeField] private UnityEngine.UI.Button resumeButton;
     [SerializeField] private UnityEngine.UI.Button mainMenuButton;
-    [SerializeField] private CurrentLevelIndex currentLevelIndexPrefab;
+    [SerializeField] private CurrentLevelIndex currentLevelPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -100,17 +100,11 @@ public class GameManager : MonoBehaviour
         bombs = new List<Bomb>();
         soundManager.PlayMusicAudioSource();
         currentLevel = GameObject.FindObjectOfType<CurrentLevelIndex>();
-
         if (currentLevel == null)
         {
-            currentLevel = Instantiate(currentLevelIndexPrefab);
+            currentLevel = Instantiate(currentLevelPrefab);
         }
-
-        if(currentLevel.CurrentLevel == 0)
-        {
-            currentLevel.CurrentLevel = 1;
-        }
-
+        
         SetGameState(GameState.InitializeLevel);
     }
 

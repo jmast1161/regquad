@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CurrentLevelIndex : MonoBehaviour
 {
-    public int CurrentLevel { get; set; }
+    public int CurrentLevel { get; set; } = 1;
 
     private void Awake() 
     {

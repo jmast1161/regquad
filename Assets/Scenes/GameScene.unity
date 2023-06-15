@@ -563,7 +563,7 @@ MonoBehaviour:
   pauseButton: {fileID: 15225989}
   resumeButton: {fileID: 1454710200}
   mainMenuButton: {fileID: 1774654859}
-  currentLevelIndexPrefab: {fileID: 3891095657319720427, guid: 9ce85f30d09dae94890d51f82e806359, type: 3}
+  currentLevelPrefab: {fileID: 3891095657319720427, guid: 9ce85f30d09dae94890d51f82e806359, type: 3}
 --- !u!4 &75417974
 Transform:
   m_ObjectHideFlags: 0

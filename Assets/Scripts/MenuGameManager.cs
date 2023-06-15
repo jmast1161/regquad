@@ -4,18 +4,25 @@ using UnityEngine.SceneManagement;
 
 public class MenuGameManager : MonoBehaviour
 {
+    private CurrentLevelIndex currentLevel;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelSelect;
-    [SerializeField] private CurrentLevelIndex currentLevel;
     [SerializeField] private Animator mainMenuEntryAnimator;
     [SerializeField] private Animator levelSelectEntryAnimator;
     [SerializeField] private UnityEngine.UI.Button mainMenuPlayButton;
     [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
     [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
     [SerializeField] private UnityEngine.UI.Button[] levelSelectButtons;
+    [SerializeField] private CurrentLevelIndex currentLevelPrefab;
 
     void Start()
     {
+        currentLevel = GameObject.FindObjectOfType<CurrentLevelIndex>();
+        if (currentLevel == null)
+        {
+            currentLevel = Instantiate(currentLevelPrefab);
+        }
+
         mainMenuEntryAnimator.Play("ShowPanel", 0);
         mainMenuQuitButton.onClick.AddListener(() => 
         {
