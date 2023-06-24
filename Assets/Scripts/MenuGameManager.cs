@@ -8,7 +8,6 @@ public class MenuGameManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelSelect;
     [SerializeField] private Animator mainMenuEntryAnimator;
-    [SerializeField] private Animator levelSelectEntryAnimator;
     [SerializeField] private UnityEngine.UI.Button mainMenuPlayButton;
     [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
     [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
