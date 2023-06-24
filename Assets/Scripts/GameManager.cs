@@ -33,14 +33,11 @@ public class GameManager : MonoBehaviour
     private GameConfiguration gameConfiguration;
     private int remainingMoves;
     private Goal goal;
-    private Canvas levelCompleteCanvas;
-    private Canvas gameOverCanvas;
     private CurrentLevelIndex currentLevel;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
-    [SerializeField] private Canvas levelCompletePrefab;
     [SerializeField] private TMPro.TMP_Text remainingMovesText;
     [SerializeField] private TMPro.TMP_Text currentLevelText;
     [SerializeField] private Canvas gameOverPrefab;
@@ -52,6 +49,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button resumeButton;
     [SerializeField] private UnityEngine.UI.Button mainMenuButton;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
+    [SerializeField] private UnityEngine.UI.Button nextLevelButton;
+    [SerializeField] private Animator nextLevelAnimator;
+    [SerializeField] private UnityEngine.UI.Button gameOverReplayButton;
+    [SerializeField] private Animator gameOverAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +62,8 @@ public class GameManager : MonoBehaviour
         pauseButton.onClick.AddListener(PauseButtonClicked);
         resumeButton.onClick.AddListener(ResumeButtonClicked);
         mainMenuButton.onClick.AddListener(MainMenuButtonClicked);
+        nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
+        gameOverReplayButton.onClick.AddListener(GameOverReplayButtonClicked);
     }
 
     private void SetGameState(GameState newState)
@@ -158,16 +161,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(goal.gameObject);
         }
-
-        if(levelCompleteCanvas != null)
-        {
-            Destroy(levelCompleteCanvas.gameObject);
-        }
-
-        if(gameOverCanvas != null)
-        {
-            Destroy(gameOverCanvas.gameObject);
-        }
     }
 
     private void InitializeLevel()
@@ -230,39 +223,20 @@ public class GameManager : MonoBehaviour
 
     private void SpawnLevelCompleteCanvas()
     {
-        levelCompleteCanvas = Instantiate(levelCompletePrefab, new Vector3(0f, 0f), Quaternion.identity);
-        var nextLevelButton = levelCompleteCanvas.GetComponentInChildren<UnityEngine.UI.Button>();
-        var entryAnimator = levelCompleteCanvas.GetComponentInChildren<Animator>();
-        if(entryAnimator != null)
-        {
-            entryAnimator.Play("ShowPanel", 0);
-        }
-
-        nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
+        nextLevelAnimator.Play("ShowPanel", 0);
         SetGameState(GameState.WaitingLevelCompleteInput);
     }
 
     private void SpawnGameOverCanvas()
     {
-        gameOverCanvas = Instantiate(gameOverPrefab, new Vector3(0f, 0f), Quaternion.identity);
-        var replayButton = gameOverCanvas.GetComponentInChildren<UnityEngine.UI.Button>();
-        var replayAnimator = gameOverCanvas.GetComponent<Animator>();
-        if(replayAnimator != null)
-        {
-            replayAnimator.Play("ShowPanel", 0);
-        }
-
-        replayButton.onClick.AddListener(() => 
-        {
-            SetGameState(GameState.InitializeLevel);
-        });
-
+        gameOverAnimator.Play("ShowPanel", 0);
         SetGameState(GameState.WaitingGameOverInput);
     }
 
     private void NextLevelButtonClicked()
     {
         ++currentLevel.CurrentLevel;
+        nextLevelAnimator.Play("HidePanel", 0);
         SetGameState(GameState.InitializeLevel);
     }
 
@@ -281,9 +255,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadSceneAsync("MenuScene");
     }
 
+    private void RestartLevel() => SetGameState(GameState.InitializeLevel);
+
     private void RestartLevelButtonClicked()
     {
-        SetGameState(GameState.InitializeLevel);
+        RestartLevel();
+    }
+
+    private void GameOverReplayButtonClicked()
+    {
+        gameOverAnimator.Play("HidePanel", 0);
+        RestartLevel();
     }
 
     private void SpawnBombs(Vector2[] bombLocations)
