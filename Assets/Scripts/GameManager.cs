@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator nextLevelAnimator;
     [SerializeField] private UnityEngine.UI.Button gameOverReplayButton;
     [SerializeField] private Animator gameOverAnimator;
+    [SerializeField] private UnityEngine.UI.Button settingsButton;
+    [SerializeField] private UnityEngine.UI.Button settingsBackButton;
 
     // Start is called before the first frame update
     void Start()
@@ -64,6 +66,8 @@ public class GameManager : MonoBehaviour
         mainMenuButton.onClick.AddListener(MainMenuButtonClicked);
         nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
         gameOverReplayButton.onClick.AddListener(GameOverReplayButtonClicked);
+        settingsButton.onClick.AddListener(SettingsButtonClicked);
+        settingsBackButton.onClick.AddListener(SettingsBackButtonClicked);
     }
 
     private void SetGameState(GameState newState)
@@ -240,27 +244,26 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.InitializeLevel);
     }
 
-    private void PauseButtonClicked()
-    {
+    private void PauseButtonClicked() =>
         SetGameState(GameState.Paused);
-    }
 
-    private void ResumeButtonClicked()
-    {
+    private void SettingsButtonClicked() =>
+        SetGameState(GameState.Paused);
+
+    private void ResumeButtonClicked() =>
         SetGameState(GameState.WaitingGameplayInput);
-    }
 
-    private void MainMenuButtonClicked()
-    {
+    private void SettingsBackButtonClicked() =>
+        SetGameState(GameState.WaitingGameplayInput);
+
+    private void MainMenuButtonClicked() =>
         SceneManager.LoadSceneAsync("MenuScene");
-    }
 
-    private void RestartLevel() => SetGameState(GameState.InitializeLevel);
+    private void RestartLevel() =>
+        SetGameState(GameState.InitializeLevel);
 
-    private void RestartLevelButtonClicked()
-    {
+    private void RestartLevelButtonClicked() =>
         RestartLevel();
-    }
 
     private void GameOverReplayButtonClicked()
     {
