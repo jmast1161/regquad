@@ -18,6 +18,12 @@ public class SoundManager : MonoBehaviour
     private int musicLevel = 10;
     private int effectsLevel = 10;
 
+    public void SaveAudioPreferences()
+    {
+        PlayerPrefs.SetInt("MusicLevel", musicLevel);
+        PlayerPrefs.SetInt("EffectsLevel", effectsLevel);
+    }
+
     private void Awake() 
     {
         DontDestroyOnLoad(this.gameObject);
@@ -29,6 +35,16 @@ public class SoundManager : MonoBehaviour
         musicDecreaseButton.onClick.AddListener(OnMusicDecreaseClicked);
         effectsIncreaseButton.onClick.AddListener(OnEffectsIncreaseClicked);
         effectsDecreaseButton.onClick.AddListener(OnEffectsDecreaseClicked);
+
+        if(PlayerPrefs.HasKey("MusicLevel"))
+        {
+            musicLevel = PlayerPrefs.GetInt("MusicLevel");
+        }
+
+        if(PlayerPrefs.HasKey("EffectsLevel"))
+        {
+            effectsLevel = PlayerPrefs.GetInt("EffectsLevel");
+        }
 
         UpdateMusicVolume(musicLevel);
         UpdateEffectsVolume(effectsLevel);

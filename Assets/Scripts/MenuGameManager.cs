@@ -12,6 +12,8 @@ public class MenuGameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
     [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
     [SerializeField] private UnityEngine.UI.Button[] levelSelectButtons;
+    [SerializeField] private UnityEngine.UI.Button settingsBackButton;
+    [SerializeField] private SoundManager soundManager;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
 
     void Start()
@@ -38,5 +40,10 @@ public class MenuGameManager : MonoBehaviour
                 SceneManager.LoadSceneAsync("GameScene");
             });
         }
+
+        settingsBackButton.onClick.AddListener(() => 
+        {
+            soundManager.SaveAudioPreferences();
+        });
     }
 }

@@ -253,8 +253,11 @@ public class GameManager : MonoBehaviour
     private void ResumeButtonClicked() =>
         SetGameState(GameState.WaitingGameplayInput);
 
-    private void SettingsBackButtonClicked() =>
+    private void SettingsBackButtonClicked() 
+    {
         SetGameState(GameState.WaitingGameplayInput);
+        soundManager.SaveAudioPreferences();
+    }
 
     private void MainMenuButtonClicked() =>
         SceneManager.LoadSceneAsync("MenuScene");
