@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas gameOverPrefab;
     [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float travelTime = 0.5f;
-    [SerializeField] private SoundManager soundManager;
+    private SoundManager soundManager;
     [SerializeField] private UnityEngine.UI.Button restartLevelButton;
     [SerializeField] private UnityEngine.UI.Button pauseButton;
     [SerializeField] private UnityEngine.UI.Button resumeButton;
@@ -55,6 +55,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator gameOverAnimator;
     [SerializeField] private UnityEngine.UI.Button settingsButton;
     [SerializeField] private UnityEngine.UI.Button settingsBackButton;
+    [SerializeField] private SoundManager soundManagerPrefab;
+
+    void Awake()
+    {
+        soundManager = GameObject.FindObjectOfType<SoundManager>();
+        if (soundManager == null)
+        {
+            soundManager = Instantiate(soundManagerPrefab);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -105,6 +115,7 @@ public class GameManager : MonoBehaviour
         nodes = new List<Node>();
         targets = new List<Target>();
         bombs = new List<Bomb>();
+
         soundManager.PlayMusicAudioSource();
         currentLevel = GameObject.FindObjectOfType<CurrentLevelIndex>();
         if (currentLevel == null)
@@ -244,17 +255,34 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.InitializeLevel);
     }
 
-    private void PauseButtonClicked() =>
-        SetGameState(GameState.Paused);
+    private void ToggleMenuButtons(bool active)
+    {
+        pauseButton.interactable = active;
+        settingsButton.interactable = active;
+        restartLevelButton.interactable = active;
+    }
 
-    private void SettingsButtonClicked() =>
+    private void PauseButtonClicked()
+    {
+        ToggleMenuButtons(false);
         SetGameState(GameState.Paused);
+    }
 
-    private void ResumeButtonClicked() =>
+    private void SettingsButtonClicked()
+    {
+        ToggleMenuButtons(false);
+        SetGameState(GameState.Paused);
+    }
+
+    private void ResumeButtonClicked()
+    {
+        ToggleMenuButtons(true);
         SetGameState(GameState.WaitingGameplayInput);
+    }
 
     private void SettingsBackButtonClicked() 
     {
+        ToggleMenuButtons(true);
         SetGameState(GameState.WaitingGameplayInput);
         soundManager.SaveAudioPreferences();
     }

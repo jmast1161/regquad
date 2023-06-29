@@ -8,97 +8,81 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource targetAudioSource;
     [SerializeField] private AudioSource goalAudioSource;
     [SerializeField] private AudioSource explosionAudioSource;
-
-    [SerializeField] private UnityEngine.UI.Button musicIncreaseButton;
-    [SerializeField] private UnityEngine.UI.Button musicDecreaseButton;
-    [SerializeField] private UnityEngine.UI.Button effectsIncreaseButton;
-    [SerializeField] private UnityEngine.UI.Button effectsDecreaseButton;
-    [SerializeField] private TMPro.TMP_Text musicLevelDisplay;
-    [SerializeField] private TMPro.TMP_Text effectsLevelDisplay;
-    private int musicLevel = 10;
-    private int effectsLevel = 10;
+    public int MusicLevel { get; private set; } = 10;
+    public int EffectsLevel { get; private set; } = 10;
 
     public void SaveAudioPreferences()
     {
-        PlayerPrefs.SetInt("MusicLevel", musicLevel);
-        PlayerPrefs.SetInt("EffectsLevel", effectsLevel);
+        PlayerPrefs.SetInt("MusicLevel", MusicLevel);
+        PlayerPrefs.SetInt("EffectsLevel", EffectsLevel);
     }
 
     private void Awake() 
     {
         DontDestroyOnLoad(this.gameObject);
-    }
-    
-    private void Start() 
-    {
-        musicIncreaseButton.onClick.AddListener(OnMusicIncreaseClicked);
-        musicDecreaseButton.onClick.AddListener(OnMusicDecreaseClicked);
-        effectsIncreaseButton.onClick.AddListener(OnEffectsIncreaseClicked);
-        effectsDecreaseButton.onClick.AddListener(OnEffectsDecreaseClicked);
-
+        
         if(PlayerPrefs.HasKey("MusicLevel"))
         {
-            musicLevel = PlayerPrefs.GetInt("MusicLevel");
+            MusicLevel = PlayerPrefs.GetInt("MusicLevel");
         }
 
         if(PlayerPrefs.HasKey("EffectsLevel"))
         {
-            effectsLevel = PlayerPrefs.GetInt("EffectsLevel");
+            EffectsLevel = PlayerPrefs.GetInt("EffectsLevel");
         }
-
-        UpdateMusicVolume(musicLevel);
-        UpdateEffectsVolume(effectsLevel);
+    }
+    
+    private void Start() 
+    {
+        UpdateMusicVolume(MusicLevel);
+        UpdateEffectsVolume(EffectsLevel);
     }
 
-    private void OnMusicIncreaseClicked()
+    public void MusicIncrease()
     {
-        if(musicLevel == 10)
+        if(MusicLevel == 10)
         {
             return;
         }
 
-        UpdateMusicVolume(++musicLevel);
+        UpdateMusicVolume(++MusicLevel);
     }
 
-    private void OnMusicDecreaseClicked()
+    public void MusicDecrease()
     {
-        if(musicLevel == 0)
+        if(MusicLevel == 0)
         {
             return;
         }
 
-        UpdateMusicVolume(--musicLevel);
+        UpdateMusicVolume(--MusicLevel);
     }
 
-    private void OnEffectsIncreaseClicked()
+    public void EffectsIncrease()
     {
-        if(effectsLevel == 10)
+        if(EffectsLevel == 10)
         {
             return;
         }
 
-        UpdateEffectsVolume(++effectsLevel);
+        UpdateEffectsVolume(++EffectsLevel);
     }
 
-    private void OnEffectsDecreaseClicked()
+    public void EffectsDecrease()
     {
-        if(effectsLevel == 0)
+        if(EffectsLevel == 0)
         {
             return;
         }
 
-        UpdateEffectsVolume(--effectsLevel);
+        UpdateEffectsVolume(--EffectsLevel);
     }
 
-    private void UpdateMusicVolume(int newMusicLevel)
-    {
-        musicLevelDisplay.text = $"{newMusicLevel}";
+    private void UpdateMusicVolume(int newMusicLevel) =>
         musicAudioSource.volume = newMusicLevel * 0.1f;
-    }
 
     private void UpdateEffectsVolume(int newEffectsLevel)
     {
-        effectsLevelDisplay.text = $"{effectsLevel}";
         var effectsLevelVolume = newEffectsLevel * 0.1f;
         moveAudioSource.volume = effectsLevelVolume;
         targetAudioSource.volume = effectsLevelVolume;
@@ -106,8 +90,13 @@ public class SoundManager : MonoBehaviour
         explosionAudioSource.volume = effectsLevelVolume;
     }
 
-    public void PlayMusicAudioSource() =>
-        musicAudioSource.Play();
+    public void PlayMusicAudioSource()
+    {
+        if (!musicAudioSource.isPlaying)
+        {
+            musicAudioSource.Play();
+        }
+    }
 
     public void PlayMoveSound() =>
         moveAudioSource.Play();

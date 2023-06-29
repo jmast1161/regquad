@@ -162,7 +162,9 @@ MonoBehaviour:
   - {fileID: 1423005613}
   - {fileID: 1168623488}
   - {fileID: 2039202587}
+  settingsBackButton: {fileID: 2118385089}
   currentLevelPrefab: {fileID: 3891095657319720427, guid: 9ce85f30d09dae94890d51f82e806359, type: 3}
+  soundManagerPrefab: {fileID: 606133691093735906, guid: cf6288abc15415d49bbe52f7a75f68d7, type: 3}
 --- !u!4 &34847432
 Transform:
   m_ObjectHideFlags: 0
@@ -176,7 +178,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &49700913 stripped
 MonoBehaviour:
@@ -1483,7 +1485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5205803403889699028, guid: 798a33a2519384f4f9cf02b09cc2c43b, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5205803403889699028, guid: 798a33a2519384f4f9cf02b09cc2c43b, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1579,6 +1581,10 @@ PrefabInstance:
     - target: {fileID: 606133691093735905, guid: cf6288abc15415d49bbe52f7a75f68d7, type: 3}
       propertyPath: m_Name
       value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 606133691093735905, guid: cf6288abc15415d49bbe52f7a75f68d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 606133691093735906, guid: cf6288abc15415d49bbe52f7a75f68d7, type: 3}
       propertyPath: musicLevelDisplay
@@ -2172,3 +2178,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35347a0d809f88f41a4038482dd84cbb, type: 3}
+--- !u!114 &2118385089 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7966751856095057635, guid: 35347a0d809f88f41a4038482dd84cbb, type: 3}
+  m_PrefabInstance: {fileID: 2118385088}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

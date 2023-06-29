@@ -1128,6 +1128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7966751854748300484}
   - component: {fileID: 7966751854748300485}
+  - component: {fileID: 6247650824838546636}
   m_Layer: 0
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -1171,6 +1172,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6247650824838546636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7966751854748300475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1d487452c52aa143975e01c0a413549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicLevelDisplay: {fileID: 6915147888906122343}
+  effectsLevelDisplay: {fileID: 6915147887427889319}
+  musicIncreaseButton: {fileID: 6915147889166877063}
+  musicDecreaseButton: {fileID: 6915147888858147197}
+  effectsIncreaseButton: {fileID: 6915147887694288423}
+  effectsDecreaseButton: {fileID: 6915147888660258477}
 --- !u!1 &7966751854810963805
 GameObject:
   m_ObjectHideFlags: 0

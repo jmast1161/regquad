@@ -13,8 +13,18 @@ public class MenuGameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
     [SerializeField] private UnityEngine.UI.Button[] levelSelectButtons;
     [SerializeField] private UnityEngine.UI.Button settingsBackButton;
-    [SerializeField] private SoundManager soundManager;
+    private SoundManager soundManager;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
+    [SerializeField] private SoundManager soundManagerPrefab;
+
+    void Awake()
+    {
+        soundManager = GameObject.FindObjectOfType<SoundManager>();
+        if (soundManager == null)
+        {
+            soundManager = Instantiate(soundManagerPrefab);
+        }
+    }
 
     void Start()
     {
@@ -41,6 +51,7 @@ public class MenuGameManager : MonoBehaviour
             });
         }
 
+        soundManager.PlayMusicAudioSource();
         settingsBackButton.onClick.AddListener(() => 
         {
             soundManager.SaveAudioPreferences();
