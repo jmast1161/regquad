@@ -42,12 +42,14 @@ public class SettingsPanel : MonoBehaviour
 
     private void OnEffectsIncreaseClicked()
     {
+        soundManager.PlayConfirmSound();
         soundManager.EffectsIncrease();
         UpdateEffectsDisplay();
     }
 
     private void OnEffectsDecreaseClicked()
     {
+        soundManager.PlayDeclineSound();
         soundManager.EffectsDecrease();
         UpdateEffectsDisplay();
     }

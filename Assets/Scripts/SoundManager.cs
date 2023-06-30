@@ -8,6 +8,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource targetAudioSource;
     [SerializeField] private AudioSource goalAudioSource;
     [SerializeField] private AudioSource explosionAudioSource;
+    [SerializeField] private AudioSource confirmAudioSource;
+    [SerializeField] private AudioSource declineAudioSource;
     public int MusicLevel { get; private set; } = 10;
     public int EffectsLevel { get; private set; } = 10;
 
@@ -88,6 +90,8 @@ public class SoundManager : MonoBehaviour
         targetAudioSource.volume = effectsLevelVolume;
         goalAudioSource.volume = effectsLevelVolume;
         explosionAudioSource.volume = effectsLevelVolume;
+        confirmAudioSource.volume = effectsLevelVolume;
+        declineAudioSource.volume = effectsLevelVolume;
     }
 
     public void PlayMusicAudioSource()
@@ -109,4 +113,10 @@ public class SoundManager : MonoBehaviour
 
     public void PlayExplosionSound() =>
         explosionAudioSource.Play();
+
+    public void PlayConfirmSound() =>
+        confirmAudioSource.Play();
+    
+    public void PlayDeclineSound() =>
+        declineAudioSource.Play();
 }

@@ -12,6 +12,7 @@ public class MenuGameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
     [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
     [SerializeField] private UnityEngine.UI.Button[] levelSelectButtons;
+    [SerializeField] private UnityEngine.UI.Button settingsButton;
     [SerializeField] private UnityEngine.UI.Button settingsBackButton;
     private SoundManager soundManager;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
@@ -46,15 +47,33 @@ public class MenuGameManager : MonoBehaviour
             var index = i;
             levelSelectButtons[i].onClick.AddListener(() =>
             {
+                soundManager.PlayConfirmSound();
                 currentLevel.CurrentLevel = index + 1;
                 SceneManager.LoadSceneAsync("GameScene");
             });
         }
 
         soundManager.PlayMusicAudioSource();
+
+        mainMenuPlayButton.onClick.AddListener(() => 
+        {
+            soundManager.PlayConfirmSound();
+        });
+
+        settingsButton.onClick.AddListener(() => 
+        {
+            soundManager.PlayConfirmSound();
+        });
+
         settingsBackButton.onClick.AddListener(() => 
         {
+            soundManager.PlayDeclineSound();
             soundManager.SaveAudioPreferences();
+        });
+
+        levelSelectBackButton.onClick.AddListener(() => 
+        {
+            soundManager.PlayDeclineSound();
         });
     }
 }

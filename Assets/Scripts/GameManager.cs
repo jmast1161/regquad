@@ -238,6 +238,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnLevelCompleteCanvas()
     {
+        ToggleMenuButtons(false);
         nextLevelAnimator.Play("ShowPanel", 0);
         SetGameState(GameState.WaitingLevelCompleteInput);
     }
@@ -250,6 +251,8 @@ public class GameManager : MonoBehaviour
 
     private void NextLevelButtonClicked()
     {
+        ToggleMenuButtons(true);
+        soundManager.PlayConfirmSound();
         ++currentLevel.CurrentLevel;
         nextLevelAnimator.Play("HidePanel", 0);
         SetGameState(GameState.InitializeLevel);
@@ -264,40 +267,52 @@ public class GameManager : MonoBehaviour
 
     private void PauseButtonClicked()
     {
+        soundManager.PlayConfirmSound();
         ToggleMenuButtons(false);
         SetGameState(GameState.Paused);
     }
 
     private void SettingsButtonClicked()
     {
+        soundManager.PlayConfirmSound();
         ToggleMenuButtons(false);
         SetGameState(GameState.Paused);
     }
 
     private void ResumeButtonClicked()
     {
+        soundManager.PlayDeclineSound();
         ToggleMenuButtons(true);
         SetGameState(GameState.WaitingGameplayInput);
     }
 
     private void SettingsBackButtonClicked() 
     {
+        soundManager.PlayDeclineSound();
         ToggleMenuButtons(true);
         SetGameState(GameState.WaitingGameplayInput);
         soundManager.SaveAudioPreferences();
     }
 
-    private void MainMenuButtonClicked() =>
+    private void MainMenuButtonClicked()
+    {
+        soundManager.PlayDeclineSound();
         SceneManager.LoadSceneAsync("MenuScene");
+    }
 
     private void RestartLevel() =>
         SetGameState(GameState.InitializeLevel);
 
-    private void RestartLevelButtonClicked() =>
+    private void RestartLevelButtonClicked()
+    {
+        soundManager.PlayConfirmSound();
         RestartLevel();
+    }
 
     private void GameOverReplayButtonClicked()
     {
+        soundManager.PlayConfirmSound();
+        ToggleMenuButtons(true);
         gameOverAnimator.Play("HidePanel", 0);
         RestartLevel();
     }
@@ -502,7 +517,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if(remainingMoves == 0)
                 {
-                    SetGameState(GameState.GameOver);
+                    InitializeGameOver();
                 }
                 else if(bombHit)
                 {
@@ -534,6 +549,12 @@ public class GameManager : MonoBehaviour
     {
         bombs.Remove(bomb);
         Destroy(bomb.gameObject);
+        InitializeGameOver();
+    }
+
+    private void InitializeGameOver()
+    {
+        ToggleMenuButtons(false);
         SetGameState(GameState.GameOver);
     }
 }
