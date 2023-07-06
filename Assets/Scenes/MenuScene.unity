@@ -162,6 +162,7 @@ MonoBehaviour:
   - {fileID: 1423005613}
   - {fileID: 1168623488}
   - {fileID: 2039202587}
+  settingsButton: {fileID: 2023165076}
   settingsBackButton: {fileID: 2118385089}
   currentLevelPrefab: {fileID: 3891095657319720427, guid: 9ce85f30d09dae94890d51f82e806359, type: 3}
   soundManagerPrefab: {fileID: 606133691093735906, guid: cf6288abc15415d49bbe52f7a75f68d7, type: 3}
@@ -1967,6 +1968,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936052693}
   m_CullTransparentMesh: 1
+--- !u!114 &2023165076 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2661158735812829678, guid: 798a33a2519384f4f9cf02b09cc2c43b, type: 3}
+  m_PrefabInstance: {fileID: 1502320470}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2039202585
 GameObject:
   m_ObjectHideFlags: 0

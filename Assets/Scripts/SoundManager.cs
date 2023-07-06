@@ -3,13 +3,17 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource musicAudioSource;
+    [SerializeField] private AudioSource musicTrack1AudioSource;
+    [SerializeField] private AudioSource musicTrack2AudioSource;
+    [SerializeField] private AudioSource musicTrack3AudioSource;
     [SerializeField] private AudioSource moveAudioSource;
     [SerializeField] private AudioSource targetAudioSource;
     [SerializeField] private AudioSource goalAudioSource;
     [SerializeField] private AudioSource explosionAudioSource;
     [SerializeField] private AudioSource confirmAudioSource;
     [SerializeField] private AudioSource declineAudioSource;
+    private AudioSource currentMusicTrack;
+    public int CurrentTrackIndex { get; private set; } = 1;
     public int MusicLevel { get; private set; } = 10;
     public int EffectsLevel { get; private set; } = 10;
 
@@ -17,6 +21,7 @@ public class SoundManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("MusicLevel", MusicLevel);
         PlayerPrefs.SetInt("EffectsLevel", EffectsLevel);
+        PlayerPrefs.SetInt("CurrentTrack", CurrentTrackIndex);
     }
 
     private void Awake() 
@@ -32,8 +37,67 @@ public class SoundManager : MonoBehaviour
         {
             EffectsLevel = PlayerPrefs.GetInt("EffectsLevel");
         }
+
+        if(PlayerPrefs.HasKey("CurrentTrack"))
+        {
+            CurrentTrackIndex = PlayerPrefs.GetInt("CurrentTrack");
+        }
+
+        SetCurrentTrack();
     }
     
+    public void NextMusicTrack()
+    {
+        if (CurrentTrackIndex == 3)
+        {
+            CurrentTrackIndex = 1;
+        }
+        else
+        {
+            ++CurrentTrackIndex;
+        }
+
+        SetCurrentTrack();
+    }
+
+    public void PreviousMusicTrack()
+    {
+        if (CurrentTrackIndex == 1)
+        {
+            CurrentTrackIndex = 3;
+        }
+        else
+        {
+            --CurrentTrackIndex;
+        }
+
+        SetCurrentTrack();
+    }
+
+    private void SetCurrentTrack()
+    {
+        if(currentMusicTrack != null)
+        {
+            currentMusicTrack.Stop();
+        }
+
+        switch(CurrentTrackIndex)
+        {
+            case 1:
+                currentMusicTrack = musicTrack1AudioSource;
+                break;
+            case 2:
+                currentMusicTrack = musicTrack2AudioSource;
+                break;
+            case 3:
+                currentMusicTrack = musicTrack3AudioSource;
+                break;
+        }
+
+        currentMusicTrack.volume = MusicLevel * 0.1f;
+        PlayMusicAudioSource();
+    }
+
     private void Start() 
     {
         UpdateMusicVolume(MusicLevel);
@@ -42,6 +106,11 @@ public class SoundManager : MonoBehaviour
 
     public void MusicIncrease()
     {
+        if(MusicLevel == 0)
+        {
+            currentMusicTrack.Play();
+        }
+
         if(MusicLevel == 10)
         {
             return;
@@ -54,6 +123,7 @@ public class SoundManager : MonoBehaviour
     {
         if(MusicLevel == 0)
         {
+            currentMusicTrack.Stop();
             return;
         }
 
@@ -81,7 +151,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void UpdateMusicVolume(int newMusicLevel) =>
-        musicAudioSource.volume = newMusicLevel * 0.1f;
+        currentMusicTrack.volume = newMusicLevel * 0.1f;
 
     private void UpdateEffectsVolume(int newEffectsLevel)
     {
@@ -96,9 +166,9 @@ public class SoundManager : MonoBehaviour
 
     public void PlayMusicAudioSource()
     {
-        if (!musicAudioSource.isPlaying)
+        if (!currentMusicTrack.isPlaying)
         {
-            musicAudioSource.Play();
+            currentMusicTrack.Play();
         }
     }
 
