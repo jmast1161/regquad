@@ -10,7 +10,8 @@ public class MenuGameManager : MonoBehaviour
     [SerializeField] private Animator mainMenuEntryAnimator;
     [SerializeField] private UnityEngine.UI.Button mainMenuPlayButton;
     [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
-    [SerializeField] private UnityEngine.UI.Button levelSelectBackButton;
+    [SerializeField] private UnityEngine.UI.Button[] levelSelectBackButtons;
+    [SerializeField] private UnityEngine.UI.Button[] levelSelectNextButtons;
     [SerializeField] private UnityEngine.UI.Button[] levelSelectButtons;
     [SerializeField] private UnityEngine.UI.Button settingsButton;
     [SerializeField] private UnityEngine.UI.Button settingsBackButton;
@@ -71,9 +72,20 @@ public class MenuGameManager : MonoBehaviour
             soundManager.SaveAudioPreferences();
         });
 
-        levelSelectBackButton.onClick.AddListener(() => 
+        for(int i = 0; i < levelSelectBackButtons.Length; ++i)
         {
-            soundManager.PlayDeclineSound();
-        });
+            levelSelectBackButtons[i].onClick.AddListener(() => 
+            {
+                soundManager.PlayDeclineSound();
+            });
+        }
+
+        for(int i = 0; i < levelSelectNextButtons.Length; ++i)
+        {
+            levelSelectNextButtons[i].onClick.AddListener(() => 
+            {
+                soundManager.PlayConfirmSound();
+            });
+        }
     }
 }
