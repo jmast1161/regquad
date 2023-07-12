@@ -43,17 +43,6 @@ public class MenuGameManager : MonoBehaviour
             Application.Quit();
         });
 
-        for(int i = 0; i < levelSelectButtons.Length; ++i)
-        {
-            var index = i;
-            levelSelectButtons[i].onClick.AddListener(() =>
-            {
-                soundManager.PlayConfirmSound();
-                currentLevel.CurrentLevel = index + 1;
-                SceneManager.LoadSceneAsync("GameScene");
-            });
-        }
-
         soundManager.PlayMusicAudioSource();
 
         mainMenuPlayButton.onClick.AddListener(() => 
@@ -71,6 +60,13 @@ public class MenuGameManager : MonoBehaviour
             soundManager.PlayDeclineSound();
             soundManager.SaveAudioPreferences();
         });
+
+        var levelButtons = GameObject.FindObjectsOfType<LevelSelectButton>();
+
+        foreach(var levelButton in levelButtons)
+        {
+            levelButton.SubscribeCurrentLevelIndex(soundManager, currentLevel);
+        }
 
         for(int i = 0; i < levelSelectBackButtons.Length; ++i)
         {
