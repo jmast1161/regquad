@@ -7,6 +7,10 @@ public class LevelSelectButton : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button levelButton;
     [SerializeField] private bool active;
     [SerializeField] private int levelIndex;
+    private int difficultyLevel = 1;
+
+    public void SetDifficultyLevel(int difficultyLevel)
+        => this.difficultyLevel = difficultyLevel;
 
     public void SubscribeCurrentLevelIndex(SoundManager soundManager, CurrentLevelIndex currentLevel)
     {
@@ -14,6 +18,7 @@ public class LevelSelectButton : MonoBehaviour
         {
             soundManager.PlayConfirmSound();
             currentLevel.CurrentLevel = levelIndex;
+            currentLevel.DifficultyLevel = difficultyLevel;
             SceneManager.LoadSceneAsync("GameScene");
         });
     }

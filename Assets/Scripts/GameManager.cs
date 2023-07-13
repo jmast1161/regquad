@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using DG.Tweening;
+using System;
 using System.IO;
 using UnityEngine.SceneManagement;
 
@@ -178,17 +179,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private Tuple<int, int> GetDifficultyGridSize()
+    {
+        switch (currentLevel.DifficultyLevel)
+        {
+            case 2:
+                return new Tuple<int, int>(4, 4);
+            case 3:
+                return new Tuple<int, int>(5, 5);
+            case 4:
+                return new Tuple<int, int>(6, 6);
+            case 1:
+            default:
+                return new Tuple<int, int>(3, 3);
+        }
+    }
+
     private void InitializeLevel()
     {
         ClearLevelGameObjects();
+
+        var difficultyGrid = GetDifficultyGridSize();
         
-        var level = gameConfiguration.Levels
+        var level = gameConfiguration.Difficulties
+            .FirstOrDefault(x => x.DifficultyLevel == currentLevel.DifficultyLevel)
+            ?.Levels
             .FirstOrDefault(l => l.Index == currentLevel.CurrentLevel);
 
         if(level != null)
         {
-            for(int x = 0; x < level.GridWidth; ++x){
-                for(int y = 0; y < level.GridHeight; ++y){
+            for(int x = 0; x < difficultyGrid.Item1; ++x){
+                for(int y = 0; y < difficultyGrid.Item2; ++y){
                     var node = Instantiate(nodePrefab, new Vector2(x, y), Quaternion.identity);
                     nodes.Add(node);
                 }
@@ -203,7 +224,7 @@ public class GameManager : MonoBehaviour
             UpdateRemainingMoves(remainingMoves);
             UpdateCurrentLevel(level.Index);
 
-            var center = new Vector2((float) level.GridWidth / 2 - 0.5f, (float) level.GridHeight / 2 - 0.5f);
+            var center = new Vector2((float) difficultyGrid.Item1 / 2 - 0.5f, (float) difficultyGrid.Item2 / 2 - 0.5f);
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
             SetGameState(GameState.WaitingGameplayInput);

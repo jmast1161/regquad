@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -7,8 +5,6 @@ using System;
 public class Level
 {
     public int Index;
-    public int GridWidth;
-    public int GridHeight;
     public Vector2 PlayerPosition;
     public Vector2[] BombLocations;
     public Vector2[] OccupiedBlockLocations;

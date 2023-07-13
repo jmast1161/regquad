@@ -174,11 +174,6 @@ MonoBehaviour:
   settingsBackButton: {fileID: 2118385089}
   currentLevelPrefab: {fileID: 3891095657319720427, guid: 9ce85f30d09dae94890d51f82e806359, type: 3}
   soundManagerPrefab: {fileID: 606133691093735906, guid: cf6288abc15415d49bbe52f7a75f68d7, type: 3}
-  levelSelectPanels:
-  - {fileID: 5123988238793266434}
-  - {fileID: 1631325925}
-  - {fileID: 110416259}
-  - {fileID: 446558181}
 --- !u!4 &34847432
 Transform:
   m_ObjectHideFlags: 0
@@ -212,6 +207,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1502320472}
     m_Modifications:
+    - target: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: DifficultyLevel
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5123988238286503658, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: m_text
       value: 'Level Select 5x5
@@ -301,17 +300,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5123988238593912567, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
   m_PrefabInstance: {fileID: 110416257}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &110416259 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6248982764424903953, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
-  m_PrefabInstance: {fileID: 110416257}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2155030752cd6794398175092688ded8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &112679022 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5123988238687145327, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
@@ -470,6 +458,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1502320472}
     m_Modifications:
+    - target: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: DifficultyLevel
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5123988238286503658, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: m_text
       value: Level Select 6x6
@@ -545,17 +537,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5123988238593912567, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
   m_PrefabInstance: {fileID: 446558179}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &446558181 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6248982764424903953, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
-  m_PrefabInstance: {fileID: 446558179}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2155030752cd6794398175092688ded8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &472267764 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5123988238593912565, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
@@ -1163,6 +1144,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1502320472}
     m_Modifications:
+    - target: {fileID: 433376580095553194, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: active
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 433376580095553194, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: levelIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: DifficultyLevel
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5123988238286503658, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: m_text
       value: Level Select 4x4
@@ -1247,6 +1240,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
       value: ShowLeft
       objectReference: {fileID: 0}
+    - target: {fileID: 7738130156240665612, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: active
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738130156240665612, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: levelIndex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
 --- !u!95 &1631325924 stripped
@@ -1254,17 +1255,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5123988238593912567, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
   m_PrefabInstance: {fileID: 1631325923}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1631325925 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6248982764424903953, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
-  m_PrefabInstance: {fileID: 1631325923}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2155030752cd6794398175092688ded8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1736510474 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5123988239953831106, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
@@ -1438,7 +1428,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 110187508315228149, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: active
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 110187508315228149, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
@@ -1446,7 +1436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 433376580095553194, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: active
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 433376580095553194, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
@@ -1455,6 +1445,10 @@ PrefabInstance:
     - target: {fileID: 2022734864216417972, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+      propertyPath: DifficultyLevel
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5123988238286503658, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: m_text
@@ -1546,14 +1540,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
---- !u!114 &5123988238793266434 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6248982764424903953, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
-  m_PrefabInstance: {fileID: 5123988238793266433}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 472267764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2155030752cd6794398175092688ded8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
