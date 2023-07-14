@@ -170,6 +170,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  levelSelectPanels:
+  - {fileID: 5123988238793266434}
+  - {fileID: 1631325925}
+  - {fileID: 110416259}
+  - {fileID: 446558181}
   settingsButton: {fileID: 2023165076}
   settingsBackButton: {fileID: 2118385089}
   currentLevelPrefab: {fileID: 3891095657319720427, guid: 9ce85f30d09dae94890d51f82e806359, type: 3}
@@ -300,6 +305,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5123988238593912567, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
   m_PrefabInstance: {fileID: 110416257}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &110416259 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+  m_PrefabInstance: {fileID: 110416257}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5309bf17dd65804fa6d8edcc85d7ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &112679022 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5123988238687145327, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
@@ -537,6 +553,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5123988238593912567, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
   m_PrefabInstance: {fileID: 446558179}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &446558181 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+  m_PrefabInstance: {fileID: 446558179}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5309bf17dd65804fa6d8edcc85d7ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &472267764 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5123988238593912565, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
@@ -1150,7 +1177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 433376580095553194, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: DifficultyLevel
@@ -1246,7 +1273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7738130156240665612, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
@@ -1255,6 +1282,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5123988238593912567, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
   m_PrefabInstance: {fileID: 1631325923}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1631325925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+  m_PrefabInstance: {fileID: 1631325923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5309bf17dd65804fa6d8edcc85d7ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1736510474 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5123988239953831106, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
@@ -1440,7 +1478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 433376580095553194, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2022734864216417972, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
@@ -1532,7 +1570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7738130156240665612, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7738130156240665612, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: soundManager
@@ -1540,3 +1578,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+--- !u!114 &5123988238793266434 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
+  m_PrefabInstance: {fileID: 5123988238793266433}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472267764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5309bf17dd65804fa6d8edcc85d7ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

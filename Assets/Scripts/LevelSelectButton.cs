@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelectButton : MonoBehaviour
 {
+
     [SerializeField] private TMPro.TMP_Text levelNumber;
     [SerializeField] private UnityEngine.UI.Button levelButton;
-    [SerializeField] private bool active;
-    [SerializeField] private int levelIndex;
-    private int difficultyLevel = 1;
+    [SerializeField] private int levelIndex = 0;
+    private int difficultyLevel;
 
     public void SetDifficultyLevel(int difficultyLevel)
         => this.difficultyLevel = difficultyLevel;
@@ -17,14 +17,12 @@ public class LevelSelectButton : MonoBehaviour
         levelButton.onClick.AddListener(() =>
         {
             soundManager.PlayConfirmSound();
-            currentLevel.CurrentLevel = levelIndex;
+            currentLevel.CurrentLevel = levelIndex + 1;
             currentLevel.DifficultyLevel = difficultyLevel;
             SceneManager.LoadSceneAsync("GameScene");
         });
     }
 
-    private void Start()
-    {
-        levelButton.interactable = active;
-    }
+    public void SetActive(int completedLevels) =>
+        levelButton.interactable = levelIndex <= completedLevels;
 }

@@ -4,5 +4,6 @@ using System;
 public class Difficulty
 {
     public int DifficultyLevel;
+    public int CompletedLevels;
     public Level[] Levels;
 }
