@@ -1470,7 +1470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 110187508315228149, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 433376580095553194, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: active
@@ -1482,7 +1482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2022734864216417972, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4022177904549438371, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: DifficultyLevel
@@ -1562,7 +1562,7 @@ PrefabInstance:
       objectReference: {fileID: 1784504674}
     - target: {fileID: 6961677781612067057, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: levelIndex
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7738130156240665612, guid: 93b76ff051b377343808b174c5f4297b, type: 3}
       propertyPath: active

@@ -57,9 +57,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button settingsButton;
     [SerializeField] private UnityEngine.UI.Button settingsBackButton;
     [SerializeField] private SoundManager soundManagerPrefab;
-
+    private string configurationFilePath = "";
+    private bool updateCompleteLevelsInFile = false;
     void Awake()
     {
+        configurationFilePath = Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json");
         soundManager = GameObject.FindObjectOfType<SoundManager>();
         if (soundManager == null)
         {
@@ -107,11 +109,41 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void IncrementAndSaveCompletedLevels()
+    {
+        if(!updateCompleteLevelsInFile)
+        {
+            return;
+        }
+
+        var difficulty = gameConfiguration
+            .Difficulties
+            .FirstOrDefault(x => x.DifficultyLevel == currentLevel.DifficultyLevel);
+        
+        if(difficulty == null)
+        {
+            return;
+        }
+
+        if(currentLevel.CurrentLevel == difficulty.CompletedLevels + 1)
+        {
+            ++difficulty.CompletedLevels;
+            
+            var jsonToWrite = JsonUtility.ToJson(gameConfiguration);
+            File.WriteAllText(configurationFilePath, jsonToWrite);
+        }
+
+        updateCompleteLevelsInFile = false;
+    }
+
     private void InitializeGame()
     {
-        StreamReader reader = new StreamReader(Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json"));
-        string json = reader.ReadToEnd();
-        gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
+        using(var reader = new StreamReader(configurationFilePath))
+        {
+            var json = reader.ReadToEnd();
+            gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
+        }
+
         occupiedNodes = new List<Node>();
         nodes = new List<Node>();
         targets = new List<Target>();
@@ -261,7 +293,6 @@ public class GameManager : MonoBehaviour
     {
         ToggleMenuButtons(false);
         nextLevelAnimator.Play("ShowPanel", 0);
-        SetGameState(GameState.WaitingLevelCompleteInput);
     }
 
     private void SpawnGameOverCanvas()
@@ -437,6 +468,15 @@ public class GameManager : MonoBehaviour
                     MoveBlock(Vector2.down);
                 }
                 break;
+
+            case GameState.LevelComplete:
+                if(updateCompleteLevelsInFile)
+                {
+                    IncrementAndSaveCompletedLevels();
+                }
+                
+                SetGameState(GameState.WaitingLevelCompleteInput);
+                break;
         }
     }
 
@@ -533,6 +573,7 @@ public class GameManager : MonoBehaviour
                     player.Node.Position.y == goal.Node.Position.y &&
                     goal.GoalActive)
                 {
+                    updateCompleteLevelsInFile = true;
                     soundManager.PlayGoalSound();
                     SetGameState(GameState.LevelComplete);
                 }
