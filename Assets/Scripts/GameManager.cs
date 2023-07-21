@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
         {
             ++difficulty.CompletedLevels;
             
-            var jsonToWrite = JsonUtility.ToJson(gameConfiguration);
+            var jsonToWrite = JsonUtility.ToJson(gameConfiguration, true);
             File.WriteAllText(configurationFilePath, jsonToWrite);
         }
 

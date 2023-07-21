@@ -1,1 +1,347 @@
-{"Difficulties":[{"DifficultyLevel":1,"CompletedLevels":2,"Levels":[{"Index":1,"PlayerPosition":{"x":0.0,"y":0.0},"BombLocations":[{"x":1.0,"y":0.0}],"OccupiedBlockLocations":[],"TargetLocations":[],"GoalPosition":{"x":2.0,"y":2.0},"Moves":2},{"Index":2,"PlayerPosition":{"x":1.0,"y":1.0},"BombLocations":[],"OccupiedBlockLocations":[],"TargetLocations":[{"x":0.0,"y":1.0}],"GoalPosition":{"x":2.0,"y":1.0},"Moves":2}]},{"DifficultyLevel":2,"CompletedLevels":1,"Levels":[{"Index":1,"PlayerPosition":{"x":1.0,"y":1.0},"BombLocations":[{"x":2.0,"y":2.0}],"OccupiedBlockLocations":[{"x":3.0,"y":2.0}],"TargetLocations":[{"x":1.0,"y":0.0}],"GoalPosition":{"x":3.0,"y":0.0},"Moves":3},{"Index":2,"PlayerPosition":{"x":0.0,"y":0.0},"BombLocations":[{"x":2.0,"y":2.0}],"OccupiedBlockLocations":[{"x":1.0,"y":1.0}],"TargetLocations":[{"x":3.0,"y":0.0},{"x":3.0,"y":3.0}],"GoalPosition":{"x":0.0,"y":3.0},"Moves":3}]}]}
+{
+    "Difficulties": [
+        {
+            "DifficultyLevel": 1,
+            "CompletedLevels": 11,
+            "Levels": [
+                {
+                    "Index": 1,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [],
+                    "TargetLocations": [],
+                    "GoalPosition": {
+                        "x": 2.0,
+                        "y": 1.0
+                    },
+                    "Moves": 2
+                },
+                {
+                    "Index": 2,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [],
+                    "TargetLocations": [],
+                    "GoalPosition": {
+                        "x": 2.0,
+                        "y": 2.0
+                    },
+                    "Moves": 2
+                },
+                {
+                    "Index": 3,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 2.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "TargetLocations": [],
+                    "GoalPosition": {
+                        "x": 1.0,
+                        "y": 0.0
+                    },
+                    "Moves": 2
+                },
+                {
+                    "Index": 4,
+                    "PlayerPosition": {
+                        "x": 2.0,
+                        "y": 2.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [],
+                    "TargetLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "Moves": 2
+                },
+                {
+                    "Index": 5,
+                    "PlayerPosition": {
+                        "x": 2.0,
+                        "y": 2.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "Moves": 3
+                },
+                {
+                    "Index": 6,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [],
+                    "TargetLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "Moves": 4
+                },
+                {
+                    "Index": 7,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 2.0,
+                        "y": 2.0
+                    },
+                    "Moves": 4
+                },
+                {
+                    "Index": 8,
+                    "PlayerPosition": {
+                        "x": 1.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 1.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 2.0
+                    },
+                    "Moves": 6
+                },
+                {
+                    "Index": 9,
+                    "PlayerPosition": {
+                        "x": 2.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 2.0,
+                        "y": 1.0
+                    },
+                    "Moves": 5
+                },
+                {
+                    "Index": 10,
+                    "PlayerPosition": {
+                        "x": 1.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 1.0,
+                        "y": 2.0
+                    },
+                    "Moves": 4
+                },
+                {
+                    "Index": 11,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 2.0
+                    },
+                    "BombLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "OccupiedBlockLocations": [],
+                    "TargetLocations": [],
+                    "GoalPosition": {
+                        "x": 2.0,
+                        "y": 2.0
+                    },
+                    "Moves": 3
+                }
+            ]
+        },
+        {
+            "DifficultyLevel": 2,
+            "CompletedLevels": 1,
+            "Levels": [
+                {
+                    "Index": 1,
+                    "PlayerPosition": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "BombLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 3.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 3.0,
+                        "y": 0.0
+                    },
+                    "Moves": 3
+                },
+                {
+                    "Index": 2,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 3.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 3.0,
+                            "y": 3.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 3.0
+                    },
+                    "Moves": 3
+                }
+            ]
+        }
+    ]
+}
