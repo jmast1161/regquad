@@ -8,6 +8,7 @@ public class Node : MonoBehaviour
     public bool HasTarget;
     public bool HasBomb;
     public bool IsGoalNode;
+    public bool IsStopBlockNode;
     public Vector2 Position => transform.position;
     [SerializeField] private SpriteRenderer _renderer;
 

@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private ICollection<Node> occupiedNodes;
     private ICollection<Target> targets;
     private ICollection<Bomb> bombs;
+    private ICollection<StopBlock> stopBlocks;
     private GameConfiguration gameConfiguration;
     private int remainingMoves;
     private Goal goal;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Block blockPrefab;
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
+    [SerializeField] private StopBlock stopBlockPrefab;
     [SerializeField] private TMPro.TMP_Text remainingMovesText;
     [SerializeField] private TMPro.TMP_Text currentLevelText;
     [SerializeField] private Canvas gameOverPrefab;
@@ -148,6 +150,7 @@ public class GameManager : MonoBehaviour
         nodes = new List<Node>();
         targets = new List<Target>();
         bombs = new List<Bomb>();
+        stopBlocks = new List<StopBlock>();
 
         soundManager.PlayMusicAudioSource();
         currentLevel = GameObject.FindObjectOfType<CurrentLevelIndex>();
@@ -200,6 +203,16 @@ public class GameManager : MonoBehaviour
             targets.Clear();
         }
 
+        if(stopBlocks.Any())
+        {
+            foreach(var stopBlock in stopBlocks)
+            {
+                Destroy(stopBlock.gameObject);
+            }
+
+            stopBlocks.Clear();
+        }
+
         if(player != null)
         {
             Destroy(player.gameObject);
@@ -249,6 +262,7 @@ public class GameManager : MonoBehaviour
 
             remainingMoves = level.Moves;
             AddOccupiedBlocks(level.OccupiedBlockLocations);
+            SpawnStopBlocks(level.StopBlockLocations);
             SpawnBombs(level.BombLocations);
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
@@ -260,6 +274,25 @@ public class GameManager : MonoBehaviour
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
             SetGameState(GameState.WaitingGameplayInput);
+        }
+    }
+
+    private void SpawnStopBlocks(Vector2[] stopBlockPositions)
+    {
+        foreach(var stopBlockPosition in stopBlockPositions)
+        {
+            var node = nodes
+                .Where(n => !n.IsGoalNode)
+                .Where(n => !n.IsOccupied)
+                .Where(n => n.Position.x == stopBlockPosition.x)
+                .FirstOrDefault(n => n.Position.y == stopBlockPosition.y);
+
+            if(node != null)
+            {
+                var stopBlock = Instantiate(stopBlockPrefab, node.Position, Quaternion.identity);
+                stopBlock.Init(node);
+                stopBlocks.Add(stopBlock);
+            }
         }
     }
 
@@ -534,7 +567,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         } 
-        while(next != null);
+        while(next != null && !next.IsStopBlockNode);
 
         if(originalPosition != player.Node)
         {

@@ -2,7 +2,7 @@
     "Difficulties": [
         {
             "DifficultyLevel": 1,
-            "CompletedLevels": 20,
+            "CompletedLevels": 25,
             "Levels": [
                 {
                     "Index": 1,
@@ -12,6 +12,7 @@
                     },
                     "BombLocations": [],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
@@ -27,6 +28,7 @@
                     },
                     "BombLocations": [],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
@@ -47,6 +49,7 @@
                             "y": 2.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
@@ -62,6 +65,7 @@
                     },
                     "BombLocations": [],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -87,6 +91,7 @@
                             "y": 2.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 1.0,
@@ -107,6 +112,7 @@
                     },
                     "BombLocations": [],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -140,6 +146,7 @@
                             "y": 1.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -177,6 +184,7 @@
                             "y": 2.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -206,6 +214,7 @@
                             "y": 0.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 0.0,
@@ -231,6 +240,7 @@
                             "y": 2.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 0.0,
@@ -264,6 +274,7 @@
                         }
                     ],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
@@ -289,6 +300,7 @@
                             "y": 0.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -319,6 +331,7 @@
                             "y": 1.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 0.0,
@@ -348,6 +361,7 @@
                         }
                     ],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 0.0,
@@ -381,6 +395,7 @@
                         }
                     ],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 0.0,
@@ -423,6 +438,7 @@
                             "y": 2.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -456,6 +472,7 @@
                         }
                     ],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -480,6 +497,7 @@
                     },
                     "BombLocations": [],
                     "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 0.0,
@@ -533,6 +551,7 @@
                             "y": 1.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 2.0,
@@ -567,6 +586,7 @@
                             "y": 0.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 1.0,
@@ -582,6 +602,189 @@
                         "y": 2.0
                     },
                     "Moves": 5
+                },
+                {
+                    "Index": 21,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "TargetLocations": [],
+                    "GoalPosition": {
+                        "x": 1.0,
+                        "y": 2.0
+                    },
+                    "Moves": 2
+                },
+                {
+                    "Index": 22,
+                    "PlayerPosition": {
+                        "x": 2.0,
+                        "y": 2.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 1.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "Moves": 5
+                },
+                {
+                    "Index": 23,
+                    "PlayerPosition": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "BombLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 1.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 1.0
+                        },
+                        {
+                            "x": 1.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 1.0,
+                        "y": 2.0
+                    },
+                    "Moves": 7
+                },
+                {
+                    "Index": 24,
+                    "PlayerPosition": {
+                        "x": 0.0,
+                        "y": 2.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "StopBlockLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "Moves": 5
+                },
+                {
+                    "Index": 25,
+                    "PlayerPosition": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "TargetLocations": [
+                        {
+                            "x": 2.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 2.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "Moves": 7
                 }
             ]
         },
@@ -607,6 +810,7 @@
                             "y": 2.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 1.0,
@@ -637,6 +841,7 @@
                             "y": 1.0
                         }
                     ],
+                    "StopBlockLocations": [],
                     "TargetLocations": [
                         {
                             "x": 3.0,

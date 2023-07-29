@@ -424,6 +424,7 @@ MonoBehaviour:
   blockPrefab: {fileID: 1681427915611887823, guid: 212bd2f3960ff904ca21225b9a22dd83, type: 3}
   targetPrefab: {fileID: 1797644771863235036, guid: b3cb53e5939c950499a410ecf52e624e, type: 3}
   goalPrefab: {fileID: 1671197447051736365, guid: e4a2c1ca92b2f9842bd18fbce6252339, type: 3}
+  stopBlockPrefab: {fileID: 6021995546518822395, guid: 8a1c5b4cfe0c5cd4d89541657db5989b, type: 3}
   remainingMovesText: {fileID: 120799585}
   currentLevelText: {fileID: 1839768910}
   gameOverPrefab: {fileID: 5205803403889699031, guid: cd417da7b227d204b85340b5eb670a54, type: 3}
