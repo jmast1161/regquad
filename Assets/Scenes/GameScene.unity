@@ -442,6 +442,8 @@ MonoBehaviour:
   settingsButton: {fileID: 896253459}
   settingsBackButton: {fileID: 3564630749966271509}
   soundManagerPrefab: {fileID: 606133691093735906, guid: cf6288abc15415d49bbe52f7a75f68d7, type: 3}
+  gameOverPanel: {fileID: 729716845}
+  levelCompletePanel: {fileID: 1235906436}
 --- !u!4 &75417974
 Transform:
   m_ObjectHideFlags: 0
@@ -1328,6 +1330,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3168338182399723212, guid: 8960a2577d965004b96fd330bd23b3aa, type: 3}
   m_PrefabInstance: {fileID: 729716843}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &729716845 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 78008532264405171, guid: 8960a2577d965004b96fd330bd23b3aa, type: 3}
+  m_PrefabInstance: {fileID: 729716843}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25f18cc0d743154785245c32eac2632, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &800556610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1874,6 +1887,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 4793077182983582886, guid: 7742e3dd0e5fe58429ce7a324c632ce4, type: 3}
   m_PrefabInstance: {fileID: 1235906432}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1235906436 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5363106291298925257, guid: 7742e3dd0e5fe58429ce7a324c632ce4, type: 3}
+  m_PrefabInstance: {fileID: 1235906432}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d2b87d4982a808449a977cf94f4ddac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1454710198
 GameObject:
   m_ObjectHideFlags: 0

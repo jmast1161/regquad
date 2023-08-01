@@ -52,13 +52,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button resumeButton;
     [SerializeField] private UnityEngine.UI.Button mainMenuButton;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
-    [SerializeField] private UnityEngine.UI.Button nextLevelButton;
     [SerializeField] private Animator nextLevelAnimator;
-    [SerializeField] private UnityEngine.UI.Button gameOverReplayButton;
     [SerializeField] private Animator gameOverAnimator;
     [SerializeField] private UnityEngine.UI.Button settingsButton;
     [SerializeField] private UnityEngine.UI.Button settingsBackButton;
     [SerializeField] private SoundManager soundManagerPrefab;
+    [SerializeField] private GameOverPanel gameOverPanel;
+    [SerializeField] private LevelCompletePanel levelCompletePanel;
     private string configurationFilePath = "";
     private bool updateCompleteLevelsInFile = false;
     void Awake()
@@ -78,11 +78,16 @@ public class GameManager : MonoBehaviour
         restartLevelButton.onClick.AddListener(RestartLevelButtonClicked);
         pauseButton.onClick.AddListener(PauseButtonClicked);
         resumeButton.onClick.AddListener(ResumeButtonClicked);
-        mainMenuButton.onClick.AddListener(MainMenuButtonClicked);
-        nextLevelButton.onClick.AddListener(NextLevelButtonClicked);
-        gameOverReplayButton.onClick.AddListener(GameOverReplayButtonClicked);
+        mainMenuButton.onClick.AddListener(LoadMainMenu);
         settingsButton.onClick.AddListener(SettingsButtonClicked);
         settingsBackButton.onClick.AddListener(SettingsBackButtonClicked);
+
+        levelCompletePanel.MainMenuButtonClicked += OnMainMenuButtonClicked;
+        levelCompletePanel.RestartLevelButtonClicked += OnLevelCompleteReplayButtonClicked;
+        levelCompletePanel.NextLevelButtonClicked += OnNextLevelButtonClicked;
+
+        gameOverPanel.MainMenuButtonClicked += OnMainMenuButtonClicked;
+        gameOverPanel.RestartLevelButtonClicked += OnGameOverReplayButtonClicked;
     }
 
     private void SetGameState(GameState newState)
@@ -334,7 +339,7 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.WaitingGameOverInput);
     }
 
-    private void NextLevelButtonClicked()
+    private void OnNextLevelButtonClicked(object emptyObject)
     {
         ToggleMenuButtons(true);
         soundManager.PlayConfirmSound();
@@ -379,7 +384,10 @@ public class GameManager : MonoBehaviour
         soundManager.SaveAudioPreferences();
     }
 
-    private void MainMenuButtonClicked()
+    private void OnMainMenuButtonClicked(object emptyObject) =>
+        LoadMainMenu();
+
+    private void LoadMainMenu()
     {
         soundManager.PlayDeclineSound();
         SceneManager.LoadSceneAsync("MenuScene");
@@ -394,7 +402,15 @@ public class GameManager : MonoBehaviour
         RestartLevel();
     }
 
-    private void GameOverReplayButtonClicked()
+    private void OnLevelCompleteReplayButtonClicked(object emptyObject)
+    {
+        soundManager.PlayConfirmSound();
+        ToggleMenuButtons(true);
+        nextLevelAnimator.Play("HidePanel", 0);
+        RestartLevel();
+    }
+
+    private void OnGameOverReplayButtonClicked(object emptyObject)
     {
         soundManager.PlayConfirmSound();
         ToggleMenuButtons(true);

@@ -204,13 +204,17 @@
                 {
                     "Index": 9,
                     "PlayerPosition": {
-                        "x": 2.0,
+                        "x": 1.0,
                         "y": 0.0
                     },
                     "BombLocations": [],
                     "OccupiedBlockLocations": [
                         {
                             "x": 0.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 2.0,
                             "y": 0.0
                         }
                     ],
@@ -225,7 +229,7 @@
                         "x": 2.0,
                         "y": 1.0
                     },
-                    "Moves": 5
+                    "Moves": 4
                 },
                 {
                     "Index": 10,
