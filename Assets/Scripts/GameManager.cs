@@ -500,19 +500,19 @@ public class GameManager : MonoBehaviour
         switch(gameState)
         {
             case GameState.WaitingGameplayInput:
-                if(Input.GetKeyDown(KeyCode.LeftArrow))
+                if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                 {
                     MoveBlock(Vector2.left);
                 }
-                else if(Input.GetKeyDown(KeyCode.RightArrow))
+                else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                 {
                     MoveBlock(Vector2.right);
                 }
-                else if(Input.GetKeyDown(KeyCode.UpArrow))
+                else if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                 {
                     MoveBlock(Vector2.up);
                 }
-                else if(Input.GetKeyDown(KeyCode.DownArrow))
+                else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                 {
                     MoveBlock(Vector2.down);
                 }
@@ -626,10 +626,6 @@ public class GameManager : MonoBehaviour
                     soundManager.PlayGoalSound();
                     SetGameState(GameState.LevelComplete);
                 }
-                else if(remainingMoves == 0)
-                {
-                    InitializeGameOver();
-                }
                 else if(bombHit)
                 {
                     Destroy(player.gameObject);
@@ -643,6 +639,10 @@ public class GameManager : MonoBehaviour
                         bomb.PlayExplosion();
                     }
 
+                }
+                else if(remainingMoves == 0)
+                {
+                    InitializeGameOver();
                 }
                 else
                 {
