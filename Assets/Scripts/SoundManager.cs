@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -7,16 +7,17 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource musicTrack2AudioSource;
     [SerializeField] private AudioSource musicTrack3AudioSource;
     [SerializeField] private AudioSource moveAudioSource;
-    [SerializeField] private AudioSource targetAudioSource;
+    [SerializeField] private AudioSource targetAudioSourcePrefab;
     [SerializeField] private AudioSource goalAudioSource;
     [SerializeField] private AudioSource explosionAudioSource;
     [SerializeField] private AudioSource confirmAudioSource;
     [SerializeField] private AudioSource declineAudioSource;
+    private IList<AudioSource> targetAudioSources = new List<AudioSource>();
     private AudioSource currentMusicTrack;
     public int CurrentTrackIndex { get; private set; } = 1;
     public int MusicLevel { get; private set; } = 10;
     public int EffectsLevel { get; private set; } = 10;
-
+    private const int maxTargetSounds = 5;
     public void SaveAudioPreferences()
     {
         PlayerPrefs.SetInt("MusicLevel", MusicLevel);
@@ -45,7 +46,7 @@ public class SoundManager : MonoBehaviour
 
         SetCurrentTrack();
     }
-    
+
     public void NextMusicTrack()
     {
         if (CurrentTrackIndex == 3)
@@ -100,6 +101,11 @@ public class SoundManager : MonoBehaviour
 
     private void Start() 
     {
+        for (int i = 0; i < maxTargetSounds; ++i)
+        {
+            targetAudioSources.Add(Instantiate(targetAudioSourcePrefab));
+        }
+
         UpdateMusicVolume(MusicLevel);
         UpdateEffectsVolume(EffectsLevel);
     }
@@ -157,11 +163,15 @@ public class SoundManager : MonoBehaviour
     {
         var effectsLevelVolume = newEffectsLevel * 0.1f;
         moveAudioSource.volume = effectsLevelVolume;
-        targetAudioSource.volume = effectsLevelVolume;
         goalAudioSource.volume = effectsLevelVolume;
         explosionAudioSource.volume = effectsLevelVolume;
         confirmAudioSource.volume = effectsLevelVolume;
         declineAudioSource.volume = effectsLevelVolume;
+
+        foreach(var targetAudioSource in targetAudioSources)
+        {
+            targetAudioSource.volume = effectsLevelVolume;
+        }
     }
 
     public void PlayMusicAudioSource()
@@ -175,8 +185,15 @@ public class SoundManager : MonoBehaviour
     public void PlayMoveSound() =>
         moveAudioSource.Play();
 
-    public void PlayTargetPickupSound(int blockDistance) =>
-        targetAudioSource.PlayDelayed(0.15f * blockDistance);
+    public void PlayTargetPickupSound(IList<int> blockDistances, int targetSoundQueueCount) 
+    {
+
+        for(int i = 0; i < targetSoundQueueCount; ++i)
+        {
+            var clipDelay = 0.15f * blockDistances[i];
+            targetAudioSources[i].PlayScheduled(AudioSettings.dspTime + clipDelay);
+        }
+    }
     
     public void PlayGoalSound() =>
         goalAudioSource.Play();

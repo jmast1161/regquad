@@ -560,6 +560,8 @@ public class GameManager : MonoBehaviour
         var playerMovePath = new List<Vector3>();
         var bombHit = false;
         var blockDistance = 0;
+        var blockDistances = new List<int>();
+        var targetSoundQueueCount = 0;
         do{
             next = GetNodeAtPosition(next.Position + direction);
             ++blockDistance;
@@ -569,7 +571,8 @@ public class GameManager : MonoBehaviour
                 {
                     var target = targets.FirstOrDefault(t => t.Node == next);
                     targetsToDelete.Add(target);
-                    soundManager.PlayTargetPickupSound(blockDistance);
+                    blockDistances.Add(blockDistance);
+                    ++targetSoundQueueCount;
                     next.HasTarget = false;
                 }
 
@@ -584,6 +587,11 @@ public class GameManager : MonoBehaviour
             }
         } 
         while(next != null && !next.IsStopBlockNode);
+
+        if(targetSoundQueueCount > 0)
+        {
+            soundManager.PlayTargetPickupSound(blockDistances, targetSoundQueueCount);
+        }
 
         if(originalPosition != player.Node)
         {
