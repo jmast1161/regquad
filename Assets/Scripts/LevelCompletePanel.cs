@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelCompletePanel : MonoBehaviour
 {
@@ -7,10 +8,9 @@ public class LevelCompletePanel : MonoBehaviour
     public event Action<object> NextLevelButtonClicked;
     public event Action<object> MainMenuButtonClicked;
     
-    [SerializeField] private UnityEngine.UI.Button restartLevelButton;
-    
-    [SerializeField] private UnityEngine.UI.Button nextLevelButton;
-    [SerializeField] private UnityEngine.UI.Button mainMenuButton;
+    [SerializeField] private Button restartLevelButton;
+    [SerializeField] private Button nextLevelButton;
+    [SerializeField] private Button mainMenuButton;
 
     // Start is called before the first frame update
     void Start()
@@ -18,5 +18,17 @@ public class LevelCompletePanel : MonoBehaviour
         restartLevelButton.onClick.AddListener(() => { RestartLevelButtonClicked?.Invoke(null);});
         nextLevelButton.onClick.AddListener(() => { NextLevelButtonClicked?.Invoke(null);});
         mainMenuButton.onClick.AddListener(() => { MainMenuButtonClicked?.Invoke(null);});
+    }
+
+    public void SetNextLevelButtonText(int currentLevelIndex)
+    {
+        if(currentLevelIndex % 25 == 0)
+        {
+            nextLevelButton.GetComponentInChildren<TMPro.TMP_Text >().text = "Next Difficulty";
+        }
+        else
+        {
+            nextLevelButton.GetComponentInChildren<TMPro.TMP_Text >().text = "Next Level";
+        }
     }
 }

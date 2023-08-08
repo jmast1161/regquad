@@ -329,6 +329,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnLevelCompleteCanvas()
     {
+        levelCompletePanel.SetNextLevelButtonText(currentLevel.CurrentLevel);
         ToggleMenuButtons(false);
         nextLevelAnimator.Play("ShowPanel", 0);
     }
@@ -336,6 +337,7 @@ public class GameManager : MonoBehaviour
     private void SpawnGameOverCanvas()
     {
         gameOverAnimator.Play("ShowPanel", 0);
+        soundManager.PlayGameOverSound();
         SetGameState(GameState.WaitingGameOverInput);
     }
 
@@ -343,7 +345,15 @@ public class GameManager : MonoBehaviour
     {
         ToggleMenuButtons(true);
         soundManager.PlayConfirmSound();
-        ++currentLevel.CurrentLevel;
+        if(currentLevel.CurrentLevel < 25)
+        {
+            ++currentLevel.CurrentLevel;
+        }
+        else
+        {
+            currentLevel.CurrentLevel = 1;
+            ++currentLevel.DifficultyLevel;
+        }
         nextLevelAnimator.Play("HidePanel", 0);
         SetGameState(GameState.InitializeLevel);
     }

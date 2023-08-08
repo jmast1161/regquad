@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource explosionAudioSource;
     [SerializeField] private AudioSource confirmAudioSource;
     [SerializeField] private AudioSource declineAudioSource;
+    [SerializeField] private AudioSource gameOverAudioSource;
     private IList<AudioSource> targetAudioSources = new List<AudioSource>();
     private AudioSource currentMusicTrack;
     public int CurrentTrackIndex { get; private set; } = 1;
@@ -167,6 +168,7 @@ public class SoundManager : MonoBehaviour
         explosionAudioSource.volume = effectsLevelVolume;
         confirmAudioSource.volume = effectsLevelVolume;
         declineAudioSource.volume = effectsLevelVolume;
+        gameOverAudioSource.volume = effectsLevelVolume;
 
         foreach(var targetAudioSource in targetAudioSources)
         {
@@ -206,4 +208,7 @@ public class SoundManager : MonoBehaviour
     
     public void PlayDeclineSound() =>
         declineAudioSource.Play();
+
+    public void PlayGameOverSound() =>
+        gameOverAudioSource.Play();
 }
