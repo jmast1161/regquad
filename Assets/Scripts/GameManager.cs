@@ -6,6 +6,7 @@ using DG.Tweening;
 using System;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEditor.Experimental.GraphView;
 
 public enum GameState
 {
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
     private ICollection<Target> targets;
     private ICollection<Bomb> bombs;
     private ICollection<StopBlock> stopBlocks;
+    private ICollection<DirectionBlock> directionBlocks;
     private GameConfiguration gameConfiguration;
     private int remainingMoves;
     private Goal goal;
@@ -41,9 +43,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
     [SerializeField] private StopBlock stopBlockPrefab;
+    [SerializeField] private DirectionBlock directionBlockPrefab;
     [SerializeField] private TMPro.TMP_Text remainingMovesText;
     [SerializeField] private TMPro.TMP_Text currentLevelText;
-    [SerializeField] private Canvas gameOverPrefab;
     [SerializeField] private Bomb bombPrefab;
     [SerializeField] private float travelTime = 0.5f;
     private SoundManager soundManager;
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelCompletePanel levelCompletePanel;
     private string configurationFilePath = "";
     private bool updateCompleteLevelsInFile = false;
+
     void Awake()
     {
         configurationFilePath = Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json");
@@ -156,6 +159,7 @@ public class GameManager : MonoBehaviour
         targets = new List<Target>();
         bombs = new List<Bomb>();
         stopBlocks = new List<StopBlock>();
+        directionBlocks = new List<DirectionBlock>();
 
         soundManager.PlayMusicAudioSource();
         currentLevel = GameObject.FindObjectOfType<CurrentLevelIndex>();
@@ -218,6 +222,16 @@ public class GameManager : MonoBehaviour
             stopBlocks.Clear();
         }
 
+        if(directionBlocks.Any())
+        {
+            foreach(var directionBlock in directionBlocks)
+            {
+                Destroy(directionBlock.gameObject);
+            }
+
+            directionBlocks.Clear();
+        }
+
         if(player != null)
         {
             Destroy(player.gameObject);
@@ -268,6 +282,7 @@ public class GameManager : MonoBehaviour
             remainingMoves = level.Moves;
             AddOccupiedBlocks(level.OccupiedBlockLocations);
             SpawnStopBlocks(level.StopBlockLocations);
+            SpawnDirectionBlocks(level.DirectionBlockConfigs);
             SpawnBombs(level.BombLocations);
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
@@ -297,6 +312,31 @@ public class GameManager : MonoBehaviour
                 var stopBlock = Instantiate(stopBlockPrefab, node.Position, Quaternion.identity);
                 stopBlock.Init(node);
                 stopBlocks.Add(stopBlock);
+            }
+        }
+    }
+
+    private void SpawnDirectionBlocks(DirectionBlockConfig[] directionBlockConfigs)
+    {
+        if(directionBlockConfigs == null)
+        {
+            return;
+        }
+        
+        foreach(var directionBlockConfig in directionBlockConfigs)
+        {
+            var node = nodes
+                .Where(n => !n.IsGoalNode)
+                .Where(n => !n.IsOccupied)
+                .Where(n => !n.IsStopBlockNode)
+                .Where(n => n.Position.x == directionBlockConfig.BlockPosition.x)
+                .FirstOrDefault(n => n.Position.y == directionBlockConfig.BlockPosition.y);
+
+            if(node != null)
+            {
+                var directionBlock = Instantiate(directionBlockPrefab, node.Position, Quaternion.identity);
+                directionBlock.Init(node, (BlockDirection)directionBlockConfig.BlockDirection);
+                directionBlocks.Add(directionBlock);
             }
         }
     }
@@ -550,7 +590,7 @@ public class GameManager : MonoBehaviour
                 .Where(n => !n.IsGoalNode);
         }
 
-        return  possibleNodes
+        return possibleNodes
             .FirstOrDefault(n => n.Position == position);
     }
 
@@ -573,6 +613,32 @@ public class GameManager : MonoBehaviour
         var blockDistances = new List<int>();
         var targetSoundQueueCount = 0;
         do{
+            
+            if(next.IsDirectionBlockNode)
+            {
+                var directionBlock = directionBlocks.
+                    FirstOrDefault(x => x.Node == next);
+                
+                if(directionBlock != null)
+                {
+                    switch(directionBlock.BlockDirection)
+                    {
+                        case BlockDirection.Up:
+                            direction = Vector2.up;
+                            break;
+                        case BlockDirection.Right:
+                            direction = Vector2.right;
+                            break;
+                        case BlockDirection.Down:
+                            direction = Vector2.down;
+                            break;
+                        case BlockDirection.Left:
+                            direction = Vector2.left;
+                            break;
+                    }
+                }
+            }
+
             next = GetNodeAtPosition(next.Position + direction);
             ++blockDistance;
             if(next != null)
@@ -607,7 +673,7 @@ public class GameManager : MonoBehaviour
         {
             soundManager.PlayMoveSound();
             var sequence = DOTween.Sequence();
-            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime).SetEase(Ease.InQuad).OnWaypointChange((int index) => {
+            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime * blockDistance).SetEase(Ease.InQuad).OnWaypointChange((int index) => {
                 if(index > 0)
                 {
                     var previousNode = playerMovePath[index - 1];

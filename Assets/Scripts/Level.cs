@@ -10,6 +10,7 @@ public class Level
     public Vector2[] OccupiedBlockLocations;
     public Vector2[] StopBlockLocations;
     public Vector2[] TargetLocations;
+    public DirectionBlockConfig[] DirectionBlockConfigs;
     public Vector2 GoalPosition;
     public int Moves;
 }

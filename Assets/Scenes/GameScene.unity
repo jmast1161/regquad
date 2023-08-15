@@ -425,19 +425,17 @@ MonoBehaviour:
   targetPrefab: {fileID: 1797644771863235036, guid: b3cb53e5939c950499a410ecf52e624e, type: 3}
   goalPrefab: {fileID: 1671197447051736365, guid: e4a2c1ca92b2f9842bd18fbce6252339, type: 3}
   stopBlockPrefab: {fileID: 6021995546518822395, guid: 8a1c5b4cfe0c5cd4d89541657db5989b, type: 3}
+  directionBlockPrefab: {fileID: 4449773772519149307, guid: 1b581cf1a9c0ae545bff7d87ea073d2d, type: 3}
   remainingMovesText: {fileID: 120799585}
   currentLevelText: {fileID: 1839768910}
-  gameOverPrefab: {fileID: 5205803403889699031, guid: cd417da7b227d204b85340b5eb670a54, type: 3}
   bombPrefab: {fileID: 1279499230878741739, guid: fb6bd9a9f10abca41add4c6cbe87c653, type: 3}
-  travelTime: 0.5
+  travelTime: 0.2
   restartLevelButton: {fileID: 1858137163}
   pauseButton: {fileID: 15225989}
   resumeButton: {fileID: 1454710200}
   mainMenuButton: {fileID: 1774654859}
   currentLevelPrefab: {fileID: 3891095657319720427, guid: 9ce85f30d09dae94890d51f82e806359, type: 3}
-  nextLevelButton: {fileID: 1235906434}
   nextLevelAnimator: {fileID: 1235906435}
-  gameOverReplayButton: {fileID: 360204507}
   gameOverAnimator: {fileID: 1172018409}
   settingsButton: {fileID: 896253459}
   settingsBackButton: {fileID: 3564630749966271509}
@@ -713,17 +711,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &360204507 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3098080136941969685, guid: 8960a2577d965004b96fd330bd23b3aa, type: 3}
-  m_PrefabInstance: {fileID: 729716843}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &461867947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,17 +1858,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4571550733034559838, guid: 7742e3dd0e5fe58429ce7a324c632ce4, type: 3}
   m_PrefabInstance: {fileID: 1235906432}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1235906434 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4501291312650337927, guid: 7742e3dd0e5fe58429ce7a324c632ce4, type: 3}
-  m_PrefabInstance: {fileID: 1235906432}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &1235906435 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4793077182983582886, guid: 7742e3dd0e5fe58429ce7a324c632ce4, type: 3}
