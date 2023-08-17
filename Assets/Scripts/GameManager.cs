@@ -613,32 +613,6 @@ public class GameManager : MonoBehaviour
         var blockDistances = new List<int>();
         var targetSoundQueueCount = 0;
         do{
-            
-            if(next.IsDirectionBlockNode)
-            {
-                var directionBlock = directionBlocks.
-                    FirstOrDefault(x => x.Node == next);
-                
-                if(directionBlock != null)
-                {
-                    switch(directionBlock.BlockDirection)
-                    {
-                        case BlockDirection.Up:
-                            direction = Vector2.up;
-                            break;
-                        case BlockDirection.Right:
-                            direction = Vector2.right;
-                            break;
-                        case BlockDirection.Down:
-                            direction = Vector2.down;
-                            break;
-                        case BlockDirection.Left:
-                            direction = Vector2.left;
-                            break;
-                    }
-                }
-            }
-
             next = GetNodeAtPosition(next.Position + direction);
             ++blockDistance;
             if(next != null)
@@ -660,6 +634,31 @@ public class GameManager : MonoBehaviour
                     bombHit = true;
                     break;
                 }
+                
+                if(next.IsDirectionBlockNode)
+                {
+                    var directionBlock = directionBlocks.
+                        FirstOrDefault(x => x.Node == next);
+                    
+                    if(directionBlock != null)
+                    {
+                        switch(directionBlock.BlockDirection)
+                        {
+                            case BlockDirection.Up:
+                                direction = Vector2.up;
+                                break;
+                            case BlockDirection.Right:
+                                direction = Vector2.right;
+                                break;
+                            case BlockDirection.Down:
+                                direction = Vector2.down;
+                                break;
+                            case BlockDirection.Left:
+                                direction = Vector2.left;
+                                break;
+                        }
+                    }
+                }
             }
         } 
         while(next != null && !next.IsStopBlockNode);
@@ -669,7 +668,7 @@ public class GameManager : MonoBehaviour
             soundManager.PlayTargetPickupSound(blockDistances, targetSoundQueueCount);
         }
 
-        if(originalPosition != player.Node)
+        if(originalPosition != player.Node || playerMovePath.Any())
         {
             soundManager.PlayMoveSound();
             var sequence = DOTween.Sequence();
