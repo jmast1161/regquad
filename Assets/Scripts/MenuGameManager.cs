@@ -29,7 +29,6 @@ public class MenuGameManager : MonoBehaviour
             soundManager = Instantiate(soundManagerPrefab);
         }
 
-        
         StreamReader reader = new StreamReader(Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json"));
         string json = reader.ReadToEnd();
         var gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
@@ -51,7 +50,7 @@ public class MenuGameManager : MonoBehaviour
         }
 
         mainMenuEntryAnimator.Play("ShowPanel", 0);
-        mainMenuQuitButton.onClick.AddListener(() => 
+        mainMenuQuitButton.onClick.AddListener(() =>
         {
             Debug.Log("quit game");
             Application.Quit();
@@ -59,7 +58,7 @@ public class MenuGameManager : MonoBehaviour
 
         soundManager.PlayMusicAudioSource();
 
-        mainMenuPlayButton.onClick.AddListener(() => 
+        mainMenuPlayButton.onClick.AddListener(() =>
         {
             soundManager.PlayConfirmSound();
             foreach (var levelSelectPanel in levelSelectPanels)
@@ -68,28 +67,28 @@ public class MenuGameManager : MonoBehaviour
             }
         });
 
-        settingsButton.onClick.AddListener(() => 
+        settingsButton.onClick.AddListener(() =>
         {
             soundManager.PlayConfirmSound();
         });
 
-        settingsBackButton.onClick.AddListener(() => 
+        settingsBackButton.onClick.AddListener(() =>
         {
             soundManager.PlayDeclineSound();
             soundManager.SaveAudioPreferences();
         });
 
-        for(int i = 0; i < levelSelectBackButtons.Length; ++i)
+        for (int i = 0; i < levelSelectBackButtons.Length; ++i)
         {
-            levelSelectBackButtons[i].onClick.AddListener(() => 
+            levelSelectBackButtons[i].onClick.AddListener(() =>
             {
                 soundManager.PlayDeclineSound();
             });
         }
 
-        for(int i = 0; i < levelSelectNextButtons.Length; ++i)
+        for (int i = 0; i < levelSelectNextButtons.Length; ++i)
         {
-            levelSelectNextButtons[i].onClick.AddListener(() => 
+            levelSelectNextButtons[i].onClick.AddListener(() =>
             {
                 soundManager.PlayConfirmSound();
             });

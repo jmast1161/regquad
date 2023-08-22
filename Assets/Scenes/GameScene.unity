@@ -425,6 +425,7 @@ MonoBehaviour:
   targetPrefab: {fileID: 1797644771863235036, guid: b3cb53e5939c950499a410ecf52e624e, type: 3}
   goalPrefab: {fileID: 1671197447051736365, guid: e4a2c1ca92b2f9842bd18fbce6252339, type: 3}
   stopBlockPrefab: {fileID: 6021995546518822395, guid: 8a1c5b4cfe0c5cd4d89541657db5989b, type: 3}
+  explodeBombBlockPrefab: {fileID: 8184208434108158089, guid: 1a874a154b5976140908084eb3f7ed94, type: 3}
   directionBlockPrefab: {fileID: 4449773772519149307, guid: 1b581cf1a9c0ae545bff7d87ea073d2d, type: 3}
   remainingMovesText: {fileID: 120799585}
   currentLevelText: {fileID: 1839768910}

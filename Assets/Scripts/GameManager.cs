@@ -24,7 +24,7 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     private GameState gameState;
-    
+
     private List<Node> nodes;
 
     private Block player;
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     private ICollection<Bomb> bombs;
     private ICollection<StopBlock> stopBlocks;
     private ICollection<DirectionBlock> directionBlocks;
+    private ICollection<ExplodeBombBlock> explodeBombBlocks;
     private GameConfiguration gameConfiguration;
     private int remainingMoves;
     private Goal goal;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Target targetPrefab;
     [SerializeField] private Goal goalPrefab;
     [SerializeField] private StopBlock stopBlockPrefab;
+    [SerializeField] private ExplodeBombBlock explodeBombBlockPrefab;
     [SerializeField] private DirectionBlock directionBlockPrefab;
     [SerializeField] private TMPro.TMP_Text remainingMovesText;
     [SerializeField] private TMPro.TMP_Text currentLevelText;
@@ -97,7 +99,7 @@ public class GameManager : MonoBehaviour
     {
         gameState = newState;
 
-        switch(gameState)
+        switch (gameState)
         {
             case GameState.InitializeGame:
                 InitializeGame();
@@ -121,7 +123,7 @@ public class GameManager : MonoBehaviour
 
     private void IncrementAndSaveCompletedLevels()
     {
-        if(!updateCompleteLevelsInFile)
+        if (!updateCompleteLevelsInFile)
         {
             return;
         }
@@ -129,16 +131,16 @@ public class GameManager : MonoBehaviour
         var difficulty = gameConfiguration
             .Difficulties
             .FirstOrDefault(x => x.DifficultyLevel == currentLevel.DifficultyLevel);
-        
-        if(difficulty == null)
+
+        if (difficulty == null)
         {
             return;
         }
 
-        if(currentLevel.CurrentLevel == difficulty.CompletedLevels + 1)
+        if (currentLevel.CurrentLevel == difficulty.CompletedLevels + 1)
         {
             ++difficulty.CompletedLevels;
-            
+
             var jsonToWrite = JsonUtility.ToJson(gameConfiguration, true);
             File.WriteAllText(configurationFilePath, jsonToWrite);
         }
@@ -148,7 +150,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        using(var reader = new StreamReader(configurationFilePath))
+        using (var reader = new StreamReader(configurationFilePath))
         {
             var json = reader.ReadToEnd();
             gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
@@ -160,6 +162,7 @@ public class GameManager : MonoBehaviour
         bombs = new List<Bomb>();
         stopBlocks = new List<StopBlock>();
         directionBlocks = new List<DirectionBlock>();
+        explodeBombBlocks = new List<ExplodeBombBlock>();
 
         soundManager.PlayMusicAudioSource();
         currentLevel = GameObject.FindObjectOfType<CurrentLevelIndex>();
@@ -167,44 +170,44 @@ public class GameManager : MonoBehaviour
         {
             currentLevel = Instantiate(currentLevelPrefab);
         }
-        
+
         SetGameState(GameState.InitializeLevel);
     }
 
     private void ClearLevelGameObjects()
     {
-        if(occupiedNodes.Any())
+        if (occupiedNodes.Any())
         {
-            foreach(var occupiedBlock in occupiedNodes)
+            foreach (var occupiedBlock in occupiedNodes)
             {
                 Destroy(occupiedBlock.gameObject);
             }
-            
+
             occupiedNodes.Clear();
         }
 
-        if(bombs.Any())
+        if (bombs.Any())
         {
-            foreach(var bomb in bombs)
+            foreach (var bomb in bombs)
             {
                 Destroy(bomb.gameObject);
             }
-            
+
             bombs.Clear();
         }
 
-        if(nodes.Any())
+        if (nodes.Any())
         {
-            foreach(var node in nodes)
+            foreach (var node in nodes)
             {
                 Destroy(node.gameObject);
             }
             nodes.Clear();
         }
 
-        if(targets.Any())
+        if (targets.Any())
         {
-            foreach(var target in targets)
+            foreach (var target in targets)
             {
                 Destroy(target.gameObject);
             }
@@ -212,9 +215,9 @@ public class GameManager : MonoBehaviour
             targets.Clear();
         }
 
-        if(stopBlocks.Any())
+        if (stopBlocks.Any())
         {
-            foreach(var stopBlock in stopBlocks)
+            foreach (var stopBlock in stopBlocks)
             {
                 Destroy(stopBlock.gameObject);
             }
@@ -222,9 +225,9 @@ public class GameManager : MonoBehaviour
             stopBlocks.Clear();
         }
 
-        if(directionBlocks.Any())
+        if (directionBlocks.Any())
         {
-            foreach(var directionBlock in directionBlocks)
+            foreach (var directionBlock in directionBlocks)
             {
                 Destroy(directionBlock.gameObject);
             }
@@ -232,12 +235,22 @@ public class GameManager : MonoBehaviour
             directionBlocks.Clear();
         }
 
-        if(player != null)
+        if (explodeBombBlocks.Any())
+        {
+            foreach (var explodeBombBlock in explodeBombBlocks)
+            {
+                Destroy(explodeBombBlock.gameObject);
+            }
+
+            explodeBombBlocks.Clear();
+        }
+
+        if (player != null)
         {
             Destroy(player.gameObject);
         }
 
-        if(goal != null)
+        if (goal != null)
         {
             Destroy(goal.gameObject);
         }
@@ -264,16 +277,18 @@ public class GameManager : MonoBehaviour
         ClearLevelGameObjects();
 
         var difficultyGrid = GetDifficultyGridSize();
-        
+
         var level = gameConfiguration.Difficulties
             .FirstOrDefault(x => x.DifficultyLevel == currentLevel.DifficultyLevel)
             ?.Levels
             .FirstOrDefault(l => l.Index == currentLevel.CurrentLevel);
 
-        if(level != null)
+        if (level != null)
         {
-            for(int x = 0; x < difficultyGrid.Item1; ++x){
-                for(int y = 0; y < difficultyGrid.Item2; ++y){
+            for (int x = 0; x < difficultyGrid.Item1; ++x)
+            {
+                for (int y = 0; y < difficultyGrid.Item2; ++y)
+                {
                     var node = Instantiate(nodePrefab, new Vector2(x, y), Quaternion.identity);
                     nodes.Add(node);
                 }
@@ -287,10 +302,11 @@ public class GameManager : MonoBehaviour
             SpawnPlayer(level.PlayerPosition);
             SpawnTargets(level.TargetLocations);
             SpawnGoal(level.GoalPosition);
+            SpawnExplodeBombBlocks(level.ExplodeBombLocations);
             UpdateRemainingMoves(remainingMoves);
             UpdateCurrentLevel(level.Index);
 
-            var center = new Vector2((float) difficultyGrid.Item1 / 2 - 0.5f, (float) difficultyGrid.Item2 / 2 - 0.5f);
+            var center = new Vector2((float)difficultyGrid.Item1 / 2 - 0.5f, (float)difficultyGrid.Item2 / 2 - 0.5f);
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
             SetGameState(GameState.WaitingGameplayInput);
@@ -299,7 +315,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnStopBlocks(Vector2[] stopBlockPositions)
     {
-        foreach(var stopBlockPosition in stopBlockPositions)
+        foreach (var stopBlockPosition in stopBlockPositions)
         {
             var node = nodes
                 .Where(n => !n.IsGoalNode)
@@ -307,7 +323,7 @@ public class GameManager : MonoBehaviour
                 .Where(n => n.Position.x == stopBlockPosition.x)
                 .FirstOrDefault(n => n.Position.y == stopBlockPosition.y);
 
-            if(node != null)
+            if (node != null)
             {
                 var stopBlock = Instantiate(stopBlockPrefab, node.Position, Quaternion.identity);
                 stopBlock.Init(node);
@@ -318,12 +334,12 @@ public class GameManager : MonoBehaviour
 
     private void SpawnDirectionBlocks(DirectionBlockConfig[] directionBlockConfigs)
     {
-        if(directionBlockConfigs == null)
+        if (directionBlockConfigs == null)
         {
             return;
         }
-        
-        foreach(var directionBlockConfig in directionBlockConfigs)
+
+        foreach (var directionBlockConfig in directionBlockConfigs)
         {
             var node = nodes
                 .Where(n => !n.IsGoalNode)
@@ -332,7 +348,7 @@ public class GameManager : MonoBehaviour
                 .Where(n => n.Position.x == directionBlockConfig.BlockPosition.x)
                 .FirstOrDefault(n => n.Position.y == directionBlockConfig.BlockPosition.y);
 
-            if(node != null)
+            if (node != null)
             {
                 var directionBlock = Instantiate(directionBlockPrefab, node.Position, Quaternion.identity);
                 directionBlock.Init(node, (BlockDirection)directionBlockConfig.BlockDirection);
@@ -342,14 +358,14 @@ public class GameManager : MonoBehaviour
     }
 
     private void AddOccupiedBlocks(Vector2[] occupiedBlockPositions)
-    {   
-        foreach(var occupiedBlockPosition in occupiedBlockPositions)
+    {
+        foreach (var occupiedBlockPosition in occupiedBlockPositions)
         {
             var node = nodes
                 .Where(n => !n.IsGoalNode)
                 .Where(n => n.Position.x == occupiedBlockPosition.x)
                 .FirstOrDefault(n => n.Position.y == occupiedBlockPosition.y);
-            if(node != null)
+            if (node != null)
             {
                 node.SetNodeOccupied();
                 occupiedNodes.Add(node);
@@ -385,7 +401,7 @@ public class GameManager : MonoBehaviour
     {
         ToggleMenuButtons(true);
         soundManager.PlayConfirmSound();
-        if(currentLevel.CurrentLevel < 25)
+        if (currentLevel.CurrentLevel < 25)
         {
             ++currentLevel.CurrentLevel;
         }
@@ -426,7 +442,7 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.WaitingGameplayInput);
     }
 
-    private void SettingsBackButtonClicked() 
+    private void SettingsBackButtonClicked()
     {
         soundManager.PlayDeclineSound();
         ToggleMenuButtons(true);
@@ -470,7 +486,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnBombs(Vector2[] bombLocations)
     {
-        foreach(var bombLocation in bombLocations)
+        foreach (var bombLocation in bombLocations)
         {
             var node = nodes
                 .Where(n => !n.IsGoalNode)
@@ -478,7 +494,7 @@ public class GameManager : MonoBehaviour
                 .Where(n => n.Position.x == bombLocation.x)
                 .FirstOrDefault(n => n.Position.y == bombLocation.y);
 
-            if(node != null)
+            if (node != null)
             {
                 var bomb = Instantiate(bombPrefab, node.Position, Quaternion.identity);
                 bomb.Init(node);
@@ -488,9 +504,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SpawnExplodeBombBlocks(Vector2[] explodeBombBlockLocations)
+    {
+        foreach (var explodeBombBlockLocation in explodeBombBlockLocations)
+        {
+            var node = nodes
+                .Where(n => !n.IsGoalNode)
+                .Where(n => !n.IsOccupied)
+                .Where(n => n.Position.x == explodeBombBlockLocation.x)
+                .FirstOrDefault(n => n.Position.y == explodeBombBlockLocation.y);
+
+            if (node != null)
+            {
+                var explodeBombBlock = Instantiate(explodeBombBlockPrefab, node.Position, Quaternion.identity);
+                explodeBombBlock.Init(node);
+                explodeBombBlocks.Add(explodeBombBlock);
+            }
+        }
+    }
+
     private void SpawnTargets(Vector2[] targetLocations)
-    {        
-        foreach(var targetLocation in targetLocations)
+    {
+        foreach (var targetLocation in targetLocations)
         {
             var node = nodes
                 .Where(n => !n.IsGoalNode)
@@ -498,9 +533,9 @@ public class GameManager : MonoBehaviour
                 .Where(n => n.Position.x == targetLocation.x)
                 .FirstOrDefault(n => n.Position.y == targetLocation.y);
 
-            if(node != null)
+            if (node != null)
             {
-                var target = Instantiate(targetPrefab,  node.Position, Quaternion.identity);
+                var target = Instantiate(targetPrefab, node.Position, Quaternion.identity);
                 target.Init(node);
                 targets.Add(target);
             }
@@ -515,16 +550,16 @@ public class GameManager : MonoBehaviour
             .Where(n => n.Position.x == position.x)
             .FirstOrDefault(n => n.Position.y == position.y);
 
-        if(node != null)
+        if (node != null)
         {
-            player = Instantiate(blockPrefab,  node.Position, Quaternion.identity);
+            player = Instantiate(blockPrefab, node.Position, Quaternion.identity);
             player.Init(node);
         }
     }
 
     private void UpdateRemainingMoves(int moves)
     {
-        if(remainingMovesText == null)
+        if (remainingMovesText == null)
         {
             return;
         }
@@ -535,7 +570,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateCurrentLevel(int currentLevel)
     {
-        if(currentLevelText == null)
+        if (currentLevelText == null)
         {
             return;
         }
@@ -547,33 +582,33 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        switch(gameState)
+        switch (gameState)
         {
             case GameState.WaitingGameplayInput:
-                if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                 {
                     MoveBlock(Vector2.left);
                 }
-                else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                 {
                     MoveBlock(Vector2.right);
                 }
-                else if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                 {
                     MoveBlock(Vector2.up);
                 }
-                else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                 {
                     MoveBlock(Vector2.down);
                 }
                 break;
 
             case GameState.LevelComplete:
-                if(updateCompleteLevelsInFile)
+                if (updateCompleteLevelsInFile)
                 {
                     IncrementAndSaveCompletedLevels();
                 }
-                
+
                 SetGameState(GameState.WaitingLevelCompleteInput);
                 break;
         }
@@ -584,7 +619,7 @@ public class GameManager : MonoBehaviour
         var possibleNodes = nodes
             .Where(n => !n.IsOccupied);
 
-        if(!goal.GoalActive)
+        if (!goal.GoalActive)
         {
             possibleNodes = possibleNodes
                 .Where(n => !n.IsGoalNode);
@@ -599,7 +634,7 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.Moving);
 
         var orderedNodes = nodes.OrderBy(x => x.Position.x).ThenBy(x => x.Position.y).ToList();
-        if(direction == Vector2.right || direction == Vector2.up)
+        if (direction == Vector2.right || direction == Vector2.up)
         {
             orderedNodes.Reverse();
         }
@@ -612,12 +647,13 @@ public class GameManager : MonoBehaviour
         var blockDistance = 0;
         var blockDistances = new List<int>();
         var targetSoundQueueCount = 0;
-        do{
+        do
+        {
             next = GetNodeAtPosition(next.Position + direction);
             ++blockDistance;
-            if(next != null)
+            if (next != null)
             {
-                if(next.HasTarget)
+                if (next.HasTarget)
                 {
                     var target = targets.FirstOrDefault(t => t.Node == next);
                     targetsToDelete.Add(target);
@@ -629,20 +665,20 @@ public class GameManager : MonoBehaviour
                 playerMovePath.Add(next.transform.position);
                 player.Node = next;
 
-                if(next.HasBomb)
+                if (next.HasBomb)
                 {
                     bombHit = true;
                     break;
                 }
-                
-                if(next.IsDirectionBlockNode)
+
+                if (next.IsDirectionBlockNode)
                 {
                     var directionBlock = directionBlocks.
                         FirstOrDefault(x => x.Node == next);
-                    
-                    if(directionBlock != null)
+
+                    if (directionBlock != null)
                     {
-                        switch(directionBlock.BlockDirection)
+                        switch (directionBlock.BlockDirection)
                         {
                             case BlockDirection.Up:
                                 direction = Vector2.up;
@@ -660,27 +696,28 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-        } 
-        while(next != null && !next.IsStopBlockNode);
+        }
+        while (next != null && !next.IsStopBlockNode);
 
-        if(targetSoundQueueCount > 0)
+        if (targetSoundQueueCount > 0)
         {
             soundManager.PlayTargetPickupSound(blockDistances, targetSoundQueueCount);
         }
 
-        if(originalPosition != player.Node || playerMovePath.Any())
+        if (originalPosition != player.Node || playerMovePath.Any())
         {
             soundManager.PlayMoveSound();
             var sequence = DOTween.Sequence();
-            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime * blockDistance).SetEase(Ease.InQuad).OnWaypointChange((int index) => {
-                if(index > 0)
+            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime * blockDistance).SetEase(Ease.InQuad).OnWaypointChange((int index) =>
+            {
+                if (index > 0)
                 {
                     var previousNode = playerMovePath[index - 1];
                     var targetToDelete = targetsToDelete
                         .Where(x => x.Node.Position.x == previousNode.x)
                         .FirstOrDefault(x => x.Node.Position.y == previousNode.y);
 
-                    if(targetToDelete != null)
+                    if (targetToDelete != null)
                     {
                         targets.Remove(targetToDelete);
                         Destroy(targetToDelete.gameObject);
@@ -688,20 +725,26 @@ public class GameManager : MonoBehaviour
                 }
             }));
 
-            sequence.OnComplete(() => {
-                if(playerMovePath.Count == 1 && targetsToDelete.Count == 1)
+            sequence.OnComplete(() =>
+            {
+                if (playerMovePath.Count == 1 && targetsToDelete.Count == 1)
                 {
                     targets.Remove(targetsToDelete[0]);
                     Destroy(targetsToDelete[0].gameObject);
                 }
 
-                if(!goal.GoalActive && !targets.Any())
+                if (!goal.GoalActive && !targets.Any())
                 {
                     goal.SetGoalState(true);
                 }
 
+                var explodeBombs = nodes
+                    .Where(x => x.IsExplodeBombNode)
+                    .Where(x => x.Position.x == player.Node.Position.x)
+                    .Any(x => x.Position.y == player.Node.Position.y);
+
                 UpdateRemainingMoves(--remainingMoves);
-                if(player.Node.Position.x == goal.Node.Position.x &&
+                if (player.Node.Position.x == goal.Node.Position.x &&
                     player.Node.Position.y == goal.Node.Position.y &&
                     goal.GoalActive)
                 {
@@ -709,21 +752,36 @@ public class GameManager : MonoBehaviour
                     soundManager.PlayGoalSound();
                     SetGameState(GameState.LevelComplete);
                 }
-                else if(bombHit)
+                else if (explodeBombs && bombs.Any())
+                {
+                    soundManager.PlayExplosionSound();
+                    foreach (var bomb in bombs)
+                    {
+                        bomb.PlayExplosion();
+                    }
+
+                    foreach (var node in nodes)
+                    {
+                        node.HasBomb = false;
+                    }
+
+                    SetGameState(GameState.WaitingGameplayInput);
+                }
+                else if (bombHit)
                 {
                     Destroy(player.gameObject);
-                    
+
                     var bomb = bombs
                         .FirstOrDefault(b => b.Node == next);
-                    
-                    if(bomb != null)
+
+                    if (bomb != null)
                     {
                         soundManager.PlayExplosionSound();
                         bomb.PlayExplosion();
                     }
 
                 }
-                else if(remainingMoves == 0)
+                else if (remainingMoves == 0)
                 {
                     InitializeGameOver();
                 }
@@ -741,9 +799,14 @@ public class GameManager : MonoBehaviour
 
     private void OnExplosionComplete(Bomb bomb)
     {
+        if (bomb.Node.Position.x == player.Node.Position.x &&
+            bomb.Node.Position.y == player.Node.Position.y)
+        {
+            InitializeGameOver();
+        }
+
         bombs.Remove(bomb);
         Destroy(bomb.gameObject);
-        InitializeGameOver();
     }
 
     private void InitializeGameOver()

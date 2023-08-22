@@ -15,6 +15,7 @@
                     "StopBlockLocations": [],
                     "TargetLocations": [],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 1.0
@@ -32,6 +33,7 @@
                     "StopBlockLocations": [],
                     "TargetLocations": [],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 2.0
@@ -54,6 +56,7 @@
                     "StopBlockLocations": [],
                     "TargetLocations": [],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
                         "y": 0.0
@@ -76,6 +79,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -103,6 +107,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -133,6 +138,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -164,6 +170,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 2.0
@@ -203,6 +210,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 2.0
@@ -234,6 +242,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 1.0
@@ -269,6 +278,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
                         "y": 2.0
@@ -291,6 +301,7 @@
                     "StopBlockLocations": [],
                     "TargetLocations": [],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 2.0
@@ -323,6 +334,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
                         "y": 0.0
@@ -355,6 +367,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 2.0
@@ -394,6 +407,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 0.0
@@ -433,6 +447,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 2.0
@@ -469,6 +484,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 2.0
@@ -504,6 +520,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -550,6 +567,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -581,6 +599,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
                         "y": 1.0
@@ -621,6 +640,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 2.0,
                         "y": 2.0
@@ -643,6 +663,7 @@
                     ],
                     "TargetLocations": [],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
                         "y": 2.0
@@ -682,6 +703,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 1.0
@@ -734,6 +756,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
                         "y": 2.0
@@ -770,6 +793,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 1.0
@@ -809,6 +833,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 1.0
@@ -819,7 +844,7 @@
         },
         {
             "DifficultyLevel": 2,
-            "CompletedLevels": 13,
+            "CompletedLevels": 14,
             "Levels": [
                 {
                     "Index": 1,
@@ -856,6 +881,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 3.0,
                         "y": 0.0
@@ -897,6 +923,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 3.0
@@ -941,6 +968,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 3.0
@@ -981,6 +1009,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 1.0,
                         "y": 3.0
@@ -1017,6 +1046,7 @@
                     ],
                     "TargetLocations": [],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 3.0
@@ -1048,6 +1078,7 @@
                         }
                     ],
                     "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -1094,6 +1125,7 @@
                             }
                         }
                     ],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -1147,6 +1179,7 @@
                             }
                         }
                     ],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 2.0
@@ -1205,6 +1238,7 @@
                             }
                         }
                     ],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 3.0,
                         "y": 3.0
@@ -1265,6 +1299,7 @@
                             }
                         }
                     ],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 3.0,
                         "y": 3.0
@@ -1316,6 +1351,7 @@
                             }
                         }
                     ],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 3.0,
                         "y": 0.0
@@ -1369,6 +1405,7 @@
                             }
                         }
                     ],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 0.0,
                         "y": 0.0
@@ -1413,11 +1450,44 @@
                             }
                         }
                     ],
+                    "ExplodeBombLocations": [],
                     "GoalPosition": {
                         "x": 3.0,
                         "y": 0.0
                     },
                     "Moves": 2
+                },
+                {
+                    "Index": 14,
+                    "PlayerPosition": {
+                        "x": 3.0,
+                        "y": 0.0
+                    },
+                    "BombLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 1.0
+                        }
+                    ],
+                    "OccupiedBlockLocations": [],
+                    "StopBlockLocations": [],
+                    "TargetLocations": [],
+                    "DirectionBlockConfigs": [],
+                    "ExplodeBombLocations": [
+                        {
+                            "x": 3.0,
+                            "y": 3.0
+                        }
+                    ],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "Moves": 3
                 }
             ]
         }
