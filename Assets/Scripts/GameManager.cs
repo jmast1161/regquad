@@ -752,21 +752,6 @@ public class GameManager : MonoBehaviour
                     soundManager.PlayGoalSound();
                     SetGameState(GameState.LevelComplete);
                 }
-                else if (explodeBombs && bombs.Any())
-                {
-                    soundManager.PlayExplosionSound();
-                    foreach (var bomb in bombs)
-                    {
-                        bomb.PlayExplosion();
-                    }
-
-                    foreach (var node in nodes)
-                    {
-                        node.HasBomb = false;
-                    }
-
-                    SetGameState(GameState.WaitingGameplayInput);
-                }
                 else if (bombHit)
                 {
                     Destroy(player.gameObject);
@@ -784,6 +769,21 @@ public class GameManager : MonoBehaviour
                 else if (remainingMoves == 0)
                 {
                     InitializeGameOver();
+                }                
+                else if (explodeBombs && bombs.Any())
+                {
+                    soundManager.PlayExplosionSound();
+                    foreach (var bomb in bombs)
+                    {
+                        bomb.PlayExplosion();
+                    }
+
+                    foreach (var node in nodes)
+                    {
+                        node.HasBomb = false;
+                    }
+
+                    SetGameState(GameState.WaitingGameplayInput);
                 }
                 else
                 {
