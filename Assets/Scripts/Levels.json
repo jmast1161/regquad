@@ -2089,7 +2089,7 @@
         },
         {
             "DifficultyLevel": 3,
-            "CompletedLevels": 7,
+            "CompletedLevels": 10,
             "Levels": [
                 {
                     "Index": 1,
@@ -2522,6 +2522,10 @@
                         "y": 4.0
                     },
                     "BombLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 0.0
+                        }
                     ],
                     "OccupiedBlockLocations": [
                         {
@@ -2541,7 +2545,7 @@
                             "y": 4.0
                         },
                         {
-                            "x": 4.0,
+                            "x": 0.0,
                             "y": 0.0
                         }
                     ],
@@ -2555,12 +2559,123 @@
                         }
                     ],
                     "ExplodeBombLocations": [
+                        {
+                            "x": 4.0,
+                            "y": 0.0
+                        }
                     ],
                     "GoalPosition": {
                         "x": 3.0,
                         "y": 2.0
                     },
-                    "Moves": 6
+                    "Moves": 9
+                },
+                {
+                    "Index": 9,
+                    "PlayerPosition": {
+                        "x": 4.0,
+                        "y": 4.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 1.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 3.0,
+                            "y": 2.0
+                        },
+                        {
+                            "x": 4.0,
+                            "y": 2.0
+                        }
+                    ],
+                    "StopBlockLocations": [],
+                    "TargetLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 4.0
+                        },
+                        {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 4.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "DirectionBlockConfigs": [
+                        {
+                            "BlockDirection": 2,
+                            "BlockPosition": {
+                                "x": 2.0,
+                                "y": 4.0
+                            }
+                        }
+                    ],
+                    "ExplodeBombLocations": [],
+                    "GoalPosition": {
+                        "x": 4.0,
+                        "y": 1.0
+                    },
+                    "Moves": 7
+                },
+                {
+                    "Index": 10,
+                    "PlayerPosition": {
+                        "x": 2.0,
+                        "y": 2.0
+                    },
+                    "BombLocations": [],
+                    "OccupiedBlockLocations": [
+                        {
+                            "x": 0.0,
+                            "y": 1.0
+                        },
+                        {
+                            "x": 4.0,
+                            "y": 3.0
+                        }
+                    ],
+                    "StopBlockLocations": [],
+                    "TargetLocations": [
+                        {
+                            "x": 1.0,
+                            "y": 0.0
+                        },
+                        {
+                            "x": 3.0,
+                            "y": 0.0
+                        }
+                    ],
+                    "DirectionBlockConfigs": [
+                        {
+                            "BlockDirection": 1,
+                            "BlockPosition": {
+                                "x": 0.0,
+                                "y": 3.0
+                            }
+                        },
+                        {
+                            "BlockDirection": 3,
+                            "BlockPosition": {
+                                "x": 4.0,
+                                "y": 1.0
+                            }
+                        }
+                    ],
+                    "ExplodeBombLocations": [],
+                    "GoalPosition": {
+                        "x": 0.0,
+                        "y": 4.0
+                    },
+                    "Moves": 8
                 }
             ]
         },
