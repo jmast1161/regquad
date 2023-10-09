@@ -16,6 +16,7 @@ public enum GameState
     Moving,
     LevelComplete,
     WaitingLevelCompleteInput,
+    WaitingBombExploding,
     GameOver,
     WaitingGameOverInput,
     Paused
@@ -49,7 +50,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text remainingMovesText;
     [SerializeField] private TMPro.TMP_Text currentLevelText;
     [SerializeField] private Bomb bombPrefab;
-    [SerializeField] private float travelTime = 0.5f;
+    private const float travelTime = 0.2f;
     private SoundManager soundManager;
     [SerializeField] private UnityEngine.UI.Button restartLevelButton;
     [SerializeField] private UnityEngine.UI.Button pauseButton;
@@ -708,7 +709,7 @@ public class GameManager : MonoBehaviour
         {
             soundManager.PlayMoveSound();
             var sequence = DOTween.Sequence();
-            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), travelTime * blockDistance).SetEase(Ease.InQuad).OnWaypointChange((int index) =>
+            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), 0.3f + ((float)(playerMovePath.Count) * (0.15f - 0.005f * playerMovePath.Count))).SetEase(Ease.InQuad).OnWaypointChange((int index) =>
             {
                 if (index > 0)
                 {
@@ -769,7 +770,7 @@ public class GameManager : MonoBehaviour
                 else if (remainingMoves == 0)
                 {
                     InitializeGameOver();
-                }                
+                }
                 else if (explodeBombs && bombs.Any())
                 {
                     soundManager.PlayExplosionSound();
@@ -783,7 +784,7 @@ public class GameManager : MonoBehaviour
                         node.HasBomb = false;
                     }
 
-                    SetGameState(GameState.WaitingGameplayInput);
+                    SetGameState(GameState.WaitingBombExploding);
                 }
                 else
                 {
@@ -803,6 +804,10 @@ public class GameManager : MonoBehaviour
             bomb.Node.Position.y == player.Node.Position.y)
         {
             InitializeGameOver();
+        }
+        else
+        {
+            SetGameState(GameState.WaitingGameplayInput);
         }
 
         bombs.Remove(bomb);

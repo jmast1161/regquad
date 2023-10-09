@@ -18,7 +18,7 @@ public class SoundManager : MonoBehaviour
     public int CurrentTrackIndex { get; private set; } = 1;
     public int MusicLevel { get; private set; } = 10;
     public int EffectsLevel { get; private set; } = 10;
-    private const int maxTargetSounds = 5;
+    private const int maxTargetSounds = 36;
     public void SaveAudioPreferences()
     {
         PlayerPrefs.SetInt("MusicLevel", MusicLevel);
