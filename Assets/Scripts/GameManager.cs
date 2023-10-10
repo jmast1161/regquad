@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private DirectionBlock directionBlockPrefab;
     [SerializeField] private TMPro.TMP_Text remainingMovesText;
     [SerializeField] private TMPro.TMP_Text currentLevelText;
+    [SerializeField] private TMPro.TMP_Text currentDifficultyText;
     [SerializeField] private Bomb bombPrefab;
     private const float travelTime = 0.2f;
     private SoundManager soundManager;
@@ -306,6 +307,7 @@ public class GameManager : MonoBehaviour
             SpawnExplodeBombBlocks(level.ExplodeBombLocations);
             UpdateRemainingMoves(remainingMoves);
             UpdateCurrentLevel(level.Index);
+            UpdateCurrentDifficulty(currentLevel.DifficultyLevel);
 
             var center = new Vector2((float)difficultyGrid.Item1 / 2 - 0.5f, (float)difficultyGrid.Item2 / 2 - 0.5f);
 
@@ -578,6 +580,30 @@ public class GameManager : MonoBehaviour
 
         var baseText = currentLevelText.text.Split(':');
         currentLevelText.text = $"{baseText[0]}: {currentLevel}";
+    }
+
+    private void UpdateCurrentDifficulty(int currentDifficulty)
+    {
+        var difficulty = "";
+        switch (currentDifficulty)
+        {
+            case (2):
+                difficulty = "4x4";
+                break;
+            case (3):
+                difficulty = "5x5";
+                break;
+            case (4):
+                difficulty = "6x6";
+                break;
+            case (1):
+            default:
+                difficulty = "3x3";
+                break;
+        }
+
+        var baseText = currentDifficultyText.text.Split(':');
+        currentDifficultyText.text = $"{baseText[0]}: {difficulty}";
     }
 
     // Update is called once per frame
