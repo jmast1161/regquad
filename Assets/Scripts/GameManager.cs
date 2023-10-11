@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SoundManager soundManagerPrefab;
     [SerializeField] private GameOverPanel gameOverPanel;
     [SerializeField] private LevelCompletePanel levelCompletePanel;
+    [SerializeField] private UnityEngine.UI.Button creditsButton;
+    [SerializeField] private UnityEngine.UI.Button creditsBackButton;
     private string configurationFilePath = "";
     private bool updateCompleteLevelsInFile = false;
 
@@ -95,6 +97,16 @@ public class GameManager : MonoBehaviour
 
         gameOverPanel.MainMenuButtonClicked += OnMainMenuButtonClicked;
         gameOverPanel.RestartLevelButtonClicked += OnGameOverReplayButtonClicked;
+        
+        creditsButton.onClick.AddListener(() =>
+        {
+            soundManager.PlayConfirmSound();
+        });
+
+        creditsBackButton.onClick.AddListener(() =>
+        {
+            soundManager.PlayDeclineSound();
+        });
     }
 
     private void SetGameState(GameState newState)
@@ -388,7 +400,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnLevelCompleteCanvas()
     {
-        levelCompletePanel.SetNextLevelButtonText(currentLevel.CurrentLevel);
+        levelCompletePanel.InitializeButtons(currentLevel);
         ToggleMenuButtons(false);
         nextLevelAnimator.Play("ShowPanel", 0);
     }

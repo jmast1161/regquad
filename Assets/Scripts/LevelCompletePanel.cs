@@ -11,7 +11,8 @@ public class LevelCompletePanel : MonoBehaviour
     [SerializeField] private Button restartLevelButton;
     [SerializeField] private Button nextLevelButton;
     [SerializeField] private Button mainMenuButton;
-
+    [SerializeField] private Button creditsButton;
+    [SerializeField] private TMPro.TMP_Text headerText;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,15 +21,27 @@ public class LevelCompletePanel : MonoBehaviour
         mainMenuButton.onClick.AddListener(() => { MainMenuButtonClicked?.Invoke(null);});
     }
 
-    public void SetNextLevelButtonText(int currentLevelIndex)
+    public void InitializeButtons(CurrentLevelIndex currentLevel)
     {
-        if(currentLevelIndex % 25 == 0)
+        if(currentLevel.DifficultyLevel == 4)
         {
-            nextLevelButton.GetComponentInChildren<TMPro.TMP_Text >().text = "Next Difficulty";
+            creditsButton.gameObject.SetActive(true);
+            nextLevelButton.gameObject.SetActive(false);
+            headerText.text = "Thanks for playing!";
         }
         else
         {
-            nextLevelButton.GetComponentInChildren<TMPro.TMP_Text >().text = "Next Level";
+            creditsButton.gameObject.SetActive(false);
+            nextLevelButton.gameObject.SetActive(true);
+            headerText.text = "Level Complete!";
+            if(currentLevel.CurrentLevel % 25 == 0)
+            {
+                nextLevelButton.GetComponentInChildren<TMPro.TMP_Text >().text = "Next Difficulty";
+            }
+            else
+            {
+                nextLevelButton.GetComponentInChildren<TMPro.TMP_Text >().text = "Next Level";
+            }
         }
     }
 }
