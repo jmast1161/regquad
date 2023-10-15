@@ -23,7 +23,7 @@ public class LevelCompletePanel : MonoBehaviour
 
     public void InitializeButtons(CurrentLevelIndex currentLevel)
     {
-        if(currentLevel.DifficultyLevel == 4)
+        if(currentLevel.DifficultyLevel == 4 && currentLevel.CurrentLevel % 25 == 0)
         {
             creditsButton.gameObject.SetActive(true);
             nextLevelButton.gameObject.SetActive(false);

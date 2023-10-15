@@ -747,7 +747,7 @@ public class GameManager : MonoBehaviour
         {
             soundManager.PlayMoveSound();
             var sequence = DOTween.Sequence();
-            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), 0.3f + ((float)(playerMovePath.Count) * (0.15f - 0.005f * playerMovePath.Count))).SetEase(Ease.InQuad).OnWaypointChange((int index) =>
+            sequence.Insert(0, player.transform.DOPath(playerMovePath.ToArray(), playerMovePath.Count * 0.15f).SetEase(Ease.Linear).OnWaypointChange((int index) =>
             {
                 if (index > 0)
                 {
@@ -822,7 +822,7 @@ public class GameManager : MonoBehaviour
                         node.HasBomb = false;
                     }
 
-                    SetGameState(GameState.WaitingBombExploding);
+                    SetGameState(GameState.WaitingGameplayInput);
                 }
                 else
                 {
@@ -839,7 +839,8 @@ public class GameManager : MonoBehaviour
     private void OnExplosionComplete(Bomb bomb)
     {
         if (bomb.Node.Position.x == player.Node.Position.x &&
-            bomb.Node.Position.y == player.Node.Position.y)
+            bomb.Node.Position.y == player.Node.Position.y &&
+            bomb.Node.HasBomb)
         {
             InitializeGameOver();
         }
