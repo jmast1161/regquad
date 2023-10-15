@@ -192,7 +192,7 @@ public class SoundManager : MonoBehaviour
 
         for(int i = 0; i < targetSoundQueueCount; ++i)
         {
-            var clipDelay = 0.15f * blockDistances[i];
+            var clipDelay = 0.15f * blockDistances[i] - 0.1f;
             targetAudioSources[i].PlayScheduled(AudioSettings.dspTime + clipDelay);
         }
     }
