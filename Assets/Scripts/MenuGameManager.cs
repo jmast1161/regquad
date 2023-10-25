@@ -2,6 +2,7 @@ using System.Linq;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class MenuGameManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class MenuGameManager : MonoBehaviour
     private SoundManager soundManager;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
     [SerializeField] private SoundManager soundManagerPrefab;
+    [SerializeField] private TextAsset configuration;
 
     void Awake()
     {
@@ -31,15 +33,33 @@ public class MenuGameManager : MonoBehaviour
             soundManager = Instantiate(soundManagerPrefab);
         }
 
-        StreamReader reader = new StreamReader(Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json"));
-        string json = reader.ReadToEnd();
+        //StreamReader reader = new StreamReader(@"Assets/Scripts/Levels.json");
+        //string json = reader.ReadToEnd();
+        //var configuration = (TextAsset)AssetDatabase.LoadAssetAtPath(@"Assets/Scripts/Levels.json", typeof(TextAsset));
+        var json = configuration.text;
         var gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
 
         foreach (var levelSelectPanel in levelSelectPanels)
         {
-            levelSelectPanel.CompletedLevels = gameConfiguration.Difficulties
-                .FirstOrDefault(x => x.DifficultyLevel == levelSelectPanel.DifficultyLevel)
-                ?.CompletedLevels ?? 0;
+            switch (levelSelectPanel.DifficultyLevel)
+            {
+                case 1:
+                    levelSelectPanel.CompletedLevels = PlayerPrefs.GetInt("completed3x3Levels", 0);
+                    break;
+                case 2:
+                    levelSelectPanel.CompletedLevels = PlayerPrefs.GetInt("completed4x4Levels", 0);
+                    break;
+                case 3:
+                    levelSelectPanel.CompletedLevels = PlayerPrefs.GetInt("completed5x5Levels", 0);
+                    break;
+                case 4:
+                    levelSelectPanel.CompletedLevels = PlayerPrefs.GetInt("completed6x6Levels", 0);
+                    break;
+            }
+
+            // levelSelectPanel.CompletedLevels = gameConfiguration.Difficulties
+            //     .FirstOrDefault(x => x.DifficultyLevel == levelSelectPanel.DifficultyLevel)
+            //     ?.CompletedLevels ?? 0;
         }
     }
 
@@ -51,7 +71,7 @@ public class MenuGameManager : MonoBehaviour
             currentLevel = Instantiate(currentLevelPrefab);
         }
 
-        mainMenuEntryAnimator.Play("ShowPanel", 0);
+        //mainMenuEntryAnimator.Play("ShowPanel", 0);
         mainMenuQuitButton.onClick.AddListener(() =>
         {
             Debug.Log("quit game");

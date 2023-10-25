@@ -6,7 +6,7 @@ using DG.Tweening;
 using System;
 using System.IO;
 using UnityEngine.SceneManagement;
-using UnityEditor.Experimental.GraphView;
+using UnityEditor;
 
 public enum GameState
 {
@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelCompletePanel levelCompletePanel;
     [SerializeField] private UnityEngine.UI.Button creditsButton;
     [SerializeField] private UnityEngine.UI.Button creditsBackButton;
+    [SerializeField] private TextAsset configuration;
     private string configurationFilePath = "";
     private bool updateCompleteLevelsInFile = false;
 
@@ -151,12 +152,52 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (currentLevel.CurrentLevel == difficulty.CompletedLevels + 1)
+        var completedLevels = 0;
+
+        switch (difficulty.DifficultyLevel)
         {
-            ++difficulty.CompletedLevels;
+            case 1:
+                completedLevels = PlayerPrefs.GetInt("completed3x3Levels", 0);
+                break;
+            case 2:
+                completedLevels = PlayerPrefs.GetInt("completed4x4Levels", 0);
+                break;
+            case 3:
+                completedLevels = PlayerPrefs.GetInt("completed5x5Levels", 0);
+                break;
+            case 4:
+                completedLevels = PlayerPrefs.GetInt("completed6x6Levels", 0);
+                break;
+        }
+
+
+        if (currentLevel.CurrentLevel == completedLevels + 1)
+        {
+            //++difficulty.CompletedLevels;
+
+            ++completedLevels;
 
             var jsonToWrite = JsonUtility.ToJson(gameConfiguration, true);
-            File.WriteAllText(configurationFilePath, jsonToWrite);
+            //File.WriteAllText(configurationFilePath, jsonToWrite);
+            //var configuration = (TextAsset)AssetDatabase.LoadAssetAtPath(@"Assets/Scripts/Levels.json", typeof(TextAsset));
+            //File.WriteAllText(@"Assets/Scripts/Levels.json", jsonToWrite);
+            //AssetDatabase.SaveAssets();
+
+            switch (difficulty.DifficultyLevel)
+            {
+                case 1:
+                    PlayerPrefs.SetInt("completed3x3Levels", completedLevels);
+                    break;
+                case 2:
+                    PlayerPrefs.SetInt("completed4x4Levels", completedLevels);
+                    break;
+                case 3:
+                    PlayerPrefs.SetInt("completed5x5Levels", completedLevels);
+                    break;
+                case 4:
+                    PlayerPrefs.SetInt("completed6x6Levels", completedLevels);
+                    break;
+            }
         }
 
         updateCompleteLevelsInFile = false;
@@ -164,9 +205,12 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        using (var reader = new StreamReader(configurationFilePath))
+        //using (var reader = new StreamReader(configurationFilePath))
         {
-            var json = reader.ReadToEnd();
+            //var json = reader.ReadToEnd();
+            
+            //var configuration = (TextAsset)AssetDatabase.LoadAssetAtPath(@"Assets/Scripts/Levels.json", typeof(TextAsset));
+            var json = configuration.text;
             gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
         }
 
