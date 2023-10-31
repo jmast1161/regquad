@@ -11,8 +11,9 @@ public class Node : MonoBehaviour
     public bool IsStopBlockNode;
     public bool IsDirectionBlockNode;
     public bool IsExplodeBombNode;
-    
+
     public Vector2 Position => transform.position;
+    public Vector2 GameBoardPosition { get; set; }
     [SerializeField] private SpriteRenderer _renderer;
 
     public void SetNodeOccupied()

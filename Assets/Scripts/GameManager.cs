@@ -68,8 +68,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button creditsButton;
     [SerializeField] private UnityEngine.UI.Button creditsBackButton;
     [SerializeField] private TextAsset configuration;
+    [SerializeField] private Canvas canvas;
     private string configurationFilePath = "";
     private bool updateCompleteLevelsInFile = false;
+    private float localScale = 1.0f;
 
     void Awake()
     {
@@ -330,6 +332,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private float GetOffset(int difficultyLevel)
+    {
+        switch(difficultyLevel)
+        {
+            case 2:
+                return new Vector2(3, 3).magnitude / 2;
+            case 3:
+                return new Vector2(4, 4).magnitude / 2;
+            case 4:
+                return new Vector2(5, 5).magnitude / 2;
+            case 1:
+            default:
+                return new Vector2(2, 2).magnitude / 2;
+        }
+    }
+
     private void InitializeLevel()
     {
         ClearLevelGameObjects();
@@ -343,11 +361,18 @@ public class GameManager : MonoBehaviour
 
         if (level != null)
         {
+            var offset = GetOffset(currentLevel.DifficultyLevel);
+
+            localScale = currentLevel.DifficultyLevel == 4
+                ? 0.9f
+                : 1.0f;
+
             for (int x = 0; x < difficultyGrid.Item1; ++x)
             {
                 for (int y = 0; y < difficultyGrid.Item2; ++y)
                 {
                     var node = Instantiate(nodePrefab, new Vector2(x, y), Quaternion.identity);
+                    node.GameBoardPosition = new Vector2(x, y);
                     nodes.Add(node);
                 }
             }
@@ -365,11 +390,50 @@ public class GameManager : MonoBehaviour
             UpdateCurrentLevel(level.Index);
             UpdateCurrentDifficulty(currentLevel.DifficultyLevel);
 
-            var center = new Vector2((float)difficultyGrid.Item1 / 2 - 0.5f, (float)difficultyGrid.Item2 / 2 - 0.5f);
+            if(currentLevel.DifficultyLevel == 4)
+            {
+                ApplyScaling();
+            }
+
+            var center = new Vector2(((float)difficultyGrid.Item1 * localScale) / 2 - 0.5f, ((float)difficultyGrid.Item2 * localScale) / 2 - 0.5f);
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
+            canvas.transform.position = new Vector3(center.x, center.y, canvas.transform.position.z);
             SetGameState(GameState.WaitingGameplayInput);
         }
+    }
+
+    private void ApplyScaling()
+    {
+        // nodes.ForEach(x => {
+        //     x.gameObject.transform.position = new Vector2(x.transform.position.x * localScale, x.transform.position.y * localScale);
+        //     x.gameObject.transform.localScale = new Vector3(localScale, localScale, localScale);
+        // });
+
+        ApplyScaling(nodes.Select(x => x.gameObject).ToList());
+        ApplyScaling(bombs.Select(x => x.gameObject).ToList());
+        ApplyScaling(targets.Select(x => x.gameObject).ToList());
+        ApplyScaling(stopBlocks.Select(x => x.gameObject).ToList());
+        ApplyScaling(directionBlocks.Select(x => x.gameObject).ToList());
+        //ApplyScaling(occupiedNodes.Select(x => x.gameObject).ToList());
+        ApplyScaling(explodeBombBlocks.Select(x => x.gameObject).ToList());
+
+        player.gameObject.transform.position = new Vector2(player.transform.position.x * localScale, player.transform.position.y * localScale);
+        player.gameObject.transform.localScale = new Vector3(localScale, localScale, localScale);
+
+        goal.gameObject.transform.position = new Vector2(goal.transform.position.x * localScale, goal.transform.position.y * localScale);
+        goal.gameObject.transform.localScale = new Vector3(localScale, localScale, localScale);
+    }
+
+    private void ApplyScaling(List<GameObject> gameObjects)
+    {
+        gameObjects.ForEach(x => {
+            x.gameObject.transform.position = new Vector2(x.transform.position.x * localScale, x.transform.position.y * localScale);
+            x.gameObject.transform.localScale = new Vector3(
+                x.gameObject.transform.localScale.x * localScale,
+                x.gameObject.transform.localScale.y * localScale,
+                x.gameObject.transform.localScale.z * localScale);
+        });
     }
 
     private void SpawnStopBlocks(Vector2[] stopBlockPositions)
@@ -697,7 +761,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Node GetNodeAtPosition(Vector2 position)
+    private Node GetNodeAtPosition(Vector2 gameBoardPosition)
     {
         var possibleNodes = nodes
             .Where(n => !n.IsOccupied);
@@ -709,7 +773,7 @@ public class GameManager : MonoBehaviour
         }
 
         return possibleNodes
-            .FirstOrDefault(n => n.Position == position);
+            .FirstOrDefault(n => n.GameBoardPosition == gameBoardPosition);
     }
 
     private void MoveBlock(Vector2 direction)
@@ -732,7 +796,7 @@ public class GameManager : MonoBehaviour
         var targetSoundQueueCount = 0;
         do
         {
-            next = GetNodeAtPosition(next.Position + direction);
+            next = GetNodeAtPosition(next.GameBoardPosition + direction);
             ++blockDistance;
             if (next != null)
             {
