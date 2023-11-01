@@ -72,6 +72,7 @@ public class MenuGameManager : MonoBehaviour
         }
 
         //mainMenuEntryAnimator.Play("ShowPanel", 0);
+        mainMenuEntryAnimator.SetTrigger("Show");
         mainMenuQuitButton.onClick.AddListener(() =>
         {
             Debug.Log("quit game");
