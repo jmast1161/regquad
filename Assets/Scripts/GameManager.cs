@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -51,7 +50,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text currentLevelText;
     [SerializeField] private TMPro.TMP_Text currentDifficultyText;
     [SerializeField] private Bomb bombPrefab;
-    private const float travelTime = 0.2f;
     private SoundManager soundManager;
     [SerializeField] private UnityEngine.UI.Button restartLevelButton;
     [SerializeField] private UnityEngine.UI.Button pauseButton;
@@ -69,13 +67,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button creditsBackButton;
     [SerializeField] private TextAsset configuration;
     [SerializeField] private Canvas canvas;
-    private string configurationFilePath = "";
     private bool updateCompleteLevelsInFile = false;
     private float localScale = 1.0f;
 
     void Awake()
     {
-        configurationFilePath = Path.GetFullPath($@"{Application.dataPath}\Scripts\Levels.json");
         soundManager = GameObject.FindObjectOfType<SoundManager>();
         if (soundManager == null)
         {
@@ -100,7 +96,7 @@ public class GameManager : MonoBehaviour
 
         gameOverPanel.MainMenuButtonClicked += OnMainMenuButtonClicked;
         gameOverPanel.RestartLevelButtonClicked += OnGameOverReplayButtonClicked;
-        
+
         creditsButton.onClick.AddListener(() =>
         {
             soundManager.PlayConfirmSound();
@@ -172,19 +168,9 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-
         if (currentLevel.CurrentLevel == completedLevels + 1)
         {
-            //++difficulty.CompletedLevels;
-
             ++completedLevels;
-
-            var jsonToWrite = JsonUtility.ToJson(gameConfiguration, true);
-            //File.WriteAllText(configurationFilePath, jsonToWrite);
-            //var configuration = (TextAsset)AssetDatabase.LoadAssetAtPath(@"Assets/Scripts/Levels.json", typeof(TextAsset));
-            //File.WriteAllText(@"Assets/Scripts/Levels.json", jsonToWrite);
-            //AssetDatabase.SaveAssets();
-
             switch (difficulty.DifficultyLevel)
             {
                 case 1:
@@ -207,14 +193,8 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        //using (var reader = new StreamReader(configurationFilePath))
-        {
-            //var json = reader.ReadToEnd();
-            
-            //var configuration = (TextAsset)AssetDatabase.LoadAssetAtPath(@"Assets/Scripts/Levels.json", typeof(TextAsset));
-            var json = configuration.text;
-            gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
-        }
+        var json = configuration.text;
+        gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
 
         occupiedNodes = new List<Node>();
         nodes = new List<Node>();
@@ -334,7 +314,7 @@ public class GameManager : MonoBehaviour
 
     private float GetOffset(int difficultyLevel)
     {
-        switch(difficultyLevel)
+        switch (difficultyLevel)
         {
             case 2:
                 return new Vector2(3, 3).magnitude / 2;
@@ -390,7 +370,7 @@ public class GameManager : MonoBehaviour
             UpdateCurrentLevel(level.Index);
             UpdateCurrentDifficulty(currentLevel.DifficultyLevel);
 
-            if(currentLevel.DifficultyLevel == 4)
+            if (currentLevel.DifficultyLevel == 4)
             {
                 ApplyScaling();
             }
@@ -405,17 +385,11 @@ public class GameManager : MonoBehaviour
 
     private void ApplyScaling()
     {
-        // nodes.ForEach(x => {
-        //     x.gameObject.transform.position = new Vector2(x.transform.position.x * localScale, x.transform.position.y * localScale);
-        //     x.gameObject.transform.localScale = new Vector3(localScale, localScale, localScale);
-        // });
-
         ApplyScaling(nodes.Select(x => x.gameObject).ToList());
         ApplyScaling(bombs.Select(x => x.gameObject).ToList());
         ApplyScaling(targets.Select(x => x.gameObject).ToList());
         ApplyScaling(stopBlocks.Select(x => x.gameObject).ToList());
         ApplyScaling(directionBlocks.Select(x => x.gameObject).ToList());
-        //ApplyScaling(occupiedNodes.Select(x => x.gameObject).ToList());
         ApplyScaling(explodeBombBlocks.Select(x => x.gameObject).ToList());
 
         player.gameObject.transform.position = new Vector2(player.transform.position.x * localScale, player.transform.position.y * localScale);
@@ -427,7 +401,8 @@ public class GameManager : MonoBehaviour
 
     private void ApplyScaling(List<GameObject> gameObjects)
     {
-        gameObjects.ForEach(x => {
+        gameObjects.ForEach(x =>
+        {
             x.gameObject.transform.position = new Vector2(x.transform.position.x * localScale, x.transform.position.y * localScale);
             x.gameObject.transform.localScale = new Vector3(
                 x.gameObject.transform.localScale.x * localScale,

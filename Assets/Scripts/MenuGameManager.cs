@@ -33,12 +33,6 @@ public class MenuGameManager : MonoBehaviour
             soundManager = Instantiate(soundManagerPrefab);
         }
 
-        //StreamReader reader = new StreamReader(@"Assets/Scripts/Levels.json");
-        //string json = reader.ReadToEnd();
-        //var configuration = (TextAsset)AssetDatabase.LoadAssetAtPath(@"Assets/Scripts/Levels.json", typeof(TextAsset));
-        var json = configuration.text;
-        var gameConfiguration = JsonUtility.FromJson<GameConfiguration>(json);
-
         foreach (var levelSelectPanel in levelSelectPanels)
         {
             switch (levelSelectPanel.DifficultyLevel)
@@ -56,10 +50,6 @@ public class MenuGameManager : MonoBehaviour
                     levelSelectPanel.CompletedLevels = PlayerPrefs.GetInt("completed6x6Levels", 0);
                     break;
             }
-
-            // levelSelectPanel.CompletedLevels = gameConfiguration.Difficulties
-            //     .FirstOrDefault(x => x.DifficultyLevel == levelSelectPanel.DifficultyLevel)
-            //     ?.CompletedLevels ?? 0;
         }
     }
 
@@ -71,7 +61,6 @@ public class MenuGameManager : MonoBehaviour
             currentLevel = Instantiate(currentLevelPrefab);
         }
 
-        //mainMenuEntryAnimator.Play("ShowPanel", 0);
         mainMenuEntryAnimator.SetTrigger("Show");
         mainMenuQuitButton.onClick.AddListener(() =>
         {
