@@ -40,16 +40,9 @@ public class GameManager : MonoBehaviour
     private Goal goal;
     private CurrentLevelIndex currentLevel;
     [SerializeField] private Node nodePrefab;
-    [SerializeField] private Block blockPrefab;
-    [SerializeField] private Target targetPrefab;
-    [SerializeField] private Goal goalPrefab;
-    [SerializeField] private StopBlock stopBlockPrefab;
-    [SerializeField] private ExplodeBombBlock explodeBombBlockPrefab;
-    [SerializeField] private DirectionBlock directionBlockPrefab;
     [SerializeField] private TMPro.TMP_Text remainingMovesText;
     [SerializeField] private TMPro.TMP_Text currentLevelText;
     [SerializeField] private TMPro.TMP_Text currentDifficultyText;
-    [SerializeField] private Bomb bombPrefab;
     private SoundManager soundManager;
     [SerializeField] private UnityEngine.UI.Button restartLevelButton;
     [SerializeField] private UnityEngine.UI.Button pauseButton;
