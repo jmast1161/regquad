@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button creditsBackButton;
     [SerializeField] private TextAsset configuration;
     [SerializeField] private Canvas canvas;
+    [SerializeField] private LevelManager levelManager;
     private bool updateCompleteLevelsInFile = false;
     private float localScale = 1.0f;
 
@@ -358,14 +359,22 @@ public class GameManager : MonoBehaviour
             }
 
             remainingMoves = level.Moves;
-            AddOccupiedBlocks(level.OccupiedBlockLocations);
-            SpawnStopBlocks(level.StopBlockLocations);
-            SpawnDirectionBlocks(level.DirectionBlockConfigs);
-            SpawnBombs(level.BombLocations);
-            SpawnPlayer(level.PlayerPosition);
-            SpawnTargets(level.TargetLocations);
-            SpawnGoal(level.GoalPosition);
-            SpawnExplodeBombBlocks(level.ExplodeBombLocations);
+
+            occupiedNodes = levelManager.AddOccupiedBlocks(level.OccupiedBlockLocations, nodes);
+            stopBlocks = levelManager.SpawnStopBlocks(level.StopBlockLocations, nodes);
+            directionBlocks = levelManager.SpawnDirectionBlocks(level.DirectionBlockConfigs, nodes);
+            bombs = levelManager.SpawnBombs(level.BombLocations, nodes);
+            player = levelManager.SpawnPlayer(level.PlayerPosition, nodes);
+            targets = levelManager.SpawnTargets(level.TargetLocations, nodes);
+            goal = levelManager.SpawnGoal(level.GoalPosition, nodes, !targets.Any());
+            explodeBombBlocks = levelManager.SpawnExplodeBombBlocks(level.ExplodeBombLocations, nodes);
+
+            foreach (var bomb in bombs)
+            {
+                bomb.ExplosionComplete += OnExplosionComplete;
+            }
+
+
             UpdateRemainingMoves(remainingMoves);
             UpdateCurrentLevel(level.Index);
             UpdateCurrentDifficulty(currentLevel.DifficultyLevel);
@@ -410,77 +419,6 @@ public class GameManager : MonoBehaviour
                 x.gameObject.transform.localScale.z * localScale);
         });
     }
-
-    private void SpawnStopBlocks(Vector2[] stopBlockPositions)
-    {
-        foreach (var stopBlockPosition in stopBlockPositions)
-        {
-            var node = nodes
-                .Where(n => !n.IsGoalNode)
-                .Where(n => !n.IsOccupied)
-                .Where(n => n.Position.x == stopBlockPosition.x)
-                .FirstOrDefault(n => n.Position.y == stopBlockPosition.y);
-
-            if (node != null)
-            {
-                var stopBlock = Instantiate(stopBlockPrefab, node.Position, Quaternion.identity);
-                stopBlock.Init(node);
-                stopBlocks.Add(stopBlock);
-            }
-        }
-    }
-
-    private void SpawnDirectionBlocks(DirectionBlockConfig[] directionBlockConfigs)
-    {
-        if (directionBlockConfigs == null)
-        {
-            return;
-        }
-
-        foreach (var directionBlockConfig in directionBlockConfigs)
-        {
-            var node = nodes
-                .Where(n => !n.IsGoalNode)
-                .Where(n => !n.IsOccupied)
-                .Where(n => !n.IsStopBlockNode)
-                .Where(n => n.Position.x == directionBlockConfig.BlockPosition.x)
-                .FirstOrDefault(n => n.Position.y == directionBlockConfig.BlockPosition.y);
-
-            if (node != null)
-            {
-                var directionBlock = Instantiate(directionBlockPrefab, node.Position, Quaternion.identity);
-                directionBlock.Init(node, (BlockDirection)directionBlockConfig.BlockDirection);
-                directionBlocks.Add(directionBlock);
-            }
-        }
-    }
-
-    private void AddOccupiedBlocks(Vector2[] occupiedBlockPositions)
-    {
-        foreach (var occupiedBlockPosition in occupiedBlockPositions)
-        {
-            var node = nodes
-                .Where(n => !n.IsGoalNode)
-                .Where(n => n.Position.x == occupiedBlockPosition.x)
-                .FirstOrDefault(n => n.Position.y == occupiedBlockPosition.y);
-            if (node != null)
-            {
-                node.SetNodeOccupied();
-                occupiedNodes.Add(node);
-            }
-        }
-    }
-
-    private void SpawnGoal(Vector2 goalPosition)
-    {
-        var node = Instantiate(nodePrefab, goalPosition, Quaternion.identity);
-        node.SetGoalNode();
-        nodes.Add(node);
-        goal = Instantiate(goalPrefab, goalPosition, Quaternion.identity);
-        goal.Init(node);
-        goal.SetGoalState(!targets.Any());
-    }
-
     private void SpawnLevelCompleteCanvas()
     {
         levelCompletePanel.InitializeButtons(currentLevel);
@@ -580,79 +518,6 @@ public class GameManager : MonoBehaviour
         ToggleMenuButtons(true);
         gameOverAnimator.Play("HidePanel", 0);
         RestartLevel();
-    }
-
-    private void SpawnBombs(Vector2[] bombLocations)
-    {
-        foreach (var bombLocation in bombLocations)
-        {
-            var node = nodes
-                .Where(n => !n.IsGoalNode)
-                .Where(n => !n.IsOccupied)
-                .Where(n => n.Position.x == bombLocation.x)
-                .FirstOrDefault(n => n.Position.y == bombLocation.y);
-
-            if (node != null)
-            {
-                var bomb = Instantiate(bombPrefab, node.Position, Quaternion.identity);
-                bomb.Init(node);
-                bomb.ExplosionComplete += OnExplosionComplete;
-                bombs.Add(bomb);
-            }
-        }
-    }
-
-    private void SpawnExplodeBombBlocks(Vector2[] explodeBombBlockLocations)
-    {
-        foreach (var explodeBombBlockLocation in explodeBombBlockLocations)
-        {
-            var node = nodes
-                .Where(n => !n.IsGoalNode)
-                .Where(n => !n.IsOccupied)
-                .Where(n => n.Position.x == explodeBombBlockLocation.x)
-                .FirstOrDefault(n => n.Position.y == explodeBombBlockLocation.y);
-
-            if (node != null)
-            {
-                var explodeBombBlock = Instantiate(explodeBombBlockPrefab, node.Position, Quaternion.identity);
-                explodeBombBlock.Init(node);
-                explodeBombBlocks.Add(explodeBombBlock);
-            }
-        }
-    }
-
-    private void SpawnTargets(Vector2[] targetLocations)
-    {
-        foreach (var targetLocation in targetLocations)
-        {
-            var node = nodes
-                .Where(n => !n.IsGoalNode)
-                .Where(n => !n.IsOccupied)
-                .Where(n => n.Position.x == targetLocation.x)
-                .FirstOrDefault(n => n.Position.y == targetLocation.y);
-
-            if (node != null)
-            {
-                var target = Instantiate(targetPrefab, node.Position, Quaternion.identity);
-                target.Init(node);
-                targets.Add(target);
-            }
-        }
-    }
-
-    private void SpawnPlayer(Vector2 position)
-    {
-        var node = nodes
-            .Where(n => !n.IsGoalNode)
-            .Where(n => !n.IsOccupied)
-            .Where(n => n.Position.x == position.x)
-            .FirstOrDefault(n => n.Position.y == position.y);
-
-        if (node != null)
-        {
-            player = Instantiate(blockPrefab, node.Position, Quaternion.identity);
-            player.Init(node);
-        }
     }
 
     private void UpdateRemainingMoves(int moves)
