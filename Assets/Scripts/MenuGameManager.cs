@@ -1,14 +1,8 @@
-using System.Linq;
-using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEditor;
 
 public class MenuGameManager : MonoBehaviour
 {
     private CurrentLevelIndex currentLevel;
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject levelSelect;
     [SerializeField] private Animator mainMenuEntryAnimator;
     [SerializeField] private UnityEngine.UI.Button mainMenuPlayButton;
     [SerializeField] private UnityEngine.UI.Button creditsButton;
@@ -16,14 +10,12 @@ public class MenuGameManager : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button mainMenuQuitButton;
     [SerializeField] private UnityEngine.UI.Button[] levelSelectBackButtons;
     [SerializeField] private UnityEngine.UI.Button[] levelSelectNextButtons;
-    [SerializeField] private UnityEngine.UI.Button[] levelSelectButtons;
     [SerializeField] private LevelSelectPanel[] levelSelectPanels;
     [SerializeField] private UnityEngine.UI.Button settingsButton;
     [SerializeField] private UnityEngine.UI.Button settingsBackButton;
     private SoundManager soundManager;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
     [SerializeField] private SoundManager soundManagerPrefab;
-    [SerializeField] private TextAsset configuration;
 
     void Awake()
     {
@@ -64,7 +56,6 @@ public class MenuGameManager : MonoBehaviour
         mainMenuEntryAnimator.SetTrigger("Show");
         mainMenuQuitButton.onClick.AddListener(() =>
         {
-            Debug.Log("quit game");
             Application.Quit();
         });
 
