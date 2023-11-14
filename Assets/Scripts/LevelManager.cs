@@ -36,9 +36,10 @@ public class LevelManager : MonoBehaviour
 
     public Goal SpawnGoal(Vector2 goalPosition, List<Node> nodes, bool goalState)
     {
-        var node = Instantiate(nodePrefab, goalPosition, Quaternion.identity);
-        node.SetGoalNode();
-        nodes.Add(node);
+        var node = nodes
+            .Where(n => !n.IsGoalNode)
+            .Where(n => n.Position.x == goalPosition.x)
+            .FirstOrDefault(n => n.Position.y == goalPosition.y);
         var goal = Instantiate(goalPrefab, goalPosition, Quaternion.identity);
         goal.Init(node);
         goal.SetGoalState(goalState);
