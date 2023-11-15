@@ -2,7 +2,6 @@
     "Difficulties": [
         {
             "DifficultyLevel": 1,
-            "CompletedLevels": 12,
             "Levels": [
                 {
                     "Index": 1,
@@ -844,7 +843,6 @@
         },
         {
             "DifficultyLevel": 2,
-            "CompletedLevels": 0,
             "Levels": [
                 {
                     "Index": 1,
@@ -2089,7 +2087,6 @@
         },
         {
             "DifficultyLevel": 3,
-            "CompletedLevels": 0,
             "Levels": [
                 {
                     "Index": 1,
@@ -3080,7 +3077,7 @@
                         "x": 0.0,
                         "y": 4.0
                     },
-                    "Moves": 7
+                    "Moves": 6
                 },
                 {
                     "Index": 17,
@@ -3766,7 +3763,6 @@
         },
         {
             "DifficultyLevel": 4,
-            "CompletedLevels": 0,
             "Levels": [
                 {
                     "Index": 1,
