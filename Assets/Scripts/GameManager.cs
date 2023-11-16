@@ -520,8 +520,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        var baseText = remainingMovesText.text.Split(':');
-        remainingMovesText.text = $"{baseText[0]}: {moves}";
+        remainingMovesText.text = moves.ToString();
     }
 
     private void UpdateCurrentLevel(int currentLevel)
@@ -531,8 +530,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        var baseText = currentLevelText.text.Split(':');
-        currentLevelText.text = $"{baseText[0]}: {currentLevel}";
+        currentLevelText.text = currentLevel.ToString();
     }
 
     private void UpdateCurrentDifficulty(int currentDifficulty)
@@ -555,8 +553,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        var baseText = currentDifficultyText.text.Split(':');
-        currentDifficultyText.text = $"{baseText[0]}: {difficulty}";
+        currentDifficultyText.text = difficulty;
     }
 
     // Update is called once per frame
