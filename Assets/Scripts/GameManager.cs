@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Linq;
 using DG.Tweening;
 using System;
-using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
@@ -306,22 +305,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private float GetOffset(int difficultyLevel)
-    {
-        switch (difficultyLevel)
-        {
-            case 2:
-                return new Vector2(3, 3).magnitude / 2;
-            case 3:
-                return new Vector2(4, 4).magnitude / 2;
-            case 4:
-                return new Vector2(5, 5).magnitude / 2;
-            case 1:
-            default:
-                return new Vector2(2, 2).magnitude / 2;
-        }
-    }
-
     private void InitializeLevel()
     {
         ClearLevelGameObjects();
@@ -335,11 +318,24 @@ public class GameManager : MonoBehaviour
 
         if (level != null)
         {
-            var offset = GetOffset(currentLevel.DifficultyLevel);
-
-            localScale = currentLevel.DifficultyLevel == 4
-                ? 0.9f
-                : 1.0f;
+            switch (currentLevel.DifficultyLevel)
+            {
+                case 1:
+                    localScale = 1.5f;
+                    break;
+                case 2:
+                    localScale = 1.25f;
+                    break;
+                case 3:
+                    localScale = 1.0f;
+                    break;
+                case 4:
+                    localScale = 0.9f;
+                    break;
+                default:
+                    localScale = 1.0f;
+                    break;
+            }
 
             for (int x = 0; x < difficultyGrid.Item1; ++x)
             {
@@ -372,12 +368,9 @@ public class GameManager : MonoBehaviour
             UpdateCurrentLevel(level.Index);
             UpdateCurrentDifficulty(currentLevel.DifficultyLevel);
 
-            if (currentLevel.DifficultyLevel == 4)
-            {
-                ApplyScaling();
-            }
+            ApplyScaling();
 
-            var center = new Vector2(((float)difficultyGrid.Item1 * localScale) / 2 - 0.5f, ((float)difficultyGrid.Item2 * localScale) / 2 - 0.5f);
+            var center = new Vector2(((float)difficultyGrid.Item1 * localScale) / 2 - localScale / 2, ((float)difficultyGrid.Item2 * localScale) / 2 - localScale / 2);
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
             canvas.transform.position = new Vector3(center.x, center.y, canvas.transform.position.z);
