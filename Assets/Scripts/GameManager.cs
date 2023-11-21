@@ -5,6 +5,7 @@ using DG.Tweening;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using Unity.Mathematics;
 
 public enum GameState
 {
@@ -18,6 +19,15 @@ public enum GameState
     GameOver,
     WaitingGameOverInput,
     Paused
+}
+
+public enum SwipeDirection
+{
+    None = 0,
+    Up = 1,
+    Right = 2,
+    Down = 3,
+    Left = 4
 }
 
 public class GameManager : MonoBehaviour
@@ -62,6 +72,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelManager levelManager;
     private bool updateCompleteLevelsInFile = false;
     private float localScale = 1.0f;
+
+    private Vector2 startTouchPosition;
+    private Vector2 endTouchPosition;
+    private const float minSwipeDistance = 200;
 
     void Awake()
     {
@@ -549,25 +563,68 @@ public class GameManager : MonoBehaviour
         currentDifficultyText.text = difficulty;
     }
 
+    private SwipeDirection GetSwipeDirection()
+    {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            startTouchPosition = Input.GetTouch(0).position;
+        }
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        {
+            endTouchPosition = Input.GetTouch(0).position;
+
+            var positionDiff = endTouchPosition - startTouchPosition;
+
+            if (Math.Abs(positionDiff.x) > Math.Abs(positionDiff.y) && Math.Abs(positionDiff.x) > minSwipeDistance)
+            {
+                if (startTouchPosition.x > endTouchPosition.x)
+                {
+                    return SwipeDirection.Left;
+                }
+
+                if (startTouchPosition.x < endTouchPosition.x)
+                {
+                    return SwipeDirection.Right;
+                }
+            }
+            else if(Math.Abs(positionDiff.y) > minSwipeDistance)
+            {
+                if (startTouchPosition.y < endTouchPosition.y)
+                {
+                    return SwipeDirection.Up;
+                }
+
+                if (startTouchPosition.y > endTouchPosition.y)
+                {
+                    return SwipeDirection.Down;
+                }
+            }
+        }
+
+        return SwipeDirection.None;
+    }
+
     // Update is called once per frame
     private void Update()
     {
         switch (gameState)
         {
             case GameState.WaitingGameplayInput:
-                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                var swipeDirection = GetSwipeDirection();
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) || swipeDirection == SwipeDirection.Left)
                 {
                     MoveBlock(Vector2.left);
                 }
-                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) || swipeDirection == SwipeDirection.Right)
                 {
                     MoveBlock(Vector2.right);
                 }
-                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || swipeDirection == SwipeDirection.Up)
                 {
                     MoveBlock(Vector2.up);
                 }
-                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) || swipeDirection == SwipeDirection.Down)
                 {
                     MoveBlock(Vector2.down);
                 }
