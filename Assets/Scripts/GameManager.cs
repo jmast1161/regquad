@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     private Vector2 startTouchPosition;
     private Vector2 endTouchPosition;
+    private bool touchStarted = false;
     private const float minSwipeDistance = 200;
 
     void Awake()
@@ -335,16 +336,16 @@ public class GameManager : MonoBehaviour
             switch (currentLevel.DifficultyLevel)
             {
                 case 1:
-                    localScale = 1.5f;
+                    localScale = 1.4f;
                     break;
                 case 2:
-                    localScale = 1.25f;
+                    localScale = 1.1f;
                     break;
                 case 3:
-                    localScale = 1.0f;
+                    localScale = 0.85f;
                     break;
                 case 4:
-                    localScale = 0.9f;
+                    localScale = 0.7f;
                     break;
                 default:
                     localScale = 1.0f;
@@ -377,7 +378,6 @@ public class GameManager : MonoBehaviour
                 bomb.ExplosionComplete += OnExplosionComplete;
             }
 
-
             UpdateRemainingMoves(remainingMoves);
             UpdateCurrentLevel(level.Index);
             UpdateCurrentDifficulty(currentLevel.DifficultyLevel);
@@ -388,6 +388,7 @@ public class GameManager : MonoBehaviour
 
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
             canvas.transform.position = new Vector3(center.x, center.y, canvas.transform.position.z);
+            ResetTouchPositions();
             SetGameState(GameState.WaitingGameplayInput);
         }
     }
@@ -568,12 +569,13 @@ public class GameManager : MonoBehaviour
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             startTouchPosition = Input.GetTouch(0).position;
+            touchStarted = true;
         }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended && touchStarted)
         {
             endTouchPosition = Input.GetTouch(0).position;
-
+            touchStarted = false;
             var positionDiff = endTouchPosition - startTouchPosition;
 
             if (Math.Abs(positionDiff.x) > Math.Abs(positionDiff.y) && Math.Abs(positionDiff.x) > minSwipeDistance)
@@ -636,9 +638,17 @@ public class GameManager : MonoBehaviour
                     IncrementAndSaveCompletedLevels();
                 }
 
+                ResetTouchPositions();
                 SetGameState(GameState.WaitingLevelCompleteInput);
                 break;
         }
+    }
+
+    private void ResetTouchPositions()
+    {
+        touchStarted = false;
+        startTouchPosition = new Vector2(0, 0);
+        endTouchPosition = new Vector2(0, 0);
     }
 
     private Node GetNodeAtPosition(Vector2 gameBoardPosition)
