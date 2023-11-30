@@ -460,6 +460,7 @@ public class GameManager : MonoBehaviour
 
     private void PauseButtonClicked()
     {
+        ResetTouchPositions();
         soundManager.PlayConfirmSound();
         ToggleMenuButtons(false);
         SetGameState(GameState.Paused);
@@ -467,6 +468,7 @@ public class GameManager : MonoBehaviour
 
     private void SettingsButtonClicked()
     {
+        ResetTouchPositions();
         soundManager.PlayConfirmSound();
         ToggleMenuButtons(false);
         SetGameState(GameState.Paused);
