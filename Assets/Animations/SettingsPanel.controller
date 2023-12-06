@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HideLevelSelectPanel
+  m_Name: HideSettingsPanel
   m_Speed: -0.5
   m_CycleOffset: 0
   m_Transitions:
@@ -112,7 +112,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ShowLevelSelectPanel
+  m_Name: ShowSettingsPanel
   m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions:

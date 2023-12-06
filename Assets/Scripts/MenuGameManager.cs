@@ -3,7 +3,10 @@ using UnityEngine;
 public class MenuGameManager : MonoBehaviour
 {
     private CurrentLevelIndex currentLevel;
-    [SerializeField] private Animator mainMenuEntryAnimator;
+    [SerializeField] private Animator mainMenuPanelAnimator;
+    [SerializeField] private Animator levelSelectPanelAnimator;
+    [SerializeField] private Animator settingsPanelAnimator;
+    [SerializeField] private Animator creditsPanelAnimator;
     [SerializeField] private UnityEngine.UI.Button mainMenuPlayButton;
     [SerializeField] private UnityEngine.UI.Button creditsButton;
     [SerializeField] private UnityEngine.UI.Button creditsBackButton;
@@ -16,6 +19,7 @@ public class MenuGameManager : MonoBehaviour
     private SoundManager soundManager;
     [SerializeField] private CurrentLevelIndex currentLevelPrefab;
     [SerializeField] private SoundManager soundManagerPrefab;
+    private bool mainMenuHidden;
 
     void Awake()
     {
@@ -53,7 +57,7 @@ public class MenuGameManager : MonoBehaviour
             currentLevel = Instantiate(currentLevelPrefab);
         }
 
-        mainMenuEntryAnimator.SetTrigger("Show");
+        mainMenuPanelAnimator.SetTrigger("Show");
         mainMenuQuitButton.onClick.AddListener(() =>
         {
             Application.Quit();
@@ -68,15 +72,29 @@ public class MenuGameManager : MonoBehaviour
             {
                 levelSelectPanel.InitializeLevelButtons(soundManager, currentLevel);
             }
+
+            if (!mainMenuHidden)
+            {
+                mainMenuPanelAnimator.SetTrigger("Hide");
+                levelSelectPanelAnimator.SetTrigger("ShowRight");
+                mainMenuHidden = true;
+            }
         });
 
         settingsButton.onClick.AddListener(() =>
         {
             soundManager.PlayConfirmSound();
+            if (!mainMenuHidden)
+            {
+                mainMenuPanelAnimator.SetTrigger("Hide");
+                settingsPanelAnimator.SetTrigger("Show");
+                mainMenuHidden = true;
+            }
         });
 
         settingsBackButton.onClick.AddListener(() =>
         {
+            mainMenuHidden = false;
             soundManager.PlayDeclineSound();
             soundManager.SaveAudioPreferences();
         });
@@ -84,19 +102,37 @@ public class MenuGameManager : MonoBehaviour
         creditsButton.onClick.AddListener(() =>
         {
             soundManager.PlayConfirmSound();
+            if (!mainMenuHidden)
+            {
+                mainMenuPanelAnimator.SetTrigger("Hide");
+                creditsPanelAnimator.SetTrigger("Show");
+                mainMenuHidden = true;
+            }
         });
 
         creditsBackButton.onClick.AddListener(() =>
         {
+            mainMenuHidden = false;
             soundManager.PlayDeclineSound();
         });
 
         for (int i = 0; i < levelSelectBackButtons.Length; ++i)
         {
-            levelSelectBackButtons[i].onClick.AddListener(() =>
+            if (i == 0)
             {
-                soundManager.PlayDeclineSound();
-            });
+                levelSelectBackButtons[i].onClick.AddListener(() =>
+                {
+                    soundManager.PlayDeclineSound();
+                    mainMenuHidden = false;
+                });
+            }
+            else
+            {
+                levelSelectBackButtons[i].onClick.AddListener(() =>
+                {
+                    soundManager.PlayDeclineSound();
+                });
+            }
         }
 
         for (int i = 0; i < levelSelectNextButtons.Length; ++i)
@@ -106,5 +142,10 @@ public class MenuGameManager : MonoBehaviour
                 soundManager.PlayConfirmSound();
             });
         }
+    }
+
+    private void OnPanelMovementComplete(AnimationEvent animationEvent) 
+    { 
+        mainMenuHidden = false;
     }
 }
