@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 3168338182399723212}
   - component: {fileID: 6200671276450294580}
   - component: {fileID: 78008532264405171}
+  - component: {fileID: 575058284413306094}
   m_Layer: 0
   m_Name: GameOverPanel
   m_TagString: Untagged
@@ -203,6 +204,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   restartLevelButton: {fileID: 3098080136941969685}
   mainMenuButton: {fileID: 7398164180722520423}
+  gameOverPanelShown: {fileID: 575058284413306094}
+--- !u!114 &575058284413306094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496271941081870173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d38c06be4fe6a04ab332326a962ecf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3098080135971120111
 GameObject:
   m_ObjectHideFlags: 0

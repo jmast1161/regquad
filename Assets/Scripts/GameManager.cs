@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas canvas;
     [SerializeField] private LevelManager levelManager;
     private bool updateCompleteLevelsInFile = false;
+    private bool levelCompletePanelShown = false;
+    private bool gameOverPanelShown = false;
     private float localScale = 1.0f;
 
     private Vector2 startTouchPosition;
@@ -101,9 +103,11 @@ public class GameManager : MonoBehaviour
         levelCompletePanel.MainMenuButtonClicked += OnMainMenuButtonClicked;
         levelCompletePanel.RestartLevelButtonClicked += OnLevelCompleteReplayButtonClicked;
         levelCompletePanel.NextLevelButtonClicked += OnNextLevelButtonClicked;
+        levelCompletePanel.LevelCompletePanelShown += OnLevelCompletePanelShown;
 
         gameOverPanel.MainMenuButtonClicked += OnMainMenuButtonClicked;
         gameOverPanel.RestartLevelButtonClicked += OnGameOverReplayButtonClicked;
+        gameOverPanel.GameOverPanelShown += OnGameOverPanelShown;
 
         creditsButton.onClick.AddListener(() =>
         {
@@ -389,6 +393,8 @@ public class GameManager : MonoBehaviour
             Camera.main.transform.position = new Vector3(center.x, center.y, -10);
             canvas.transform.position = new Vector3(center.x, center.y, canvas.transform.position.z);
             ResetTouchPositions();
+            levelCompletePanelShown = false;
+            gameOverPanelShown = false;
             SetGameState(GameState.WaitingGameplayInput);
         }
     }
@@ -434,7 +440,26 @@ public class GameManager : MonoBehaviour
         SetGameState(GameState.WaitingGameOverInput);
     }
 
-    private void OnNextLevelButtonClicked(object emptyObject)
+    private void OnNextLevelButtonClicked(object emptyObject) =>
+        SpawnNextLevel();
+
+    private void OnLevelCompletePanelShown(AnimationEvent animationEvent)
+    {
+        if(gameState == GameState.WaitingLevelCompleteInput)
+        {
+            levelCompletePanelShown = true;
+        }
+    }
+
+    private void OnGameOverPanelShown(AnimationEvent animationEvent)
+    {
+        if(gameState == GameState.WaitingGameOverInput)
+        {
+            gameOverPanelShown = true;
+        }
+    }
+
+    private void SpawnNextLevel()
     {
         ToggleMenuButtons(true);
         soundManager.PlayConfirmSound();
@@ -447,7 +472,9 @@ public class GameManager : MonoBehaviour
             currentLevel.CurrentLevel = 1;
             ++currentLevel.DifficultyLevel;
         }
+
         nextLevelAnimator.Play("HidePanel", 0);
+        levelCompletePanelShown = false;
         SetGameState(GameState.InitializeLevel);
     }
 
@@ -507,19 +534,17 @@ public class GameManager : MonoBehaviour
         RestartLevel();
     }
 
-    private void OnLevelCompleteReplayButtonClicked(object emptyObject)
-    {
-        soundManager.PlayConfirmSound();
-        ToggleMenuButtons(true);
-        nextLevelAnimator.Play("HidePanel", 0);
-        RestartLevel();
-    }
+    private void OnLevelCompleteReplayButtonClicked(object emptyObject) =>
+        HidePanelForRestartLevel(nextLevelAnimator);
 
-    private void OnGameOverReplayButtonClicked(object emptyObject)
+    private void OnGameOverReplayButtonClicked(object emptyObject) =>
+        HidePanelForRestartLevel(gameOverAnimator);
+
+    private void HidePanelForRestartLevel(Animator animator)
     {
         soundManager.PlayConfirmSound();
         ToggleMenuButtons(true);
-        gameOverAnimator.Play("HidePanel", 0);
+        animator.Play("HidePanel", 0);
         RestartLevel();
     }
 
@@ -642,6 +667,22 @@ public class GameManager : MonoBehaviour
 
                 ResetTouchPositions();
                 SetGameState(GameState.WaitingLevelCompleteInput);
+                break;
+            
+            case GameState.WaitingLevelCompleteInput:
+                if (levelCompletePanelShown && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
+                {
+                    SpawnNextLevel();
+                }
+
+                break;
+            
+            case GameState.WaitingGameOverInput:
+                if (gameOverPanelShown && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
+                {
+                    HidePanelForRestartLevel(gameOverAnimator);
+                }
+
                 break;
         }
     }

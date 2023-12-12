@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4571550733034559838}
   - component: {fileID: 4793077182983582886}
   - component: {fileID: 5363106291298925257}
+  - component: {fileID: 6583280664973352770}
   m_Layer: 0
   m_Name: LevelCompletePanel
   m_TagString: Untagged
@@ -71,6 +72,19 @@ MonoBehaviour:
   mainMenuButton: {fileID: 2882406509659979397}
   creditsButton: {fileID: 4334452721809924563}
   headerText: {fileID: 4501291312319445874}
+  levelCompletePanelShown: {fileID: 6583280664973352770}
+--- !u!114 &6583280664973352770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20979261252579535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d38c06be4fe6a04ab332326a962ecf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1783849492632798230
 GameObject:
   m_ObjectHideFlags: 0
